@@ -10,11 +10,15 @@ export function isWaitingForAnswers(phase: RoundPhase): boolean {
   return phase === 'LISTENING_FOR_PLAYERS' || phase === 'WAITING_FOR_ANSWERS';
 }
 
-export function canAcceptAnswers(phase: RoundPhase, earlyShoutOut = false): boolean {
+export function isHostReadingPhase(phase: RoundPhase): boolean {
+  return phase === 'HOST_SPEAKING' || phase === 'REPEATING_QUESTION';
+}
+
+export function canAcceptAnswers(phase: RoundPhase, earlyInterrupt = false): boolean {
   if (isWaitingForAnswers(phase)) {
     return true;
   }
-  return earlyShoutOut && phase === 'HOST_SPEAKING';
+  return earlyInterrupt && isHostReadingPhase(phase);
 }
 
 export function canStartListening(
@@ -57,7 +61,7 @@ export function shouldAdvanceAfterJudgment(
 export function bannerFor(
   phase: RoundPhase,
   lastCorrect: boolean | null = null,
-  flags: { earlyShoutOut?: boolean; interrupt?: boolean } = {},
+  flags: { earlyShoutOut?: boolean; earlyTapIn?: boolean; interrupt?: boolean } = {},
 ): PhaseBannerId {
   if (
     flags.interrupt &&
@@ -72,9 +76,8 @@ export function bannerFor(
     case 'QUESTION_DISPLAYED':
       return 'asking';
     case 'REPEATING_QUESTION':
-      return 'asking';
     case 'HOST_SPEAKING':
-      return flags.earlyShoutOut ? 'asking-armed' : 'asking';
+      return flags.earlyShoutOut || flags.earlyTapIn ? 'asking-armed' : 'asking';
     case 'HOST_SPEECH_FINISHED':
     case 'LISTENING_FOR_PLAYERS':
     case 'WAITING_FOR_ANSWERS':
@@ -113,7 +116,7 @@ export function bannerLabel(banner: PhaseBannerId): string {
     case 'asking':
       return '🔊 AI IS ASKING…';
     case 'asking-armed':
-      return '🔊 HOST READING… (early buzz armed)';
+      return '🔊 HOST READING…';
     case 'interrupt':
       return '⚡ ANSWER HEARD!';
     case 'listening':
@@ -131,6 +134,13 @@ export function bannerLabel(banner: PhaseBannerId): string {
     default:
       return '🔊 AI IS ASKING…';
   }
+}
+
+export function bannerHint(banner: PhaseBannerId): string | null {
+  if (banner === 'asking-armed') {
+    return 'Tap an answer anytime';
+  }
+  return null;
 }
 
 /** Default path: listening starts only after a real TTS completion — never onStopped/onError. */

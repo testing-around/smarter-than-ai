@@ -59,6 +59,9 @@ export function LobbyScreen() {
           Last question is a BOSS ROUND (3×). Voice:{' '}
           {voice.available && settings.voiceEnabled ? 'on' : 'tap fallback'}. Host:{' '}
           {HOST_MODE_LABEL[settings.hostMode ?? 'AI_HOST_PLUS_HUMAN_CLICKER']}.
+          {settings.answerMode === 'shout' && settings.earlyTapIn !== false
+            ? ' Tap while the host reads.'
+            : ''}
           {settings.earlyShoutOut && settings.answerMode === 'shout'
             ? ' Early shout-out: interrupt the host, wrong stays live.'
             : ''}

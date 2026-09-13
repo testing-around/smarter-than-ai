@@ -271,8 +271,13 @@ export interface GameSettings {
   beatTheAi: boolean;
   hostVoice: HostVoiceMode;
   hostMode: HostMode;
-  /** When true with shout-out, contestants may answer while the host is still reading. */
+  /** When true with shout-out, contestants may shout while the host is still reading. */
   earlyShoutOut: boolean;
+  /**
+   * When true with shout-out, contestants may tap a choice while the host is still reading.
+   * Default on. Independent of the voice early-shout mic gate.
+   */
+  earlyTapIn?: boolean;
   /** Locked-out players cannot attempt again on the same live question. */
   wrongAnswerLockout: boolean;
 }

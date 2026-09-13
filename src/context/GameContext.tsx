@@ -12,7 +12,7 @@ import { AppState } from 'react-native';
 import type { ClickerWho } from '../components/ClickerPanel';
 import { AI_PLAYER, FAMILY_PLAYERS, createPlayer } from '../data/players';
 import { correctChoiceIndex, isBossQuestion } from '../data/questionAccess';
-import { isEarlyShoutArmed } from '../game/earlyShout';
+import { isEarlyAnswerArmed, isEarlyShoutArmed, isEarlyTapArmed } from '../game/earlyShout';
 import {
   LISTEN_BUFFER_MS,
   createAttempt,
@@ -108,6 +108,7 @@ const QUICK_MODES: Record<
     timerSeconds: 15,
     beatTheAi: false,
     earlyShoutOut: true,
+    earlyTapIn: true,
   },
   lightning: {
     questionCount: 5,
@@ -116,6 +117,7 @@ const QUICK_MODES: Record<
     timerSeconds: 8,
     beatTheAi: false,
     earlyShoutOut: true,
+    earlyTapIn: true,
   },
   beatAi: {
     questionCount: 10,
@@ -124,6 +126,7 @@ const QUICK_MODES: Record<
     timerSeconds: 15,
     beatTheAi: true,
     earlyShoutOut: true,
+    earlyTapIn: true,
   },
   grade: {
     questionCount: 10,
@@ -132,6 +135,7 @@ const QUICK_MODES: Record<
     timerSeconds: 20,
     beatTheAi: false,
     earlyShoutOut: false,
+    earlyTapIn: false,
     wrongAnswerLockout: true,
   },
 };
@@ -407,6 +411,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setBanner(
       bannerFor(next, lastCorrectRef.current, {
         earlyShoutOut: isEarlyShoutArmed(settingsRef.current),
+        earlyTapIn: isEarlyTapArmed(settingsRef.current),
         interrupt: interruptRef.current,
       }),
     );
@@ -968,7 +973,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const submitAnswer = useCallback(
     (playerId: string, choiceIndex: number, source: AnswerSource) => {
-      const early = isEarlyShoutArmed(settingsRef.current);
+      const early =
+        source === 'voice'
+          ? isEarlyShoutArmed(settingsRef.current)
+          : isEarlyAnswerArmed(settingsRef.current);
       if (!canAcceptAnswers(phaseRef.current, early) || lockedRef.current) {
         return;
       }
@@ -1033,7 +1041,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const openWhoSaidThat = useCallback(
     (choiceIndex: number, heard: string) => {
       if (
-        !canAcceptAnswers(phaseRef.current, isEarlyShoutArmed(settingsRef.current)) ||
+        !canAcceptAnswers(phaseRef.current, isEarlyAnswerArmed(settingsRef.current)) ||
         lockedRef.current ||
         whoRef.current
       ) {
@@ -1081,7 +1089,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const tapChoice = useCallback(
     (choiceIndex: number) => {
-      const early = isEarlyShoutArmed(settingsRef.current);
+      const early = isEarlyAnswerArmed(settingsRef.current);
       if (!canAcceptAnswers(phaseRef.current, early) || lockedRef.current) {
         return;
       }

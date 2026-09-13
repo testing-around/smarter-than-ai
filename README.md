@@ -37,7 +37,7 @@ npx tsc --noEmit
 2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**), optional **⚡ EARLY SHOUT-OUT**.
 3. **Voice check** — **Train / Retrain / Test / Delete** walks each human through 5 spoken lines (need 3). Profiles persist on-device for offline speaker ID. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md` and `docs/VOICE-AUDIT.md`.
 4. **Lobby** — roster + rules, then start.
-5. **Game** — host reads the full question (🔊 AI IS ASKING…). By default the answer timer and mic start only after TTS `onDone` + a 400ms buffer (🎤 LISTENING…). **Early shout-out** (Family Battle / Lightning / Beat the AI, or the Setup toggle) lets humans interrupt on the first read. Wrong answers stay on the **same question** (overlay only — no reveal, no Next). Last question is a **boss round (3×)**.
+5. **Game** — host reads the full question (🔊 HOST READING…). In shout-out, **tap an answer anytime** (default on), even during the read and re-reads. The mic still waits for TTS `onDone` unless **Early shout-out** is on. Wrong answers stay on the **same question** (overlay only — no reveal, no Next). Last question is a **boss round (3×)**.
 6. **Round result** — full result only after a **correct** answer (or host skip/reveal). Then Next Question.
 7. **Final** — leaderboard and rematch.
 
@@ -79,7 +79,7 @@ The host never accepts, scores, or reveals an answer until TTS **finishes** (`ex
 
 **Early shout-out** (opt-in; default remains P2 / wait for TTS):
 
-`🔊 HOST READING… (early buzz armed) → ⚡ ANSWER HEARD! → WHO? → ✅/❌`
+`🔊 HOST READING…` (Tap an answer anytime) `→ ⚡ ANSWER HEARD! → WHO? → ✅/❌`
 
 - Humans can shout (or tap) while the host is reading. Host TTS pauses. Host + Clicker picks **who said it**, or a high-confidence speaker guess auto-assigns.
 - **Correct** → score, host feedback, next question.

@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { isEarlyShoutArmed } from './earlyShout';
+import { isEarlyAnswerArmed, isEarlyShoutArmed, isEarlyTapArmed } from './earlyShout';
 import {
   bannerFor,
+  bannerHint,
   bannerLabel,
   canAcceptAnswers,
   canStartListening,
@@ -61,10 +62,23 @@ describe('game machine gates', () => {
 
   it('accepts early interrupt while the host is still speaking', () => {
     assert.equal(canAcceptAnswers('HOST_SPEAKING', true), true);
+    assert.equal(canAcceptAnswers('REPEATING_QUESTION', true), true);
+    assert.equal(canAcceptAnswers('REPEATING_QUESTION', false), false);
     assert.equal(canStartListening('HOST_SPEAKING', true, true, true), true);
     assert.equal(canStartListening('HOST_SPEAKING', true, false, true), false);
-    assert.equal(bannerFor('HOST_SPEAKING', null, { earlyShoutOut: true }), 'asking-armed');
-    assert.equal(bannerLabel('asking-armed'), '🔊 HOST READING… (early buzz armed)');
+    assert.equal(bannerFor('HOST_SPEAKING', null, { earlyTapIn: true }), 'asking-armed');
+    assert.equal(bannerFor('REPEATING_QUESTION', null, { earlyTapIn: true }), 'asking-armed');
+    assert.equal(bannerLabel('asking-armed'), '🔊 HOST READING…');
+    assert.equal(bannerHint('asking-armed'), 'Tap an answer anytime');
+  });
+
+  it('arms tap-during-TTS for shout-out even when voice early shout is off', () => {
+    assert.equal(isEarlyTapArmed({ earlyTapIn: true, earlyShoutOut: false, answerMode: 'shout' }), true);
+    assert.equal(isEarlyTapArmed({ earlyTapIn: undefined, earlyShoutOut: false, answerMode: 'shout' }), true);
+    assert.equal(isEarlyTapArmed({ earlyTapIn: false, earlyShoutOut: false, answerMode: 'shout' }), false);
+    assert.equal(isEarlyTapArmed({ earlyTapIn: true, earlyShoutOut: false, answerMode: 'turn' }), false);
+    assert.equal(isEarlyAnswerArmed({ earlyTapIn: false, earlyShoutOut: true, answerMode: 'shout' }), true);
+    assert.equal(isEarlyShoutArmed({ earlyShoutOut: false, answerMode: 'shout' }), false);
   });
 
   it('shows the who-said-that interrupt alert after an early shout', () => {
