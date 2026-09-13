@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../theme/colors';
 
@@ -15,8 +15,16 @@ export function AiHostOrb({ size = 132, listening = false, caption = 'AI HOST' }
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulse, { toValue: 1, duration: listening ? 700 : 1400, useNativeDriver: true }),
-        Animated.timing(pulse, { toValue: 0, duration: listening ? 700 : 1400, useNativeDriver: true }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: listening ? 700 : 1400,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+        Animated.timing(pulse, {
+          toValue: 0,
+          duration: listening ? 700 : 1400,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
       ]),
     );
     loop.start();
