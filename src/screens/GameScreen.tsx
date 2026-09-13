@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ChoiceButton } from '../components/ChoiceButton';
+import { ClickerPanel } from '../components/ClickerPanel';
+import { EventLogPanel } from '../components/EventLogPanel';
 import { HostBar } from '../components/HostBar';
+import { HostControls } from '../components/HostControls';
 import { Panel } from '../components/Panel';
+import { PhaseBanner } from '../components/PhaseBanner';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Scoreboard } from '../components/Scoreboard';
 import { Screen } from '../components/Screen';
 import { WhoSaidThatModal } from '../components/WhoSaidThatModal';
 import { useGame } from '../context/GameContext';
+import { canAcceptAnswers } from '../game/phases';
 import { CATEGORY_LABEL } from '../data/bank';
 import { difficultyBand } from '../data/questionAccess';
 import { colors } from '../theme/colors';
@@ -28,11 +33,30 @@ export function GameScreen() {
     hostLine,
     transcript,
     listening,
+    phase,
+    banner,
+    hostSpeaking,
+    pendingAnswer,
+    clickerOpen,
+    clickerWho,
+    clickerCorrect,
+    paused,
+    eventLog,
     tapChoice,
     buzzIn,
     claimAnswer,
     listenNow,
     goHome,
+    pauseRound,
+    resumeRound,
+    repeatQuestion,
+    skipQuestion,
+    stopHostSpeaking,
+    retryHostSpeech,
+    skipToListening,
+    setClickerWho,
+    setClickerCorrect,
+    confirmClicker,
   } = useGame();
 
   if (!current) {
@@ -45,13 +69,18 @@ export function GameScreen() {
 
   const turnPlayer = players.find((p) => p.id === turnPlayerId);
   const buzzed = players.find((p) => p.id === buzzedPlayerId);
+  const accepting = canAcceptAnswers(phase) && !hostSpeaking && !paused;
   const choicesLocked =
     locked ||
+    !accepting ||
     (settings.answerMode === 'buzz' && !buzzedPlayerId) ||
-    Boolean(whoSaidThat);
+    Boolean(whoSaidThat) ||
+    clickerOpen;
 
+  const timerArmed = phase === 'LISTENING_FOR_PLAYERS';
   const timerColor =
-    timeLeft <= 3 ? colors.red : timeLeft <= 6 ? colors.gold : colors.cyan;
+    !timerArmed ? colors.muted : timeLeft <= 3 ? colors.red : timeLeft <= 6 ? colors.gold : colors.cyan;
+  const showTtsRecovery = phase === 'TTS_ERROR' || phase === 'HOST_STOPPED';
 
   return (
     <Screen>
@@ -59,8 +88,11 @@ export function GameScreen() {
         <Text style={styles.kicker}>
           Q {questionNumber}/{questionTotal}
         </Text>
-        <Text style={[styles.timer, { color: timerColor }]}>{timeLeft}s</Text>
+        <Text style={[styles.timer, { color: timerColor }]}>
+          {timerArmed ? `${timeLeft}s` : '—'}
+        </Text>
       </View>
+      <PhaseBanner banner={banner} />
       <Scoreboard
         players={players}
         highlightId={settings.answerMode === 'turn' ? turnPlayerId : buzzedPlayerId}
@@ -86,10 +118,14 @@ export function GameScreen() {
       ) : null}
       {settings.answerMode === 'buzz' ? (
         <Text style={styles.hint}>
-          {buzzed ? `${buzzed.emoji} ${buzzed.name} buzzed in` : 'Buzz first, then answer'}
+          {buzzed ? `${buzzed.emoji} ${buzzed.name} buzzed in` : 'Buzz after the host finishes'}
         </Text>
       ) : (
-        <Text style={styles.hint}>Shout a letter, or tap. Name-then-answer works too.</Text>
+        <Text style={styles.hint}>
+          {accepting
+            ? 'Shout a letter, or tap. Name-then-answer works too.'
+            : 'Hold answers until the host finishes the question.'}
+        </Text>
       )}
 
       {settings.answerMode === 'buzz' && !buzzedPlayerId ? (
@@ -101,6 +137,7 @@ export function GameScreen() {
                 <PrimaryButton
                   label={`${player.emoji} Buzz`}
                   variant="purple"
+                  disabled={!accepting}
                   onPress={() => buzzIn(player.id)}
                 />
               </View>
@@ -121,18 +158,48 @@ export function GameScreen() {
         ))}
       </View>
 
+      {clickerOpen && pendingAnswer ? (
+        <ClickerPanel
+          pending={pendingAnswer}
+          choiceLabel={current.choices[pendingAnswer.choiceIndex] ?? ''}
+          players={players}
+          who={clickerWho}
+          correctOverride={clickerCorrect}
+          onWho={setClickerWho}
+          onCorrect={setClickerCorrect}
+          onConfirm={confirmClicker}
+        />
+      ) : null}
+
       <View style={{ height: 12 }} />
       <HostBar line={listening ? `${hostLine} · listening` : hostLine} />
       {transcript ? <Text style={styles.heard}>Heard: {transcript}</Text> : null}
+      <HostControls
+        paused={paused}
+        hostSpeaking={hostSpeaking}
+        showTtsRecovery={showTtsRecovery}
+        onPause={pauseRound}
+        onResume={resumeRound}
+        onRepeat={repeatQuestion}
+        onSkip={skipQuestion}
+        onStopSpeaking={stopHostSpeaking}
+        onRetryTts={retryHostSpeech}
+        onSkipToListening={skipToListening}
+      />
       <View style={{ height: 10 }} />
       {settings.voiceEnabled ? (
-        <PrimaryButton label={listening ? 'Listening…' : 'Listen now'} onPress={listenNow} />
+        <PrimaryButton
+          label={listening ? 'Listening…' : 'Listen now'}
+          disabled={!accepting}
+          onPress={listenNow}
+        />
       ) : null}
       <View style={{ height: 8 }} />
       <PrimaryButton label="Quit to home" variant="ghost" onPress={goHome} />
+      <EventLogPanel events={eventLog} />
 
       <WhoSaidThatModal
-        visible={Boolean(whoSaidThat)}
+        visible={Boolean(whoSaidThat) && !clickerOpen}
         transcript={whoSaidThat?.transcript ?? ''}
         choiceIndex={whoSaidThat?.choiceIndex ?? 0}
         choiceLabel={current.choices[whoSaidThat?.choiceIndex ?? 0] ?? ''}

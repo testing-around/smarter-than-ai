@@ -154,17 +154,41 @@ function matchAccepted(
   acceptedAnswers: string[],
 ): number | null {
   const hay = normalize(transcript);
+  const words = tokens(transcript);
+
   for (const accepted of acceptedAnswers) {
     const needle = normalize(accepted);
-    if (needle.length >= 2 && (hay === needle || hay.includes(needle))) {
-      const idx = choices.findIndex((choice) => normalize(choice) === needle);
-      if (idx >= 0) {
-        return idx;
+    if (needle.length < 2) {
+      continue;
+    }
+    if (hay === needle || hay.includes(needle)) {
+      const mapped = indexForAccepted(needle, choices);
+      if (mapped !== null) {
+        return mapped;
       }
-      return choices.findIndex((choice) => normalize(choice).includes(needle));
+    }
+
+    if (needle.length >= 4) {
+      for (const word of words) {
+        if (word.length >= 4 && levenshtein(word, needle) <= 1) {
+          const mapped = indexForAccepted(needle, choices);
+          if (mapped !== null) {
+            return mapped;
+          }
+        }
+      }
     }
   }
   return null;
+}
+
+function indexForAccepted(needle: string, choices: string[]): number | null {
+  const exact = choices.findIndex((choice) => normalize(choice) === needle);
+  if (exact >= 0) {
+    return exact;
+  }
+  const via = choices.findIndex((choice) => normalize(choice).includes(needle));
+  return via >= 0 ? via : null;
 }
 
 function matchChoiceText(transcript: string, choices: string[]): number | null {

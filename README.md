@@ -34,10 +34,10 @@ npx tsc --noEmit
 `HOME → SETUP → VOICE_CHECK → LOBBY → GAME → ROUND_RESULT → FINAL` (rematch).
 
 1. **Home** — start a custom game or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
-2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s.
+2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**).
 3. **Voice check** — each human enrolls by saying `I'm {name} and I'm smarter than AI`. If the mic is missing, mark enrolled and play tap-only.
 4. **Lobby** — roster + rules, then start.
-5. **Game** — live scoreboard, category, four choices, countdown. Last question is a **boss round (3×)**.
+5. **Game** — host reads the full question (🔊 AI IS ASKING…). The answer timer and mic start only after TTS `onDone` (🎤 LISTENING…). Last question is a **boss round (3×)**.
 6. **Round result** — who answered, correct?, points, response ms, explanation.
 7. **Final** — leaderboard and rematch.
 
@@ -65,6 +65,29 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 - Permissions: microphone + speech recognition on iOS; `RECORD_AUDIO` on Android.
 
 Enrollment is a practical party check (“can we hear this person?”), not a voiceprint. Live rounds parse the transcript for player names and A/B/C/D (or choice text). Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed.
+
+### Host / listen / judge (strict)
+
+The host never accepts, scores, or reveals an answer until TTS **finishes** (`expo-speech` `onDone`). Sequence:
+
+`QUESTION_SELECTED → DISPLAYED → HOST_SPEAKING → HOST_SPEECH_FINISHED → LISTENING_FOR_PLAYERS → … → HOST_FEEDBACK → next`
+
+- Mic is **off** while 🔊 AI IS ASKING… so host audio does not enter contestant STT.
+- Timer starts at 🎤 LISTENING…, not at question display.
+- Host question text is display + TTS only. The correct answer stays internal until someone answers or time expires.
+- Stale callbacks from a previous `questionSessionId` are ignored.
+
+**Host modes** (Setup):
+
+| Mode | What happens |
+| --- | --- |
+| **Host + Clicker** (default) | AI reads and listens, then you get **WHO ANSWERED?** `[players] [AI GOT IT] [UNKNOWN]` and optional **CORRECT?** override. Best for testing. |
+| **Full AI host** | Auto-judge when speaker+answer are clear; **Who said Mars?** if speaker unknown; auto-advance after feedback TTS. |
+| **Human + AI assist** | You own next / who / correct / skip / pause. AI still displays, reads, listens, and suggests. |
+
+On-game controls: Pause / Resume / Repeat (re-read, wait for TTS, then listen again) / Skip / Stop host speaking. If TTS fails: Retry or **I read it — listen**.
+
+Exercise Clicker: Setup → **HOST + CLICKER** → start a match → wait for 🎤 LISTENING… → tap an answer or shout one → pick a player and Confirm (optionally override CORRECT?).
 
 ### British female host (default)
 

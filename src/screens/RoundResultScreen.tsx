@@ -8,8 +8,17 @@ import { useGame } from '../context/GameContext';
 import { colors, letters } from '../theme/colors';
 
 export function RoundResultScreen() {
-  const { lastResult, players, hostLine, continueAfterRound, questionNumber, questionTotal } =
-    useGame();
+  const {
+    lastResult,
+    players,
+    hostLine,
+    continueAfterRound,
+    questionNumber,
+    questionTotal,
+    canAdvance,
+    hostSpeaking,
+    settings,
+  } = useGame();
 
   if (!lastResult) {
     return (
@@ -57,7 +66,14 @@ export function RoundResultScreen() {
       <HostBar line={hostLine} />
       <View style={{ height: 18 }} />
       <PrimaryButton
-        label={questionNumber >= questionTotal ? 'See final board' : 'Next question'}
+        label={
+          questionNumber >= questionTotal
+            ? 'See final board'
+            : !canAdvance && hostSpeaking
+              ? 'Host is wrapping up…'
+              : 'Next question'
+        }
+        disabled={settings.hostMode === 'FULL_AI_HOST' && !canAdvance}
         onPress={continueAfterRound}
       />
     </Screen>

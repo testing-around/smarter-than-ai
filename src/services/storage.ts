@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS: GameSettings = {
   voiceEnabled: true,
   beatTheAi: false,
   hostVoice: 'british-female',
+  hostMode: 'AI_HOST_PLUS_HUMAN_CLICKER',
 };
 
 export interface PersistedState {

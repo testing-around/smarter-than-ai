@@ -29,7 +29,8 @@
     "prebuild:android": "expo prebuild --platform android",
     "apk:release": "cd android && ./gradlew assembleRelease",
     "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "npx --yes tsx --test src/game/gameMachine.test.ts src/services/answerJudgeEngine.test.ts src/services/hostQuestionEngine.test.ts"
   },
   "private": true
 }
