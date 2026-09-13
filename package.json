@@ -1,6 +1,6 @@
 {
   "name": "smarter-than-ai",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "main": "index.ts",
   "dependencies": {
     "@expo/metro-runtime": "~57.0.15",
