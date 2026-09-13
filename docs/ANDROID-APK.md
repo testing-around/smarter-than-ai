@@ -4,7 +4,7 @@ This is a **standalone** build of Smarter Than AI (`com.smarterthanai.game`), no
 
 ## Install on a phone
 
-1. Download `SmarterThanAI-1.0.3-preview.apk` (versionName **1.0.3**, versionCode **4**) from the GitHub Release (URL and SHA-256 are added after assembleRelease).
+1. Download `SmarterThanAI-1.0.3-preview.apk` (versionName **1.0.3**, versionCode **4**) from https://github.com/testing-around/smarter-than-ai/releases/download/v1.0.3-preview/SmarterThanAI-1.0.3-preview.apk (SHA-256 `bb4f5adb629a5ee4c7acba145f59bd36da44143304eec5398444b70ed29feaae`).
 2. Open the file. If Android blocks it, allow **Install unknown apps** / **Install from this source** for Files, Chrome, or Drive — whichever you used to open the APK.
 3. Tap **Install**, then **Open**.
 
