@@ -1,4 +1,5 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { whoSaidPrompt } from '../services/answerJudgeEngine';
 import { colors, letters } from '../theme/colors';
 import type { Player } from '../types';
 import { PrimaryButton } from './PrimaryButton';
@@ -25,7 +26,7 @@ export function WhoSaidThatModal({
       <View style={styles.backdrop}>
         <View style={styles.card}>
           <Text style={styles.kicker}>LOW SPEAKER CONFIDENCE</Text>
-          <Text style={styles.title}>Who said that?</Text>
+          <Text style={styles.title}>{whoSaidPrompt(transcript, choiceLabel)}</Text>
           <Text style={styles.body}>
             The host heard an answer and will not throw it away. Claim it.
           </Text>

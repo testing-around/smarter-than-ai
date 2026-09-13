@@ -13,6 +13,12 @@ const MODE_LABEL = {
   turn: 'Turn based',
 } as const;
 
+const HOST_MODE_LABEL = {
+  FULL_AI_HOST: 'Full AI host',
+  AI_HOST_PLUS_HUMAN_CLICKER: 'Host + clicker',
+  HUMAN_HOST_PLUS_AI_ASSIST: 'Human host + AI assist',
+} as const;
+
 export function LobbyScreen() {
   const { players, settings, hostLine, startMatch, goSetup, voice } = useGame();
 
@@ -41,7 +47,9 @@ export function LobbyScreen() {
           {settings.difficulty.toUpperCase()} · {settings.timerSeconds}s
         </Text>
         <Text style={styles.rule}>
-          Last question is a BOSS ROUND (3×). Voice: {voice.available && settings.voiceEnabled ? 'on' : 'tap fallback'}.
+          Last question is a BOSS ROUND (3×). Voice:{' '}
+          {voice.available && settings.voiceEnabled ? 'on' : 'tap fallback'}. Host:{' '}
+          {HOST_MODE_LABEL[settings.hostMode ?? 'AI_HOST_PLUS_HUMAN_CLICKER']}.
         </Text>
       </Panel>
       <View style={{ height: 18 }} />

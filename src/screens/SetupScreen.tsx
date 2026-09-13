@@ -6,7 +6,13 @@ import { Screen } from '../components/Screen';
 import { useGame } from '../context/GameContext';
 import { PLAYER_EMOJIS } from '../data/players';
 import { colors } from '../theme/colors';
-import type { AnswerMode, GameDifficulty, HostVoiceMode, QuestionCount } from '../types';
+import type {
+  AnswerMode,
+  GameDifficulty,
+  HostMode,
+  HostVoiceMode,
+  QuestionCount,
+} from '../types';
 
 export function SetupScreen() {
   const {
@@ -111,6 +117,24 @@ export function SetupScreen() {
         ]}
       />
 
+      <Text style={styles.section}>HOST MODE</Text>
+      <ChipSelect<HostMode>
+        value={settings.hostMode ?? 'AI_HOST_PLUS_HUMAN_CLICKER'}
+        onChange={(hostMode) => patchSettings({ hostMode })}
+        options={[
+          { value: 'AI_HOST_PLUS_HUMAN_CLICKER', label: 'HOST + CLICKER' },
+          { value: 'FULL_AI_HOST', label: 'FULL AI HOST' },
+          { value: 'HUMAN_HOST_PLUS_AI_ASSIST', label: 'HUMAN + AI ASSIST' },
+        ]}
+      />
+      <Text style={styles.modeHint}>
+        {settings.hostMode === 'FULL_AI_HOST'
+          ? 'AI reads, listens, judges, and advances after feedback.'
+          : settings.hostMode === 'HUMAN_HOST_PLUS_AI_ASSIST'
+            ? 'You control next / who / correct / skip / pause. AI still displays, reads, listens, and suggests.'
+            : 'Default for testing: after an answer, pick WHO ANSWERED? and optionally override CORRECT?'}
+      </Text>
+
       <Text style={styles.section}>HOST VOICE</Text>
       <ChipSelect<HostVoiceMode>
         value={settings.hostVoice ?? 'british-female'}
@@ -205,6 +229,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     marginTop: 12,
+  },
+  modeHint: {
+    color: colors.muted,
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: 8,
   },
   section: {
     color: colors.muted,

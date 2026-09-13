@@ -62,8 +62,95 @@ export type DifficultyBand = 'easy' | 'medium' | 'hard';
 export type GameDifficulty = 'easy' | 'adaptive' | 'hard';
 export type AnswerMode = 'shout' | 'buzz' | 'turn';
 export type QuestionCount = 5 | 10 | 20;
-export type AnswerSource = 'tap' | 'voice' | 'buzz' | 'ai' | 'timeout' | 'claim';
+export type AnswerSource =
+  | 'tap'
+  | 'voice'
+  | 'buzz'
+  | 'ai'
+  | 'timeout'
+  | 'claim'
+  | 'clicker'
+  | 'host'
+  | 'skip';
 export type HostVoiceMode = 'british-female' | 'system';
+export type HostMode =
+  | 'FULL_AI_HOST'
+  | 'AI_HOST_PLUS_HUMAN_CLICKER'
+  | 'HUMAN_HOST_PLUS_AI_ASSIST';
+export type TtsOutcome = 'done' | 'stopped' | 'error' | 'empty' | 'disabled' | 'unavailable' | 'stale';
+export type OverlapFlag = 'SINGLE' | 'MULTIPLE_SPEAKERS';
+
+export type RoundPhase =
+  | 'IDLE'
+  | 'QUESTION_SELECTED'
+  | 'QUESTION_DISPLAYED'
+  | 'HOST_SPEAKING'
+  | 'HOST_SPEECH_FINISHED'
+  | 'LISTENING_FOR_PLAYERS'
+  | 'ANSWER_DETECTED'
+  | 'SPEAKER_IDENTIFICATION'
+  | 'ANSWER_TRANSCRIPTION'
+  | 'ANSWER_JUDGING'
+  | 'SCORE_UPDATE'
+  | 'HOST_FEEDBACK'
+  | 'HOST_FEEDBACK_TTS_COMPLETE'
+  | 'PAUSED'
+  | 'TTS_ERROR'
+  | 'HOST_STOPPED';
+
+export type PhaseBannerId =
+  | 'asking'
+  | 'listening'
+  | 'checking'
+  | 'correct'
+  | 'wrong'
+  | 'paused'
+  | 'error';
+
+export type GameEventType =
+  | 'QUESTION_LOADED'
+  | 'DISPLAYED'
+  | 'TTS_STARTED'
+  | 'TTS_FINISHED'
+  | 'TTS_ERROR'
+  | 'TTS_STOPPED'
+  | 'MIC_OPENED'
+  | 'MIC_CLOSED'
+  | 'SPEECH_PARTIAL'
+  | 'SPEECH_FINAL'
+  | 'TRANSCRIPT'
+  | 'SPEAKER_GUESSED'
+  | 'SPEAKER_IDENTIFIED'
+  | 'SPEAKER_UNKNOWN'
+  | 'SPEAKER_CORRECTED'
+  | 'ANSWER_JUDGED'
+  | 'JUDGMENT_OVERRIDE'
+  | 'SCORE_UPDATED'
+  | 'HOST_RESPONSE_STARTED'
+  | 'HOST_RESPONSE_FINISHED'
+  | 'NEXT_QUESTION'
+  | 'REPEAT_QUESTION'
+  | 'SKIP_QUESTION'
+  | 'PAUSED'
+  | 'RESUMED'
+  | 'TRANSCRIPT_CORRECTED';
+
+export interface GameEvent {
+  at: number;
+  sessionId: string;
+  questionId: string | null;
+  type: GameEventType;
+  detail?: string;
+}
+
+export interface PendingAnswer {
+  transcript: string;
+  choiceIndex: number;
+  suggestedPlayerId: string | null;
+  suggestedCorrect: boolean;
+  responseMs: number;
+  overlap: OverlapFlag;
+}
 
 /** @deprecated Use DifficultyBand. Kept so older imports still typecheck during the swap. */
 export type QuestionDifficulty = DifficultyBand;
@@ -119,6 +206,7 @@ export interface GameSettings {
   voiceEnabled: boolean;
   beatTheAi: boolean;
   hostVoice: HostVoiceMode;
+  hostMode: HostMode;
 }
 
 export interface RoundResult {
@@ -132,6 +220,7 @@ export interface RoundResult {
   timedOut: boolean;
   source: AnswerSource;
   isBoss: boolean;
+  overridden?: boolean;
 }
 
 export interface LeaderboardRow {
