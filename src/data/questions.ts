@@ -1,7 +1,6 @@
-import type { Question } from '../types';
-import { MORE_QUESTIONS } from './moreQuestions';
+import type { LegacyQuestion } from '../types';
 
-const CORE_QUESTIONS: Question[] = [
+export const CORE_QUESTIONS: LegacyQuestion[] = [
   {
     id: 'sci-01',
     category: 'science',
@@ -543,16 +542,3 @@ const CORE_QUESTIONS: Question[] = [
     explanation: '24 × 60 = 1,440 minutes. Protect them from the group chat.',
   },
 ];
-
-export const QUESTIONS: Question[] = [...CORE_QUESTIONS, ...MORE_QUESTIONS];
-
-export const CATEGORY_LABEL: Record<Question['category'], string> = {
-  science: 'Science',
-  math: 'Math',
-  geography: 'Geography',
-  history: 'History',
-  logic: 'Logic',
-  general: 'General',
-  pop: 'Pop Culture',
-  kaiju: 'Kaiju',
-};

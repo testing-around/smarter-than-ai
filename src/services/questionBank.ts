@@ -1,21 +1,23 @@
-import { QUESTIONS } from '../data/questions';
-import type { GameDifficulty, Question, QuestionDifficulty } from '../types';
+import { QUESTIONS } from '../data/bank';
+import { difficultyBand } from '../data/questionAccess';
+import type { DifficultyBand, GameDifficulty, Question } from '../types';
 import { shuffle } from '../utils/shuffle';
 
-const RANK: Record<QuestionDifficulty, number> = {
+const RANK: Record<DifficultyBand, number> = {
   easy: 0,
   medium: 1,
   hard: 2,
 };
 
+function bandRank(question: Question): number {
+  return RANK[difficultyBand(question.difficulty)];
+}
+
 export function questionBankSize(): number {
   return QUESTIONS.length;
 }
 
-export function pickDeck(
-  count: number,
-  difficulty: GameDifficulty,
-): Question[] {
+export function pickDeck(count: number, difficulty: GameDifficulty): Question[] {
   if (count > QUESTIONS.length) {
     throw new Error(`Need ${count} questions but bank only has ${QUESTIONS.length}`);
   }
@@ -24,23 +26,22 @@ export function pickDeck(
     return shuffle(QUESTIONS).slice(0, count);
   }
 
-  const target: QuestionDifficulty = difficulty === 'easy' ? 'easy' : 'hard';
-  const preferred = shuffle(QUESTIONS.filter((q) => q.difficulty === target));
+  const target: DifficultyBand = difficulty === 'easy' ? 'easy' : 'hard';
+  const preferred = shuffle(QUESTIONS.filter((q) => difficultyBand(q.difficulty) === target));
   const neighbors = shuffle(
-    QUESTIONS.filter((q) => q.difficulty === 'medium' && !preferred.includes(q)),
+    QUESTIONS.filter((q) => difficultyBand(q.difficulty) === 'medium' && !preferred.includes(q)),
   );
   const rest = shuffle(
     QUESTIONS.filter((q) => !preferred.includes(q) && !neighbors.includes(q)),
   );
 
-  const deck = [...preferred, ...neighbors, ...rest].slice(0, count);
-  return shuffle(deck);
+  return shuffle([...preferred, ...neighbors, ...rest].slice(0, count));
 }
 
 export function nextAdaptiveDifficulty(
   recentCorrect: boolean[],
-  current: QuestionDifficulty,
-): QuestionDifficulty {
+  current: DifficultyBand,
+): DifficultyBand {
   const lastTwo = recentCorrect.slice(-2);
   if (lastTwo.length === 2 && lastTwo.every(Boolean) && current !== 'hard') {
     return current === 'easy' ? 'medium' : 'hard';
@@ -53,12 +54,13 @@ export function nextAdaptiveDifficulty(
 
 export function takeMatching(
   remaining: Question[],
-  difficulty: QuestionDifficulty,
+  difficulty: DifficultyBand,
 ): { next: Question; rest: Question[] } {
-  const exact = remaining.find((q) => q.difficulty === difficulty);
+  const targetRank = RANK[difficulty];
+  const exact = remaining.find((q) => difficultyBand(q.difficulty) === difficulty);
   const chosen =
     exact ??
-    remaining.find((q) => Math.abs(RANK[q.difficulty] - RANK[difficulty]) === 1) ??
+    remaining.find((q) => Math.abs(bandRank(q) - targetRank) === 1) ??
     remaining[0];
 
   if (!chosen) {
@@ -67,7 +69,12 @@ export function takeMatching(
 
   return {
     next: chosen,
-    rest: remaining.filter((q) => q.id !== chosen.id),
+    rest: remaining.filter((q) => q.question_id !== chosen.question_id),
   };
 }
 
+// Hooks for later (not shipped): steal_allowed, sudden-death, picture/sound, parent-authored items.
+export const FUTURE_ENGINE_NOTES = {
+  steal: 'Question.steal_allowed is stored; scoring does not use it yet.',
+  adaptive: 'Grade + numeric difficulty can drive a real adaptive engine later.',
+};

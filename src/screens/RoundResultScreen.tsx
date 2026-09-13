@@ -23,7 +23,7 @@ export function RoundResultScreen() {
     lastResult.choiceIndex !== null
       ? `${letters[lastResult.choiceIndex]} · ${lastResult.question.choices[lastResult.choiceIndex]}`
       : 'No answer';
-  const correctLabel = lastResult.question.choices[lastResult.question.correctIndex];
+  const correctLabel = lastResult.question.correct_answer;
 
   return (
     <Screen>
@@ -40,7 +40,7 @@ export function RoundResultScreen() {
       </Text>
       <View style={{ height: 10 }} />
       <Panel gold={lastResult.isBoss}>
-        <Text style={styles.q}>{lastResult.question.prompt}</Text>
+        <Text style={styles.q}>{lastResult.question.question}</Text>
         <Text style={styles.row}>Answered: {choice}</Text>
         <Text style={styles.row}>Correct: {correctLabel}</Text>
         <Text style={styles.row}>

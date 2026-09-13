@@ -1,3 +1,5 @@
+import type { Question } from '../types';
+
 export function speedBonus(responseMs: number): number {
   if (responseMs < 2000) {
     return 50;
@@ -12,9 +14,12 @@ export function scoreForAnswer(
   correct: boolean,
   responseMs: number,
   multiplier: number,
+  question?: Question,
 ): number {
   if (!correct) {
     return 0;
   }
-  return (100 + speedBonus(responseMs)) * multiplier;
+  const base = question?.base_points ?? 100;
+  const bonus = question?.speed_bonus === false ? 0 : speedBonus(responseMs);
+  return (base + bonus) * multiplier;
 }

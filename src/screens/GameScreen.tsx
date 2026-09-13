@@ -7,7 +7,8 @@ import { Scoreboard } from '../components/Scoreboard';
 import { Screen } from '../components/Screen';
 import { WhoSaidThatModal } from '../components/WhoSaidThatModal';
 import { useGame } from '../context/GameContext';
-import { CATEGORY_LABEL } from '../data/questions';
+import { CATEGORY_LABEL } from '../data/bank';
+import { difficultyBand } from '../data/questionAccess';
 import { colors } from '../theme/colors';
 
 export function GameScreen() {
@@ -68,10 +69,16 @@ export function GameScreen() {
       <Panel gold={isBoss}>
         <View style={styles.tags}>
           <Text style={styles.tag}>{CATEGORY_LABEL[current.category]}</Text>
-          <Text style={styles.tag}>{current.difficulty.toUpperCase()}</Text>
+          {current.subcategory ? <Text style={styles.tag}>{current.subcategory}</Text> : null}
+          <Text style={styles.tag}>
+            {difficultyBand(current.difficulty).toUpperCase()} · {current.difficulty}/10
+          </Text>
+          {current.question_type !== 'MULTIPLE_CHOICE' ? (
+            <Text style={styles.tag}>{current.question_type.replace('_', ' ')}</Text>
+          ) : null}
           {isBoss ? <Text style={styles.boss}>BOSS ROUND · {multiplier}×</Text> : null}
         </View>
-        <Text style={styles.prompt}>{current.prompt}</Text>
+        <Text style={styles.prompt}>{current.question}</Text>
       </Panel>
 
       {settings.answerMode === 'turn' ? (

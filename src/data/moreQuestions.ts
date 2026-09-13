@@ -1,7 +1,7 @@
-import type { Question } from '../types';
+import type { LegacyQuestion } from '../types';
 
 /** Extra bank — unique prompts, same schema as the original set. */
-export const MORE_QUESTIONS: Question[] = [
+export const MORE_QUESTIONS: LegacyQuestion[] = [
   {
     id: 'sci-12',
     category: 'science',

@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS: GameSettings = {
   timerSeconds: 15,
   voiceEnabled: true,
   beatTheAi: false,
+  hostVoice: 'british-female',
 };
 
 export interface PersistedState {
