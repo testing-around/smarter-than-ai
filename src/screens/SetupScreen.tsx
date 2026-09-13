@@ -177,6 +177,23 @@ export function SetupScreen() {
           : 'P2 default: mic and answers wait until the host finishes the question. Family Battle, Lightning, and Beat the AI turn this on.'}
       </Text>
 
+      <Pressable
+        onPress={() =>
+          patchSettings({ wrongAnswerLockout: settings.wrongAnswerLockout === false })
+        }
+        style={[styles.toggle, settings.wrongAnswerLockout !== false && styles.toggleOn]}
+      >
+        <Text style={styles.toggleText}>
+          {settings.wrongAnswerLockout !== false
+            ? '🚫 WRONG-ANSWER LOCKOUT is ON'
+            : '🚫 WRONG-ANSWER LOCKOUT is OFF'}
+        </Text>
+      </Pressable>
+      <Text style={styles.modeHint}>
+        A player who answers wrong stays locked for the rest of this question. Reset on the next
+        question.
+      </Text>
+
       <Panel>
         <Text style={styles.infoTitle}>Voice-first night</Text>
         <Text style={styles.info}>

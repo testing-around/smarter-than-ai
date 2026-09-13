@@ -33,12 +33,12 @@ npx tsc --noEmit
 
 `HOME → SETUP → VOICE_CHECK → LOBBY → GAME → ROUND_RESULT → FINAL` (rematch).
 
-1. **Home** — start a custom game or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
+1. **Home** — **New game**, **Continue game** (unfinished save), **Past games**, or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
 2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**), optional **⚡ EARLY SHOUT-OUT**.
 3. **Voice check** — **Train voice** walks each human through 3–5 short phrases (mic + local samples). `voiceReady` only after captures succeed. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md`.
 4. **Lobby** — roster + rules, then start.
-5. **Game** — host reads the full question (🔊 AI IS ASKING…). By default the answer timer and mic start only after TTS `onDone` (🎤 LISTENING…). **Early shout-out** (Family Battle / Lightning / Beat the AI, or the Setup toggle) lets humans interrupt while the host is still reading. Last question is a **boss round (3×)**.
-6. **Round result** — who answered, correct?, points, response ms, explanation.
+5. **Game** — host reads the full question (🔊 AI IS ASKING…). By default the answer timer and mic start only after TTS `onDone` + a 400ms buffer (🎤 LISTENING…). **Early shout-out** (Family Battle / Lightning / Beat the AI, or the Setup toggle) lets humans interrupt on the first read. Wrong answers stay on the **same question** (overlay only — no reveal, no Next). Last question is a **boss round (3×)**.
+6. **Round result** — full result only after a **correct** answer (or host skip/reveal). Then Next Question.
 7. **Final** — leaderboard and rematch.
 
 Scoring: a correct answer earns `(100 + speedBonus) × multiplier`. Speed bonus is ~50 under 2s, ~30 under 4s, otherwise ~15. Wrong or timeout is 0.

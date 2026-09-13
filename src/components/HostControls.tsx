@@ -9,6 +9,9 @@ interface Props {
   onResume: () => void;
   onRepeat: () => void;
   onSkip: () => void;
+  onReveal: () => void;
+  onIdentify: () => void;
+  onSave: () => void;
   onStopSpeaking: () => void;
   onRetryTts: () => void;
   onSkipToListening: () => void;
@@ -22,6 +25,9 @@ export function HostControls({
   onResume,
   onRepeat,
   onSkip,
+  onReveal,
+  onIdentify,
+  onSave,
   onStopSpeaking,
   onRetryTts,
   onSkipToListening,
@@ -43,6 +49,17 @@ export function HostControls({
         </View>
         <View style={styles.cell}>
           <PrimaryButton label="Skip" variant="ghost" onPress={onSkip} />
+        </View>
+      </View>
+      <View style={styles.row}>
+        <View style={styles.cell}>
+          <PrimaryButton label="Identify player" variant="ghost" onPress={onIdentify} />
+        </View>
+        <View style={styles.cell}>
+          <PrimaryButton label="Reveal answer" variant="ghost" onPress={onReveal} />
+        </View>
+        <View style={styles.cell}>
+          <PrimaryButton label="Save" variant="ghost" onPress={onSave} />
         </View>
       </View>
       {hostSpeaking ? (

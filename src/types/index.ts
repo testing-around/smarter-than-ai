@@ -5,7 +5,8 @@ export type ScreenName =
   | 'LOBBY'
   | 'GAME'
   | 'ROUND_RESULT'
-  | 'FINAL';
+  | 'FINAL'
+  | 'PAST_GAMES';
 
 /** Legacy 8-bucket labels used by the first in-app bank. */
 export type LegacyCategory =
@@ -94,6 +95,10 @@ export type RoundPhase =
   | 'SCORE_UPDATE'
   | 'HOST_FEEDBACK'
   | 'HOST_FEEDBACK_TTS_COMPLETE'
+  | 'WAITING_FOR_ANSWERS'
+  | 'WRONG_ATTEMPT'
+  | 'REPEATING_QUESTION'
+  | 'QUESTION_COMPLETE'
   | 'PAUSED'
   | 'TTS_ERROR'
   | 'HOST_STOPPED';
@@ -137,7 +142,11 @@ export type GameEventType =
   | 'RESUMED'
   | 'TRANSCRIPT_CORRECTED'
   | 'EARLY_INTERRUPT'
-  | 'WRONG_STAY';
+  | 'WRONG_STAY'
+  | 'ATTEMPT_RECORDED'
+  | 'QUESTION_REVEALED'
+  | 'SESSION_SAVED'
+  | 'SESSION_RESUMED';
 
 export interface GameEvent {
   at: number;
@@ -252,6 +261,64 @@ export interface GameSettings {
   hostMode: HostMode;
   /** When true with shout-out, contestants may answer while the host is still reading. */
   earlyShoutOut: boolean;
+  /** Locked-out players cannot attempt again on the same live question. */
+  wrongAnswerLockout: boolean;
+}
+
+export interface QuestionAttempt {
+  questionId: string;
+  playerId: string;
+  playerName: string;
+  answer: string;
+  answerChoice: number | null;
+  isCorrect: boolean;
+  timestamp: number;
+  responseTimeMs: number;
+  inputSource: AnswerSource;
+  speakerConfidence: number | null;
+  attemptNumber: number;
+}
+
+export type GameSessionStatus = 'in_progress' | 'completed' | 'abandoned';
+
+export interface GameSession {
+  saveVersion: number;
+  id: string;
+  name: string;
+  status: GameSessionStatus;
+  createdAt: number;
+  updatedAt: number;
+  settings: GameSettings;
+  players: Player[];
+  questionOrder: string[];
+  remainingQuestionIds: string[];
+  questionNumber: number;
+  questionTotal: number;
+  currentQuestionId: string | null;
+  questionState: RoundPhase;
+  questionAttempts: QuestionAttempt[];
+  lockoutPlayerIds: string[];
+  remainingTimeMs: number;
+  results: RoundResult[];
+  eventLog: GameEvent[];
+  adaptiveLevel: QuestionDifficulty;
+  turnIndex: number;
+  isBoss: boolean;
+  pendingAnswer: PendingAnswer | null;
+  buzzedPlayerId: string | null;
+  questionSessionId: string;
+  hostLine: string;
+}
+
+export interface GameSessionSummary {
+  id: string;
+  name: string;
+  status: GameSessionStatus;
+  createdAt: number;
+  updatedAt: number;
+  questionNumber: number;
+  questionTotal: number;
+  playerNames: string[];
 }
 
 export interface RoundResult {

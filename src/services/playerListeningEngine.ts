@@ -9,6 +9,7 @@ export interface ListeningGate {
   hostSpeaking: boolean;
   listeningEnabled: boolean;
   earlyShoutOut: boolean;
+  repeating?: boolean;
 }
 
 export function shouldOpenMic(gate: ListeningGate): boolean {
@@ -17,6 +18,7 @@ export function shouldOpenMic(gate: ListeningGate): boolean {
     gate.hostSpeaking,
     gate.listeningEnabled,
     gate.earlyShoutOut,
+    Boolean(gate.repeating),
   );
 }
 

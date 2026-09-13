@@ -16,7 +16,17 @@ const MODES: { id: QuickModeId; title: string; blurb: string }[] = [
 ];
 
 export function HomeScreen() {
-  const { goSetup, applyQuickMode, leaderboard, hostLine } = useGame();
+  const {
+    goSetup,
+    goPastGames,
+    applyQuickMode,
+    leaderboard,
+    hostLine,
+    activeSessionSummary,
+    crashRecovery,
+    continueSavedGame,
+    dismissCrashRecovery,
+  } = useGame();
 
   return (
     <Screen>
@@ -29,7 +39,33 @@ export function HomeScreen() {
       <AiHostOrb />
       <HostBar line={hostLine} />
       <View style={{ height: 16 }} />
-      <PrimaryButton label="Start New Game" onPress={goSetup} />
+      {crashRecovery ? (
+        <Panel>
+          <Text style={styles.modeTitle}>Resume interrupted game?</Text>
+          <Text style={styles.modeBlurb}>
+            {crashRecovery.name} · Q {crashRecovery.questionNumber}/{crashRecovery.questionTotal}
+          </Text>
+          <View style={{ height: 10 }} />
+          <PrimaryButton
+            label="Continue game"
+            variant="gold"
+            onPress={() => continueSavedGame(crashRecovery.id)}
+          />
+          <View style={{ height: 8 }} />
+          <PrimaryButton label="Not now" variant="ghost" onPress={dismissCrashRecovery} />
+        </Panel>
+      ) : null}
+      {activeSessionSummary && !crashRecovery ? (
+        <PrimaryButton
+          label="Continue game"
+          variant="gold"
+          onPress={() => continueSavedGame(activeSessionSummary.id)}
+        />
+      ) : null}
+      <View style={{ height: 10 }} />
+      <PrimaryButton label="New game" onPress={goSetup} />
+      <View style={{ height: 10 }} />
+      <PrimaryButton label="Past games" variant="ghost" onPress={goPastGames} />
       <Text style={styles.section}>QUICK MODES</Text>
       <View style={styles.modeGrid}>
         {MODES.map((mode) => (

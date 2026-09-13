@@ -5,6 +5,7 @@ import { GameProvider, useGame } from './src/context/GameContext';
 import { FinalScreen } from './src/screens/FinalScreen';
 import { GameScreen } from './src/screens/GameScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
+import { PastGamesScreen } from './src/screens/PastGamesScreen';
 import { LobbyScreen } from './src/screens/LobbyScreen';
 import { RoundResultScreen } from './src/screens/RoundResultScreen';
 import { SetupScreen } from './src/screens/SetupScreen';
@@ -25,6 +26,8 @@ function Router() {
   switch (screen) {
     case 'HOME':
       return <HomeScreen />;
+    case 'PAST_GAMES':
+      return <PastGamesScreen />;
     case 'SETUP':
       return <SetupScreen />;
     case 'VOICE_CHECK':

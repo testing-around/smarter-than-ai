@@ -10,6 +10,7 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { Scoreboard } from '../components/Scoreboard';
 import { Screen } from '../components/Screen';
 import { WhoSaidThatModal } from '../components/WhoSaidThatModal';
+import { WrongAttemptCard } from '../components/WrongAttemptCard';
 import { useGame } from '../context/GameContext';
 import { isEarlyShoutArmed } from '../game/earlyShout';
 import { canAcceptAnswers } from '../game/phases';
@@ -44,6 +45,9 @@ export function GameScreen() {
     paused,
     eventLog,
     interruptAlert,
+    wrongOverlay,
+    lockoutPlayerIds,
+    resumeCountdown,
     tapChoice,
     buzzIn,
     claimAnswer,
@@ -53,6 +57,9 @@ export function GameScreen() {
     resumeRound,
     repeatQuestion,
     skipQuestion,
+    revealAnswer,
+    identifyPlayer,
+    saveGameNow,
     stopHostSpeaking,
     retryHostSpeech,
     skipToListening,
@@ -96,6 +103,13 @@ export function GameScreen() {
         </Text>
       </View>
       <PhaseBanner banner={banner} />
+      {resumeCountdown !== null ? (
+        <View style={styles.alert}>
+          <Text style={styles.alertTitle}>RESUMING IN {resumeCountdown}</Text>
+          <Text style={styles.alertBody}>Host will re-read the question, then listen.</Text>
+        </View>
+      ) : null}
+      {wrongOverlay ? <WrongAttemptCard attempt={wrongOverlay} /> : null}
       {interruptAlert ? (
         <View style={styles.alert}>
           <Text style={styles.alertTitle}>⚡ ANSWER HEARD!</Text>
@@ -126,6 +140,15 @@ export function GameScreen() {
 
       {settings.answerMode === 'turn' ? (
         <Text style={styles.hint}>Turn: {turnPlayer ? `${turnPlayer.emoji} ${turnPlayer.name}` : '—'}</Text>
+      ) : null}
+      {lockoutPlayerIds.length ? (
+        <Text style={styles.hint}>
+          Locked this question:{' '}
+          {players
+            .filter((p) => lockoutPlayerIds.includes(p.id))
+            .map((p) => p.name)
+            .join(', ')}
+        </Text>
       ) : null}
       {settings.answerMode === 'buzz' ? (
         <Text style={styles.hint}>
@@ -179,7 +202,7 @@ export function GameScreen() {
         <ClickerPanel
           pending={pendingAnswer}
           choiceLabel={current.choices[pendingAnswer.choiceIndex] ?? ''}
-          players={players}
+          players={players.filter((p) => !lockoutPlayerIds.includes(p.id))}
           who={clickerWho}
           correctOverride={clickerCorrect}
           onWho={setClickerWho}
@@ -199,6 +222,9 @@ export function GameScreen() {
         onResume={resumeRound}
         onRepeat={repeatQuestion}
         onSkip={skipQuestion}
+        onReveal={revealAnswer}
+        onIdentify={identifyPlayer}
+        onSave={saveGameNow}
         onStopSpeaking={stopHostSpeaking}
         onRetryTts={retryHostSpeech}
         onSkipToListening={skipToListening}
@@ -220,7 +246,7 @@ export function GameScreen() {
         transcript={whoSaidThat?.transcript ?? ''}
         choiceIndex={whoSaidThat?.choiceIndex ?? 0}
         choiceLabel={current.choices[whoSaidThat?.choiceIndex ?? 0] ?? ''}
-        players={players}
+        players={players.filter((p) => !lockoutPlayerIds.includes(p.id) || p.isAi)}
         onClaim={claimAnswer}
       />
     </Screen>

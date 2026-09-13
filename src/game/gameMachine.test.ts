@@ -17,6 +17,7 @@ describe('game machine gates', () => {
     assert.equal(canAcceptAnswers('QUESTION_DISPLAYED'), false);
     assert.equal(canAcceptAnswers('HOST_SPEECH_FINISHED'), false);
     assert.equal(canAcceptAnswers('LISTENING_FOR_PLAYERS'), true);
+    assert.equal(canAcceptAnswers('WAITING_FOR_ANSWERS'), true);
     assert.equal(canAcceptAnswers('ANSWER_DETECTED'), false);
   });
 
@@ -78,10 +79,14 @@ describe('game machine gates', () => {
     assert.equal(bannerLabel('interrupt'), '⚡ ANSWER HEARD!');
   });
 
-  it('advances after an early correct answer and stays after an early wrong', () => {
-    assert.equal(shouldAdvanceAfterJudgment(true, false, true), true);
-    assert.equal(shouldAdvanceAfterJudgment(false, false, true), false);
-    assert.equal(shouldAdvanceAfterJudgment(false, true, true), true);
-    assert.equal(shouldAdvanceAfterJudgment(false, false, false), true);
+  it('completes only on a correct answer or host skip/reveal', () => {
+    assert.equal(shouldAdvanceAfterJudgment(true, 'voice'), true);
+    assert.equal(shouldAdvanceAfterJudgment(false, 'voice'), false);
+    assert.equal(shouldAdvanceAfterJudgment(false, 'timeout'), false);
+    assert.equal(shouldAdvanceAfterJudgment(false, 'skip'), true);
+    assert.equal(shouldAdvanceAfterJudgment(false, 'host'), true);
+    assert.equal(bannerFor('WRONG_ATTEMPT'), 'wrong');
+    assert.equal(bannerFor('WAITING_FOR_ANSWERS'), 'listening');
+    assert.equal(bannerFor('QUESTION_COMPLETE', true), 'correct');
   });
 });

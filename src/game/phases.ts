@@ -1,12 +1,17 @@
-import type { PhaseBannerId, RoundPhase, TtsOutcome } from '../types';
+import type { AnswerSource, PhaseBannerId, RoundPhase, TtsOutcome } from '../types';
 
 export const ANSWER_PHASES: readonly RoundPhase[] = [
   'LISTENING_FOR_PLAYERS',
+  'WAITING_FOR_ANSWERS',
   'ANSWER_DETECTED',
 ];
 
+export function isWaitingForAnswers(phase: RoundPhase): boolean {
+  return phase === 'LISTENING_FOR_PLAYERS' || phase === 'WAITING_FOR_ANSWERS';
+}
+
 export function canAcceptAnswers(phase: RoundPhase, earlyShoutOut = false): boolean {
-  if (phase === 'LISTENING_FOR_PLAYERS') {
+  if (isWaitingForAnswers(phase)) {
     return true;
   }
   return earlyShoutOut && phase === 'HOST_SPEAKING';
@@ -17,29 +22,36 @@ export function canStartListening(
   hostSpeaking: boolean,
   listeningEnabled: boolean,
   earlyShoutOut = false,
+  repeating = false,
 ): boolean {
   if (!listeningEnabled) {
     return false;
   }
+  if (repeating) {
+    return !hostSpeaking && isWaitingForAnswers(phase);
+  }
   if (earlyShoutOut && phase === 'HOST_SPEAKING') {
     return true;
   }
-  return !hostSpeaking && phase === 'LISTENING_FOR_PLAYERS';
+  return !hostSpeaking && isWaitingForAnswers(phase);
 }
 
 export function isHostSpeakingPhase(phase: RoundPhase): boolean {
-  return phase === 'HOST_SPEAKING' || phase === 'HOST_FEEDBACK';
+  return (
+    phase === 'HOST_SPEAKING' ||
+    phase === 'REPEATING_QUESTION' ||
+    phase === 'HOST_FEEDBACK'
+  );
 }
 
 export function shouldAdvanceAfterJudgment(
   correct: boolean,
-  timedOut: boolean,
-  earlyShoutOut: boolean,
+  source: AnswerSource = 'voice',
 ): boolean {
-  if (timedOut || correct) {
+  if (source === 'skip' || source === 'host') {
     return true;
   }
-  return !earlyShoutOut;
+  return correct;
 }
 
 export function bannerFor(
@@ -59,11 +71,18 @@ export function bannerFor(
     case 'QUESTION_SELECTED':
     case 'QUESTION_DISPLAYED':
       return 'asking';
+    case 'REPEATING_QUESTION':
+      return 'asking';
     case 'HOST_SPEAKING':
       return flags.earlyShoutOut ? 'asking-armed' : 'asking';
     case 'HOST_SPEECH_FINISHED':
     case 'LISTENING_FOR_PLAYERS':
+    case 'WAITING_FOR_ANSWERS':
       return 'listening';
+    case 'WRONG_ATTEMPT':
+      return 'wrong';
+    case 'QUESTION_COMPLETE':
+      return lastCorrect === false ? 'wrong' : 'correct';
     case 'ANSWER_DETECTED':
     case 'SPEAKER_IDENTIFICATION':
     case 'ANSWER_TRANSCRIPTION':

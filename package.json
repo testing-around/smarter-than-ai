@@ -30,7 +30,7 @@
     "apk:release": "cd android && ./gradlew assembleRelease",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "npx --yes tsx --test src/game/gameMachine.test.ts src/game/enrollmentMachine.test.ts src/services/answerJudgeEngine.test.ts src/services/hostQuestionEngine.test.ts src/services/speakerMatch.test.ts"
+    "test": "npx --yes tsx --test src/game/gameMachine.test.ts src/game/enrollmentMachine.test.ts src/game/attemptEngine.test.ts src/game/gameSession.test.ts src/services/answerJudgeEngine.test.ts src/services/hostQuestionEngine.test.ts src/services/speakerMatch.test.ts"
   },
   "private": true
 }
