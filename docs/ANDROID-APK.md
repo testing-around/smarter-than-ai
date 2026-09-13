@@ -18,9 +18,11 @@ You do not need Expo Go. First launch may ask for microphone / speech permission
 export ANDROID_HOME="$HOME/android-sdk"
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 npx expo prebuild --platform android --no-install
-cd android && ./gradlew assembleDebug
-# APK: android/app/build/outputs/apk/debug/app-debug.apk
+cd android && ./gradlew assembleRelease
+# APK: android/app/build/outputs/apk/release/app-release.apk
 ```
+
+Use `assembleRelease`, not `assembleDebug`. React Native debug APKs skip the JS bundle (`debuggableVariants`) and need Metro. Release embeds the bundle so the APK is sideloadable without a computer.
 
 **EAS (needs `eas login` or `EXPO_TOKEN`):**
 
