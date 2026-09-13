@@ -14,6 +14,18 @@ import { correctChoiceIndex, isBossQuestion } from '../data/questionAccess';
 import { bannerFor, canAcceptAnswers, canStartListening } from '../game/phases';
 import { createQuestionSessionId, isLiveSession } from '../game/session';
 import { evaluateTranscript, judgeChoice, whoSaidPrompt } from '../services/answerJudgeEngine';
+import { buildVoiceProfile, canMarkVoiceReady } from '../game/enrollmentMachine';
+import {
+  SPEAKER_AUTO_THRESHOLD,
+  guessSpeaker,
+  shouldAskWhoSaidThat,
+} from '../services/speakerMatch';
+import {
+  loadVoiceProfiles,
+  profileForPlayer,
+  saveVoiceProfiles,
+  upsertProfile,
+} from '../services/voiceProfiles';
 import { appendGameEvent, createGameEvent } from '../services/gameEventLog';
 import { buildQuestionUtterance, speakQuestion } from '../services/hostQuestionEngine';
 import { closePlayerMic, startPlayerListening } from '../services/playerListeningEngine';
@@ -51,6 +63,8 @@ import type {
   RoundPhase,
   RoundResult,
   ScreenName,
+  EnrollmentSample,
+  VoiceProfile,
   VoiceStatus,
   WhoSaidThat,
 } from '../types';
@@ -135,7 +149,13 @@ interface GameContextValue {
   loadFamily: () => void;
   patchSettings: (patch: Partial<GameSettings>) => void;
   continueToVoiceCheck: () => void;
-  enrollPlayer: (id: string) => void;
+  voiceProfiles: VoiceProfile[];
+  completeVoiceEnrollment: (
+    playerId: string,
+    name: string,
+    samples: EnrollmentSample[],
+  ) => VoiceProfile;
+  skipPlayerVoice: (id: string) => void;
   skipVoiceAndLobby: () => void;
   finishVoiceCheck: () => void;
   startMatch: () => void;
@@ -228,6 +248,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [canAdvance, setCanAdvance] = useState(false);
   const [eventLog, setEventLog] = useState<GameEvent[]>([]);
   const [ttsFailed, setTtsFailed] = useState(false);
+  const [voiceProfiles, setVoiceProfiles] = useState<VoiceProfile[]>([]);
 
   const playersRef = useRef(players);
   const settingsRef = useRef(settings);
@@ -258,6 +279,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const voiceAvailableRef = useRef(false);
   const isBossRef = useRef(false);
   const questionTotalRef = useRef(10);
+  const voiceProfilesRef = useRef<VoiceProfile[]>([]);
+  const listenStartedAtRef = useRef(0);
 
   playersRef.current = players;
   settingsRef.current = settings;
@@ -275,6 +298,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   voiceAvailableRef.current = voice.available;
   isBossRef.current = isBoss;
   questionTotalRef.current = settings.questionCount;
+  voiceProfilesRef.current = voiceProfiles;
 
   const turnPlayerId = players[turnIndex % Math.max(players.length, 1)]?.id ?? null;
   const multiplier = isBoss ? 3 : 1;
@@ -325,13 +349,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     void (async () => {
       const saved = await loadPersisted();
-      const voiceStatus = await checkVoiceAvailable();
+      const [voiceStatus, profiles] = await Promise.all([
+        checkVoiceAvailable(),
+        loadVoiceProfiles(),
+      ]);
       if (cancelled) {
         return;
       }
       setPlayers(saved.players);
       setSettings(saved.settings);
       setLeaderboard(saved.leaderboard);
+      setVoiceProfiles(profiles);
+      voiceProfilesRef.current = profiles;
       configureHostVoice(saved.settings.hostVoice ?? 'british-female');
       void warmHostVoice();
       setVoice(voiceStatus);
@@ -457,30 +486,81 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const continueToVoiceCheck = useCallback(() => {
-    const roster = withAi(playersRef.current, settingsRef.current.beatTheAi).map((p) => ({
-      ...p,
-      name: p.name.trim() || 'Player',
-      score: 0,
-      enrolled: Boolean(p.isAi),
-    }));
+    const roster = withAi(playersRef.current, settingsRef.current.beatTheAi).map((p) => {
+      const saved = profileForPlayer(voiceProfilesRef.current, p.id);
+      const name = p.name.trim() || 'Player';
+      const ready =
+        Boolean(p.isAi) ||
+        (saved?.quality.voiceReady &&
+          saved.name.trim().toLowerCase() === name.toLowerCase());
+      return {
+        ...p,
+        name,
+        score: 0,
+        enrolled: Boolean(ready),
+        voiceReady: Boolean(ready),
+        tapOnly: false,
+      };
+    });
     setPlayers(roster);
     void persistRoster(roster, settingsRef.current);
     setScreen('VOICE_CHECK');
-    setLine('Each human should enroll. Say your name. If the mic fails, mark it by tap.');
+    setLine('Train each voice with a few short phrases, or skip to tap-only.');
   }, [persistRoster, setLine]);
 
-  const enrollPlayer = useCallback((id: string) => {
-    setPlayers((prev) => prev.map((p) => (p.id === id ? { ...p, enrolled: true } : p)));
+  const completeVoiceEnrollment = useCallback(
+    (playerId: string, name: string, samples: EnrollmentSample[]): VoiceProfile => {
+      const profile = buildVoiceProfile(playerId, name, samples);
+      const ready = canMarkVoiceReady(profile);
+      if (ready) {
+        setPlayers((prev) =>
+          prev.map((p) =>
+            p.id === playerId
+              ? { ...p, enrolled: true, voiceReady: true, tapOnly: false }
+              : p,
+          ),
+        );
+      }
+      setVoiceProfiles((prev) => {
+        const next = upsertProfile(prev, profile);
+        voiceProfilesRef.current = next;
+        void saveVoiceProfiles(next);
+        return next;
+      });
+      return profile;
+    },
+    [],
+  );
+
+  const skipPlayerVoice = useCallback((id: string) => {
+    setPlayers((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, enrolled: false, voiceReady: false, tapOnly: true } : p,
+      ),
+    );
   }, []);
 
   const skipVoiceAndLobby = useCallback(() => {
     setSettings((prev) => ({ ...prev, voiceEnabled: false }));
+    setPlayers((prev) =>
+      prev.map((p) =>
+        p.isAi ? p : { ...p, enrolled: false, voiceReady: false, tapOnly: true },
+      ),
+    );
     setScreen('LOBBY');
     const names = playersRef.current.map((p) => p.name).join(', ');
     setLine(hostCopy.lobby(names));
   }, [setLine]);
 
   const finishVoiceCheck = useCallback(() => {
+    const humans = playersRef.current.filter((p) => !p.isAi);
+    const voiceOn = settingsRef.current.voiceEnabled && voiceAvailableRef.current;
+    if (voiceOn && humans.some((p) => !p.voiceReady && !p.tapOnly)) {
+      return;
+    }
+    if (!humans.some((p) => p.voiceReady)) {
+      setSettings((prev) => ({ ...prev, voiceEnabled: false }));
+    }
     setScreen('LOBBY');
     const names = playersRef.current.map((p) => p.name).join(', ');
     setLine(hostCopy.lobby(names));
@@ -766,24 +846,51 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (!pending) {
         return;
       }
-      logEvent('TRANSCRIPT', text);
+      const durationMs = listenStartedAtRef.current
+        ? Date.now() - listenStartedAtRef.current
+        : responseMs;
+      const guess = guessSpeaker(
+        text,
+        durationMs,
+        playersRef.current,
+        voiceProfilesRef.current,
+      );
+      pending.speakerGuess = guess.playerId;
+      pending.speakerConfidence = guess.confidence;
+      if (guess.playerId) {
+        pending.suggestedPlayerId = guess.playerId;
+      }
+      logEvent(
+        'TRANSCRIPT',
+        `${text} · guess=${guess.playerId ?? 'none'} ${Math.round(guess.confidence * 100)}%`,
+      );
       applyPhase('ANSWER_DETECTED');
       applyPhase('ANSWER_TRANSCRIPTION');
 
       const cfg = settingsRef.current;
       if (usesClicker(cfg.hostMode) || pending.overlap === 'MULTIPLE_SPEAKERS') {
-        openClicker(pending);
+        openClicker({
+          ...pending,
+          suggestedPlayerId: guess.playerId ?? pending.suggestedPlayerId,
+        });
         return;
       }
 
-      if (pending.suggestedPlayerId) {
+      if (
+        pending.suggestedPlayerId &&
+        !shouldAskWhoSaidThat(guess) &&
+        guess.confidence >= SPEAKER_AUTO_THRESHOLD
+      ) {
         if (cfg.answerMode === 'turn') {
           const currentTurn = playersRef.current[turnRef.current % playersRef.current.length];
           if (currentTurn && currentTurn.id !== pending.suggestedPlayerId) {
             return;
           }
         }
-        logEvent('SPEAKER_IDENTIFIED', pending.suggestedPlayerId);
+        logEvent(
+          'SPEAKER_IDENTIFIED',
+          `${pending.suggestedPlayerId} ${Math.round(guess.confidence * 100)}%`,
+        );
         submitAnswer(pending.suggestedPlayerId, pending.choiceIndex, 'voice');
         return;
       }
@@ -843,6 +950,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     ];
     void startPlayerListening(listeningGate, phrases, {
       onStart: () => {
+        listenStartedAtRef.current = Date.now();
         setListening(true);
         logEvent('MIC_OPENED');
       },
@@ -991,6 +1099,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const startMatch = useCallback(() => {
     const cfg = settingsRef.current;
+    const humans = playersRef.current.filter((p) => !p.isAi);
+    if (cfg.voiceEnabled && humans.some((p) => !p.voiceReady && !p.tapOnly)) {
+      setScreen('VOICE_CHECK');
+      setLine('Train or skip each voice before the host starts listening.');
+      return;
+    }
     const roster = withAi(playersRef.current, cfg.beatTheAi).map((p) => ({
       ...p,
       score: 0,
@@ -1357,7 +1471,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       loadFamily,
       patchSettings,
       continueToVoiceCheck,
-      enrollPlayer,
+      voiceProfiles,
+      completeVoiceEnrollment,
+      skipPlayerVoice,
       skipVoiceAndLobby,
       finishVoiceCheck,
       startMatch,
@@ -1394,9 +1510,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       clickerWho,
       confirmClicker,
       continueAfterRound,
+      completeVoiceEnrollment,
       continueToVoiceCheck,
       current,
-      enrollPlayer,
       eventLog,
       finishVoiceCheck,
       goHome,
@@ -1433,6 +1549,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setPlayerEmoji,
       setPlayerName,
       settings,
+      skipPlayerVoice,
       skipQuestion,
       skipToListening,
       skipVoiceAndLobby,
@@ -1445,6 +1562,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ttsFailed,
       turnPlayerId,
       voice,
+      voiceProfiles,
       whoSaidThat,
       screen,
     ],

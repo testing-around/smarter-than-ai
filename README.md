@@ -35,7 +35,7 @@ npx tsc --noEmit
 
 1. **Home** — start a custom game or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
 2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**).
-3. **Voice check** — each human enrolls by saying `I'm {name} and I'm smarter than AI`. If the mic is missing, mark enrolled and play tap-only.
+3. **Voice check** — **Train voice** walks each human through 3–5 short phrases (mic + local samples). `voiceReady` only after captures succeed. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md`.
 4. **Lobby** — roster + rules, then start.
 5. **Game** — host reads the full question (🔊 AI IS ASKING…). The answer timer and mic start only after TTS `onDone` (🎤 LISTENING…). Last question is a **boss round (3×)**.
 6. **Round result** — who answered, correct?, points, response ms, explanation.
@@ -52,7 +52,7 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 | Layer | What we use | Notes |
 | --- | --- | --- |
 | Speech-to-text | [`expo-speech-recognition` ^57](https://github.com/jamsch/expo-speech-recognition) | iOS `SFSpeechRecognizer`, Android `SpeechRecognizer`, Web Speech API |
-| Attribution | Name-then-answer parser + enrollment | “Damian, B” or “Dorian, Pacific”. Not biometric speaker ID |
+| Attribution | Name-then-answer + local enrollment profile | “Damian, B”. Speaker guess + confidence; under 70% → Who said that? |
 | Low confidence | Never discard | Host asks **Who said that?** and assigns to the claimer |
 | Host voice | [`expo-speech`](https://docs.expo.dev/versions/v57.0.0/sdk/speech/) + `pickBritishFemaleHostVoice()` | Default **British female** (`en-GB`). Setup can switch to system default. |
 | Persistence | `@react-native-async-storage/async-storage` | Last players, settings, family leaderboard |
@@ -64,7 +64,7 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 - **Web (Chrome / Edge)**: Web Speech API can listen. Firefox / some Linux environments have no recognizer — tap still works.
 - Permissions: microphone + speech recognition on iOS; `RECORD_AUDIO` on Android.
 
-Enrollment is a practical party check (“can we hear this person?”), not a voiceprint. Live rounds parse the transcript for player names and A/B/C/D (or choice text). Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed.
+Enrollment is a **real training path** (mic permission, 3–5 spoken phrases, stored samples). It is still not a biometric voiceprint. Live rounds parse names/A–D, then compare against the local profile. Confidence under 70% opens **Who said that?** or Host + Clicker. Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed. Profiles stay on-device; nothing is uploaded.
 
 ### Host / listen / judge (strict)
 

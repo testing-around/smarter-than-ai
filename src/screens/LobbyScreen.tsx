@@ -35,7 +35,13 @@ export function LobbyScreen() {
             <Text style={styles.emoji}>{player.emoji}</Text>
             <Text style={styles.name}>{player.name}</Text>
             <Text style={styles.meta}>
-              {player.isAi ? 'CPU' : player.enrolled ? 'enrolled' : 'tap'}
+              {player.isAi
+                ? 'CPU'
+                : player.voiceReady
+                  ? 'voice ready'
+                  : player.tapOnly
+                    ? 'tap only'
+                    : 'not trained'}
             </Text>
           </View>
         ))}
