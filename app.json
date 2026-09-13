@@ -23,6 +23,7 @@
     },
     "android": {
       "package": "com.smarterthanai.game",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#07111F",
         "foregroundImage": "./assets/android-icon-foreground.png",
