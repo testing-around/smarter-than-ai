@@ -6,6 +6,20 @@ export interface VoiceListeners {
   onError?: (message: string) => void;
   onStart?: () => void;
   onEnd?: () => void;
+  onAudio?: (uri: string | null) => void;
+}
+
+export interface ListenOptions {
+  persistRecording?: boolean;
+  continuous?: boolean;
+}
+
+export interface EnrollmentCapture {
+  ok: boolean;
+  transcript: string;
+  durationMs: number;
+  audioUri: string | null;
+  error: string | null;
 }
 
 export interface VoiceCapability {
@@ -84,6 +98,7 @@ export async function requestVoicePermissions(): Promise<boolean> {
 export async function startListening(
   contextualStrings: string[],
   listeners: VoiceListeners,
+  extras: ListenOptions = {},
 ): Promise<boolean> {
   const mod = await loadSpeech();
   if (!mod) {
@@ -117,14 +132,18 @@ export async function startListening(
         listeners.onPartial?.(text);
       }
     }),
+    mod.ExpoSpeechRecognitionModule.addListener('audioend', (event) => {
+      listeners.onAudio?.(event.uri ?? null);
+    }),
   );
 
   const options: ExpoSpeechRecognitionOptions = {
     lang: 'en-US',
     interimResults: true,
-    continuous: true,
+    continuous: extras.continuous ?? true,
     addsPunctuation: false,
     contextualStrings: contextualStrings.slice(0, 40),
+    recordingOptions: extras.persistRecording ? { persist: true } : undefined,
   };
 
   try {
@@ -186,6 +205,76 @@ export async function listenOnce(
         settled = true;
         clearTimeout(timer);
         resolve(null);
+      }
+    });
+  });
+}
+
+/** One enrollment utterance: STT + optional persisted wav (Android/iOS APK). */
+export async function captureEnrollmentSample(
+  contextualStrings: string[],
+  timeoutMs = 10000,
+): Promise<EnrollmentCapture> {
+  const permitted = await requestVoicePermissions();
+  if (!permitted) {
+    return {
+      ok: false,
+      transcript: '',
+      durationMs: 0,
+      audioUri: null,
+      error: 'Microphone or speech permission was denied. Enable it, then retry.',
+    };
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+    let transcript = '';
+    let audioUri: string | null = null;
+    const startedAt = Date.now();
+
+    const finish = (error: string | null) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timer);
+      void stopListening();
+      const durationMs = Date.now() - startedAt;
+      const heard = transcript.trim();
+      resolve({
+        ok: Boolean(heard) && !error,
+        transcript: heard,
+        durationMs,
+        audioUri,
+        error,
+      });
+    };
+
+    const timer = setTimeout(() => {
+      finish(transcript.trim() ? null : 'Did not catch that phrase. Try again closer to the phone.');
+    }, timeoutMs);
+
+    void startListening(
+      contextualStrings,
+      {
+        onFinal: (text) => {
+          transcript = text;
+          finish(null);
+        },
+        onPartial: (text) => {
+          transcript = text;
+        },
+        onAudio: (uri) => {
+          audioUri = uri;
+        },
+        onError: (message) => {
+          finish(message || 'Speech recognition failed.');
+        },
+      },
+      { persistRecording: true, continuous: false },
+    ).then((ok) => {
+      if (!ok && !settled) {
+        finish('Could not start the microphone.');
       }
     });
   });

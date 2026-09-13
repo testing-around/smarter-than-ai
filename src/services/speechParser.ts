@@ -1,3 +1,4 @@
+import { enrollmentPhrases, phrasePassed, scorePhraseMatch } from '../game/enrollmentMachine';
 import type { Player } from '../types';
 
 export type ParseConfidence = 'high' | 'medium' | 'low' | 'none';
@@ -260,14 +261,13 @@ export function parseSpokenAnswer(
 }
 
 export function enrollmentPhrase(name: string): string {
-  return `I'm ${name} and I'm smarter than AI`;
+  return `My name is ${name} and I'm ready to play`;
 }
 
 export function transcriptMatchesEnrollment(transcript: string, name: string): boolean {
-  const hay = normalize(transcript);
-  const who = normalize(name);
-  if (who && hay.includes(who)) {
-    return true;
+  const phrase = enrollmentPhrases(name)[0];
+  if (!phrase) {
+    return false;
   }
-  return hay.includes('smarter') || hay.includes('ready') || hay.length > 8;
+  return phrasePassed(scorePhraseMatch(transcript, phrase, name));
 }

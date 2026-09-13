@@ -150,6 +150,8 @@ export interface PendingAnswer {
   suggestedCorrect: boolean;
   responseMs: number;
   overlap: OverlapFlag;
+  speakerGuess?: string | null;
+  speakerConfidence?: number;
 }
 
 /** @deprecated Use DifficultyBand. Kept so older imports still typecheck during the swap. */
@@ -189,12 +191,49 @@ export interface Question {
   quality_score: number;
 }
 
+export type EnrollmentPhraseId = 'ready' | 'yes' | 'no' | 'know' | 'name';
+
+export interface EnrollmentSample {
+  phraseId: EnrollmentPhraseId;
+  prompt: string;
+  transcript: string;
+  durationMs: number;
+  audioUri: string | null;
+  matchScore: number;
+  capturedAt: number;
+}
+
+export interface VoiceProfileQuality {
+  phrasesPassed: number;
+  phrasesRequired: number;
+  hasAudio: boolean;
+  voiceReady: boolean;
+}
+
+export interface VoiceProfile {
+  playerId: string;
+  name: string;
+  enrollmentSamples: EnrollmentSample[];
+  enrolledAt: number;
+  quality: VoiceProfileQuality;
+  meanDurationMs: number;
+  meanSpeechRate: number;
+}
+
+export interface SpeakerGuess {
+  playerId: string | null;
+  confidence: number;
+  method: 'name' | 'profile' | 'combined' | 'none';
+}
+
 export interface Player {
   id: string;
   name: string;
   emoji: string;
   score: number;
   enrolled: boolean;
+  voiceReady?: boolean;
+  tapOnly?: boolean;
   isAi?: boolean;
 }
 
