@@ -11,8 +11,10 @@ export type Category =
   | 'science'
   | 'math'
   | 'geography'
+  | 'history'
   | 'logic'
   | 'general'
+  | 'pop'
   | 'kaiju';
 
 export type QuestionDifficulty = 'easy' | 'medium' | 'hard';
