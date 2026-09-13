@@ -87,14 +87,14 @@ This MVP collapses that to **STT → name/answer parser → scoring → TTS**, w
 src/
   screens/      HOME, SETUP, VOICE_CHECK, LOBBY, GAME, ROUND_RESULT, FINAL
   components/   orb, buttons, scoreboard, claim modal
-  data/         60-question bank + default players
+  data/         169-question bank + default players
   types/        question + game schema
   services/     scoring, bank shuffle, STT, TTS, parser, AsyncStorage
   context/      screen machine + round timer
   theme/        game-show palette
 ```
 
-The question bank lives in `src/data/questions.ts` (science, math, geography, logic, general, kaiju). A round shuffles and does not repeat IDs.
+The question bank is **169 unique items** in `src/data/questions.ts` plus `src/data/moreQuestions.ts` (science, math, geography, history, logic, general, pop culture, kaiju). A round shuffles and does not repeat IDs. The last question of a match is still the 3× boss round; the extra hard items feed that slot.
 
 ## Config
 

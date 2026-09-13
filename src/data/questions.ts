@@ -1,6 +1,7 @@
 import type { Question } from '../types';
+import { MORE_QUESTIONS } from './moreQuestions';
 
-export const QUESTIONS: Question[] = [
+const CORE_QUESTIONS: Question[] = [
   {
     id: 'sci-01',
     category: 'science',
@@ -543,11 +544,15 @@ export const QUESTIONS: Question[] = [
   },
 ];
 
+export const QUESTIONS: Question[] = [...CORE_QUESTIONS, ...MORE_QUESTIONS];
+
 export const CATEGORY_LABEL: Record<Question['category'], string> = {
   science: 'Science',
   math: 'Math',
   geography: 'Geography',
+  history: 'History',
   logic: 'Logic',
   general: 'General',
+  pop: 'Pop Culture',
   kaiju: 'Kaiju',
 };
