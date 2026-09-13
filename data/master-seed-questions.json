@@ -1,0 +1,5585 @@
+[
+  {
+    "question_id": "MATH-001",
+    "category": "Math",
+    "subcategory": "Arithmetic",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 5 + 7?",
+    "choices": [
+      "10",
+      "11",
+      "12",
+      "13"
+    ],
+    "correct_answer": "12",
+    "accepted_answers": [
+      "12",
+      "twelve"
+    ],
+    "explanation": "5 + 7 equals 12.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-002",
+    "category": "Math",
+    "subcategory": "Arithmetic",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 20 − 8?",
+    "choices": [
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "correct_answer": "12",
+    "accepted_answers": [
+      "12",
+      "twelve"
+    ],
+    "explanation": "20 minus 8 equals 12.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-003",
+    "category": "Math",
+    "subcategory": "Multiplication",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 7 × 8?",
+    "choices": [
+      "48",
+      "54",
+      "56",
+      "64"
+    ],
+    "correct_answer": "56",
+    "accepted_answers": [
+      "56",
+      "fifty-six"
+    ],
+    "explanation": "7 × 8 = 56.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-004",
+    "category": "Math",
+    "subcategory": "Division",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 81 ÷ 9?",
+    "choices": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "correct_answer": "9",
+    "accepted_answers": [
+      "9",
+      "nine"
+    ],
+    "explanation": "81 divided by 9 equals 9.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-005",
+    "category": "Math",
+    "subcategory": "Fractions",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is half of 50?",
+    "choices": [
+      "20",
+      "25",
+      "30",
+      "40"
+    ],
+    "correct_answer": "25",
+    "accepted_answers": [
+      "25",
+      "twenty-five"
+    ],
+    "explanation": "Half of 50 is 25.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-006",
+    "category": "Math",
+    "subcategory": "Fractions",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 3/4 of 20?",
+    "choices": [
+      "10",
+      "12",
+      "15",
+      "16"
+    ],
+    "correct_answer": "15",
+    "accepted_answers": [
+      "15",
+      "fifteen"
+    ],
+    "explanation": "Three-fourths of 20 is 15.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-007",
+    "category": "Math",
+    "subcategory": "Percentages",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 25% of 80?",
+    "choices": [
+      "15",
+      "20",
+      "25",
+      "40"
+    ],
+    "correct_answer": "20",
+    "accepted_answers": [
+      "20",
+      "twenty"
+    ],
+    "explanation": "25% means one-fourth; one-fourth of 80 is 20.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-008",
+    "category": "Math",
+    "subcategory": "Algebra",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "If 5x = 35, what is x?",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct_answer": "7",
+    "accepted_answers": [
+      "7",
+      "seven"
+    ],
+    "explanation": "Divide both sides by 5: x = 7.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-009",
+    "category": "Math",
+    "subcategory": "Algebra",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "If 2x + 6 = 20, what is x?",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct_answer": "7",
+    "accepted_answers": [
+      "7",
+      "seven"
+    ],
+    "explanation": "Subtract 6: 2x = 14; divide by 2: x = 7.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-010",
+    "category": "Math",
+    "subcategory": "Roots",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the square root of 144?",
+    "choices": [
+      "10",
+      "11",
+      "12",
+      "14"
+    ],
+    "correct_answer": "12",
+    "accepted_answers": [
+      "12",
+      "twelve"
+    ],
+    "explanation": "12 × 12 = 144.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-011",
+    "category": "Math",
+    "subcategory": "Percentages",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 15% of 200?",
+    "choices": [
+      "15",
+      "20",
+      "30",
+      "45"
+    ],
+    "correct_answer": "30",
+    "accepted_answers": [
+      "30",
+      "thirty"
+    ],
+    "explanation": "10% of 200 is 20; 5% is 10; together 30.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-012",
+    "category": "Math",
+    "subcategory": "Exponents",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 12 squared (12²)?",
+    "choices": [
+      "24",
+      "120",
+      "144",
+      "244"
+    ],
+    "correct_answer": "144",
+    "accepted_answers": [
+      "144"
+    ],
+    "explanation": "12 × 12 = 144.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-013",
+    "category": "Math",
+    "subcategory": "Exponents",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is 5 cubed (5³)?",
+    "choices": [
+      "15",
+      "25",
+      "125",
+      "625"
+    ],
+    "correct_answer": "125",
+    "accepted_answers": [
+      "125"
+    ],
+    "explanation": "5 × 5 × 5 = 125.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-014",
+    "category": "Math",
+    "subcategory": "Number Properties",
+    "difficulty": 6,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which number is both a perfect square and a perfect cube?",
+    "choices": [
+      "16",
+      "36",
+      "64",
+      "81"
+    ],
+    "correct_answer": "64",
+    "accepted_answers": [
+      "64",
+      "sixty-four"
+    ],
+    "explanation": "64 = 8² and also 4³.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MATH-015",
+    "category": "Math",
+    "subcategory": "Calculus",
+    "difficulty": 8,
+    "grade_min": 7,
+    "grade_max": 12,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the derivative of x² with respect to x?",
+    "choices": [
+      "x",
+      "2x",
+      "x²",
+      "2"
+    ],
+    "correct_answer": "2x",
+    "accepted_answers": [
+      "2x",
+      "2X",
+      "2*x"
+    ],
+    "explanation": "Power rule: d/dx[x^n] = n*x^(n-1), so 2x.",
+    "time_limit_seconds": 30,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-001",
+    "category": "Science",
+    "subcategory": "Biology",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What gas do humans need to breathe to stay alive?",
+    "choices": [
+      "Nitrogen",
+      "Carbon dioxide",
+      "Oxygen",
+      "Helium"
+    ],
+    "correct_answer": "Oxygen",
+    "accepted_answers": [
+      "Oxygen",
+      "O2"
+    ],
+    "explanation": "Oxygen is essential for cellular respiration.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-002",
+    "category": "Science",
+    "subcategory": "States of Matter",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Ice is an example of which state of matter?",
+    "choices": [
+      "Liquid",
+      "Gas",
+      "Solid",
+      "Plasma"
+    ],
+    "correct_answer": "Solid",
+    "accepted_answers": [
+      "Solid",
+      "solid"
+    ],
+    "explanation": "Ice is water in the solid state.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-003",
+    "category": "Science",
+    "subcategory": "Chemistry",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the common name for H₂O?",
+    "choices": [
+      "Salt",
+      "Water",
+      "Oxygen",
+      "Hydrogen"
+    ],
+    "correct_answer": "Water",
+    "accepted_answers": [
+      "Water",
+      "water",
+      "H2O"
+    ],
+    "explanation": "H₂O is water.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-004",
+    "category": "Science",
+    "subcategory": "Physics",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What force pulls objects toward Earth?",
+    "choices": [
+      "Magnetism",
+      "Friction",
+      "Gravity",
+      "Inertia"
+    ],
+    "correct_answer": "Gravity",
+    "accepted_answers": [
+      "Gravity",
+      "gravity"
+    ],
+    "explanation": "Gravity is the attractive force between masses.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-005",
+    "category": "Science",
+    "subcategory": "Biology",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What process do plants use to make food from sunlight?",
+    "choices": [
+      "Respiration",
+      "Photosynthesis",
+      "Digestion",
+      "Fermentation"
+    ],
+    "correct_answer": "Photosynthesis",
+    "accepted_answers": [
+      "Photosynthesis"
+    ],
+    "explanation": "Plants convert light, water, and CO₂ into sugars.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-006",
+    "category": "Science",
+    "subcategory": "Atomic Structure",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which subatomic particle has a negative charge?",
+    "choices": [
+      "Proton",
+      "Neutron",
+      "Electron",
+      "Photon"
+    ],
+    "correct_answer": "Electron",
+    "accepted_answers": [
+      "Electron",
+      "electron"
+    ],
+    "explanation": "Electrons carry a negative electric charge.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-007",
+    "category": "Science",
+    "subcategory": "Atomic Structure",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which subatomic particle has a positive charge?",
+    "choices": [
+      "Electron",
+      "Neutron",
+      "Proton",
+      "Quark"
+    ],
+    "correct_answer": "Proton",
+    "accepted_answers": [
+      "Proton",
+      "proton"
+    ],
+    "explanation": "Protons are positively charged in the nucleus.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-008",
+    "category": "Science",
+    "subcategory": "Atomic Structure",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which subatomic particle has no electric charge?",
+    "choices": [
+      "Electron",
+      "Proton",
+      "Neutron",
+      "Ion"
+    ],
+    "correct_answer": "Neutron",
+    "accepted_answers": [
+      "Neutron",
+      "neutron"
+    ],
+    "explanation": "Neutrons are electrically neutral.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-009",
+    "category": "Science",
+    "subcategory": "Atomic Structure",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the dense center of an atom called?",
+    "choices": [
+      "Electron cloud",
+      "Nucleus",
+      "Orbital",
+      "Shell"
+    ],
+    "correct_answer": "Nucleus",
+    "accepted_answers": [
+      "Nucleus",
+      "nucleus"
+    ],
+    "explanation": "The nucleus holds protons and neutrons.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-010",
+    "category": "Science",
+    "subcategory": "Chemistry",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "At what Celsius temperature does water freeze?",
+    "choices": [
+      "-10°C",
+      "0°C",
+      "32°C",
+      "100°C"
+    ],
+    "correct_answer": "0°C",
+    "accepted_answers": [
+      "0°C",
+      "0",
+      "zero",
+      "0 degrees Celsius"
+    ],
+    "explanation": "Pure water freezes at 0°C under standard pressure.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-011",
+    "category": "Science",
+    "subcategory": "Chemistry",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "At what Celsius temperature does water boil at sea level?",
+    "choices": [
+      "0°C",
+      "50°C",
+      "90°C",
+      "100°C"
+    ],
+    "correct_answer": "100°C",
+    "accepted_answers": [
+      "100°C",
+      "100",
+      "100 degrees Celsius"
+    ],
+    "explanation": "Water boils at 100°C at standard atmospheric pressure.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SCI-012",
+    "category": "Science",
+    "subcategory": "Physics",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "About how fast does light travel in a vacuum?",
+    "choices": [
+      "3,000 km/s",
+      "30,000 km/s",
+      "300,000 km/s",
+      "3,000,000 km/s"
+    ],
+    "correct_answer": "300,000 km/s",
+    "accepted_answers": [
+      "300,000 km/s",
+      "300000 km/s",
+      "~300000 km/s"
+    ],
+    "explanation": "About 300,000 km/s (3×10^8 m/s).",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-001",
+    "category": "Space",
+    "subcategory": "Solar System",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which planet do we live on?",
+    "choices": [
+      "Mars",
+      "Venus",
+      "Earth",
+      "Jupiter"
+    ],
+    "correct_answer": "Earth",
+    "accepted_answers": [
+      "Earth",
+      "earth"
+    ],
+    "explanation": "Earth is the third planet from the Sun.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-002",
+    "category": "Space",
+    "subcategory": "Solar System",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which planet is known as the Red Planet?",
+    "choices": [
+      "Venus",
+      "Mars",
+      "Mercury",
+      "Saturn"
+    ],
+    "correct_answer": "Mars",
+    "accepted_answers": [
+      "Mars",
+      "mars"
+    ],
+    "explanation": "Mars looks reddish due to iron oxide.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-003",
+    "category": "Space",
+    "subcategory": "Stars",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the star at the center of our solar system?",
+    "choices": [
+      "Polaris",
+      "Sirius",
+      "The Sun",
+      "Proxima Centauri"
+    ],
+    "correct_answer": "The Sun",
+    "accepted_answers": [
+      "The Sun",
+      "Sun",
+      "sun",
+      "Sol"
+    ],
+    "explanation": "The Sun is a G-type main-sequence star.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-004",
+    "category": "Space",
+    "subcategory": "Solar System",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What natural satellite orbits Earth?",
+    "choices": [
+      "Phobos",
+      "Titan",
+      "The Moon",
+      "Europa"
+    ],
+    "correct_answer": "The Moon",
+    "accepted_answers": [
+      "The Moon",
+      "Moon",
+      "moon",
+      "Luna"
+    ],
+    "explanation": "Earth's only permanent natural satellite is the Moon.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-005",
+    "category": "Space",
+    "subcategory": "Solar System",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which planet is the largest in our solar system?",
+    "choices": [
+      "Saturn",
+      "Neptune",
+      "Jupiter",
+      "Uranus"
+    ],
+    "correct_answer": "Jupiter",
+    "accepted_answers": [
+      "Jupiter",
+      "jupiter"
+    ],
+    "explanation": "Jupiter is the largest planet.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-006",
+    "category": "Space",
+    "subcategory": "Solar System",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which planet is famous for its prominent ring system?",
+    "choices": [
+      "Jupiter",
+      "Mars",
+      "Saturn",
+      "Venus"
+    ],
+    "correct_answer": "Saturn",
+    "accepted_answers": [
+      "Saturn",
+      "saturn"
+    ],
+    "explanation": "Saturn has the most spectacular ring system.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-007",
+    "category": "Space",
+    "subcategory": "Exploration",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who was the first person to walk on the Moon?",
+    "choices": [
+      "Buzz Aldrin",
+      "Yuri Gagarin",
+      "Neil Armstrong",
+      "John Glenn"
+    ],
+    "correct_answer": "Neil Armstrong",
+    "accepted_answers": [
+      "Neil Armstrong",
+      "Armstrong"
+    ],
+    "explanation": "Neil Armstrong stepped onto the Moon in 1969.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-008",
+    "category": "Space",
+    "subcategory": "Astronomy",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What galaxy is Earth located in?",
+    "choices": [
+      "Andromeda",
+      "Whirlpool",
+      "Milky Way",
+      "Sombrero"
+    ],
+    "correct_answer": "Milky Way",
+    "accepted_answers": [
+      "Milky Way",
+      "the Milky Way"
+    ],
+    "explanation": "Our solar system sits in the Milky Way.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-009",
+    "category": "Space",
+    "subcategory": "Stars",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the closest star to Earth?",
+    "choices": [
+      "Alpha Centauri",
+      "Sirius",
+      "The Sun",
+      "Betelgeuse"
+    ],
+    "correct_answer": "The Sun",
+    "accepted_answers": [
+      "The Sun",
+      "Sun",
+      "sun"
+    ],
+    "explanation": "The Sun is by far the nearest star.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPACE-010",
+    "category": "Space",
+    "subcategory": "Black Holes",
+    "difficulty": 7,
+    "grade_min": 7,
+    "grade_max": 12,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the boundary around a black hole beyond which nothing can escape?",
+    "choices": [
+      "Photon sphere",
+      "Event horizon",
+      "Singularity",
+      "Accretion disk"
+    ],
+    "correct_answer": "Event horizon",
+    "accepted_answers": [
+      "Event horizon",
+      "event horizon"
+    ],
+    "explanation": "The event horizon is the point of no return.",
+    "time_limit_seconds": 30,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-001",
+    "category": "Geography",
+    "subcategory": "Countries",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which country is directly north of the contiguous United States?",
+    "choices": [
+      "Mexico",
+      "Canada",
+      "Greenland",
+      "Russia"
+    ],
+    "correct_answer": "Canada",
+    "accepted_answers": [
+      "Canada",
+      "canada"
+    ],
+    "explanation": "Canada borders the U.S. to the north.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-002",
+    "category": "Geography",
+    "subcategory": "Oceans",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which ocean is the largest on Earth?",
+    "choices": [
+      "Atlantic",
+      "Indian",
+      "Arctic",
+      "Pacific"
+    ],
+    "correct_answer": "Pacific",
+    "accepted_answers": [
+      "Pacific",
+      "Pacific Ocean",
+      "the Pacific"
+    ],
+    "explanation": "The Pacific is Earth's largest ocean.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-003",
+    "category": "Geography",
+    "subcategory": "Europe",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In which country would you find the Eiffel Tower?",
+    "choices": [
+      "Italy",
+      "Spain",
+      "France",
+      "Germany"
+    ],
+    "correct_answer": "France",
+    "accepted_answers": [
+      "France",
+      "france"
+    ],
+    "explanation": "The Eiffel Tower stands in Paris, France.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-004",
+    "category": "Geography",
+    "subcategory": "Capitals",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the capital of France?",
+    "choices": [
+      "Lyon",
+      "Marseille",
+      "Paris",
+      "Nice"
+    ],
+    "correct_answer": "Paris",
+    "accepted_answers": [
+      "Paris",
+      "paris"
+    ],
+    "explanation": "Paris is France's capital.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-005",
+    "category": "Geography",
+    "subcategory": "Capitals",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the capital of Japan?",
+    "choices": [
+      "Osaka",
+      "Kyoto",
+      "Tokyo",
+      "Nagoya"
+    ],
+    "correct_answer": "Tokyo",
+    "accepted_answers": [
+      "Tokyo",
+      "tokyo"
+    ],
+    "explanation": "Tokyo is Japan's capital.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-006",
+    "category": "Geography",
+    "subcategory": "Capitals",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the capital of Australia?",
+    "choices": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Perth"
+    ],
+    "correct_answer": "Canberra",
+    "accepted_answers": [
+      "Canberra",
+      "canberra"
+    ],
+    "explanation": "Canberra was purpose-built as Australia's capital.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-007",
+    "category": "Geography",
+    "subcategory": "Rivers",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which river is widely taught as the longest in the world?",
+    "choices": [
+      "Amazon",
+      "Yangtze",
+      "Nile",
+      "Mississippi"
+    ],
+    "correct_answer": "Nile",
+    "accepted_answers": [
+      "Nile",
+      "the Nile",
+      "Nile River"
+    ],
+    "explanation": "School atlases traditionally list the Nile as longest.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-008",
+    "category": "Geography",
+    "subcategory": "Countries",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the world's smallest independent country by area?",
+    "choices": [
+      "Monaco",
+      "San Marino",
+      "Vatican City",
+      "Liechtenstein"
+    ],
+    "correct_answer": "Vatican City",
+    "accepted_answers": [
+      "Vatican City",
+      "Vatican",
+      "the Vatican"
+    ],
+    "explanation": "Vatican City is an independent city-state in Rome.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-009",
+    "category": "Geography",
+    "subcategory": "Mountains",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the highest mountain above sea level on Earth?",
+    "choices": [
+      "K2",
+      "Mount Everest",
+      "Kangchenjunga",
+      "Denali"
+    ],
+    "correct_answer": "Mount Everest",
+    "accepted_answers": [
+      "Mount Everest",
+      "Everest",
+      "Mt. Everest"
+    ],
+    "explanation": "Mount Everest rises on the Nepal-China border.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GEO-010",
+    "category": "Geography",
+    "subcategory": "Continents",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many continents are there on Earth (standard school model)?",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct_answer": "7",
+    "accepted_answers": [
+      "7",
+      "seven"
+    ],
+    "explanation": "Seven continents in the common school model.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-001",
+    "category": "History",
+    "subcategory": "United States",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who was the first President of the United States?",
+    "choices": [
+      "Thomas Jefferson",
+      "John Adams",
+      "George Washington",
+      "Abraham Lincoln"
+    ],
+    "correct_answer": "George Washington",
+    "accepted_answers": [
+      "George Washington",
+      "Washington"
+    ],
+    "explanation": "Washington was the first U.S. president.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-002",
+    "category": "History",
+    "subcategory": "United States",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In what year was the Declaration of Independence adopted?",
+    "choices": [
+      "1492",
+      "1776",
+      "1787",
+      "1812"
+    ],
+    "correct_answer": "1776",
+    "accepted_answers": [
+      "1776"
+    ],
+    "explanation": "Adopted on July 4, 1776.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-003",
+    "category": "History",
+    "subcategory": "United States",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who was the primary author of the Declaration of Independence?",
+    "choices": [
+      "Benjamin Franklin",
+      "John Adams",
+      "Thomas Jefferson",
+      "James Madison"
+    ],
+    "correct_answer": "Thomas Jefferson",
+    "accepted_answers": [
+      "Thomas Jefferson",
+      "Jefferson"
+    ],
+    "explanation": "Jefferson drafted the Declaration.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-004",
+    "category": "History",
+    "subcategory": "Ancient World",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which ancient civilization built the Great Pyramids of Giza?",
+    "choices": [
+      "Ancient Greeks",
+      "Ancient Romans",
+      "Ancient Egyptians",
+      "Aztecs"
+    ],
+    "correct_answer": "Ancient Egyptians",
+    "accepted_answers": [
+      "Ancient Egyptians",
+      "Egyptians",
+      "Egypt"
+    ],
+    "explanation": "The Giza pyramids were built as pharaohs' tombs.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-005",
+    "category": "History",
+    "subcategory": "Ancient World",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which empire built vast roads and aqueducts across Europe?",
+    "choices": [
+      "Ottoman Empire",
+      "Roman Empire",
+      "Mongol Empire",
+      "Byzantine Empire"
+    ],
+    "correct_answer": "Roman Empire",
+    "accepted_answers": [
+      "Roman Empire",
+      "Rome",
+      "Romans"
+    ],
+    "explanation": "Rome's engineering knit the Mediterranean world.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-006",
+    "category": "History",
+    "subcategory": "World Wars",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In what year did World War II end?",
+    "choices": [
+      "1918",
+      "1939",
+      "1945",
+      "1950"
+    ],
+    "correct_answer": "1945",
+    "accepted_answers": [
+      "1945"
+    ],
+    "explanation": "World War II ended in 1945.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-007",
+    "category": "History",
+    "subcategory": "United States",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which U.S. war was fought between the Union and the Confederacy?",
+    "choices": [
+      "Revolutionary War",
+      "War of 1812",
+      "American Civil War",
+      "Spanish-American War"
+    ],
+    "correct_answer": "American Civil War",
+    "accepted_answers": [
+      "American Civil War",
+      "Civil War",
+      "the Civil War"
+    ],
+    "explanation": "The Civil War lasted 1861-1865.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HIST-008",
+    "category": "History",
+    "subcategory": "Exploration",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which ship carried the Pilgrims to North America in 1620?",
+    "choices": [
+      "Santa Maria",
+      "Mayflower",
+      "Beagle",
+      "Endeavour"
+    ],
+    "correct_answer": "Mayflower",
+    "accepted_answers": [
+      "Mayflower",
+      "the Mayflower"
+    ],
+    "explanation": "The Mayflower landed at Plymouth in 1620.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-001",
+    "category": "English",
+    "subcategory": "Grammar",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the plural of \"child\"?",
+    "choices": [
+      "Childs",
+      "Childrens",
+      "Children",
+      "Childer"
+    ],
+    "correct_answer": "Children",
+    "accepted_answers": [
+      "Children",
+      "children"
+    ],
+    "explanation": "Child becomes children (irregular plural).",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-002",
+    "category": "English",
+    "subcategory": "Grammar",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the past tense of \"run\"?",
+    "choices": [
+      "Runned",
+      "Ran",
+      "Running",
+      "Runs"
+    ],
+    "correct_answer": "Ran",
+    "accepted_answers": [
+      "Ran",
+      "ran"
+    ],
+    "explanation": "Run is an irregular verb: run, ran, run.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-003",
+    "category": "English",
+    "subcategory": "Parts of Speech",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In \"The tall tree swayed,\" what part of speech is \"tall\"?",
+    "choices": [
+      "Noun",
+      "Verb",
+      "Adjective",
+      "Adverb"
+    ],
+    "correct_answer": "Adjective",
+    "accepted_answers": [
+      "Adjective",
+      "adjective"
+    ],
+    "explanation": "Adjectives describe nouns.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-004",
+    "category": "English",
+    "subcategory": "Parts of Speech",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In \"Birds fly south,\" what part of speech is \"fly\"?",
+    "choices": [
+      "Noun",
+      "Verb",
+      "Adjective",
+      "Preposition"
+    ],
+    "correct_answer": "Verb",
+    "accepted_answers": [
+      "Verb",
+      "verb"
+    ],
+    "explanation": "Fly is the action word — a verb.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-005",
+    "category": "English",
+    "subcategory": "Vocabulary",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which word is a synonym of \"enormous\"?",
+    "choices": [
+      "Tiny",
+      "Huge",
+      "Average",
+      "Quiet"
+    ],
+    "correct_answer": "Huge",
+    "accepted_answers": [
+      "Huge",
+      "huge",
+      "Gigantic",
+      "Massive"
+    ],
+    "explanation": "Enormous means very large; huge is a synonym.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-006",
+    "category": "English",
+    "subcategory": "Vocabulary",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is an antonym of \"ancient\"?",
+    "choices": [
+      "Old",
+      "Historic",
+      "Modern",
+      "Antique"
+    ],
+    "correct_answer": "Modern",
+    "accepted_answers": [
+      "Modern",
+      "modern",
+      "New"
+    ],
+    "explanation": "Ancient means very old; modern means current.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-007",
+    "category": "English",
+    "subcategory": "Parts of Speech",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In \"The dog barked,\" what part of speech is \"dog\"?",
+    "choices": [
+      "Verb",
+      "Adjective",
+      "Noun",
+      "Adverb"
+    ],
+    "correct_answer": "Noun",
+    "accepted_answers": [
+      "Noun",
+      "noun"
+    ],
+    "explanation": "Dog names a thing — a noun.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENG-008",
+    "category": "English",
+    "subcategory": "Punctuation",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which punctuation mark ends a direct question?",
+    "choices": [
+      "Period",
+      "Comma",
+      "Exclamation point",
+      "Question mark"
+    ],
+    "correct_answer": "Question mark",
+    "accepted_answers": [
+      "Question mark",
+      "question mark",
+      "?"
+    ],
+    "explanation": "Questions end with a question mark.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-001",
+    "category": "Logic",
+    "subcategory": "Sequences",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What comes next in the sequence: 2, 4, 6, 8, ?",
+    "choices": [
+      "9",
+      "10",
+      "12",
+      "16"
+    ],
+    "correct_answer": "10",
+    "accepted_answers": [
+      "10",
+      "ten"
+    ],
+    "explanation": "Even numbers increase by 2.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-002",
+    "category": "Logic",
+    "subcategory": "Sequences",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What comes next: 3, 6, 12, 24, ?",
+    "choices": [
+      "30",
+      "36",
+      "48",
+      "60"
+    ],
+    "correct_answer": "48",
+    "accepted_answers": [
+      "48",
+      "forty-eight"
+    ],
+    "explanation": "Each term doubles: 24 × 2 = 48.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-003",
+    "category": "Logic",
+    "subcategory": "Number Patterns",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the next prime number after 11?",
+    "choices": [
+      "12",
+      "13",
+      "14",
+      "15"
+    ],
+    "correct_answer": "13",
+    "accepted_answers": [
+      "13",
+      "thirteen"
+    ],
+    "explanation": "13 is the next prime after 11.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-004",
+    "category": "Logic",
+    "subcategory": "Riddles",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "TRUE_FALSE",
+    "question": "Can you cry underwater?",
+    "choices": [
+      "Yes",
+      "No",
+      "Only in saltwater",
+      "Only if you hold your breath"
+    ],
+    "correct_answer": "Yes",
+    "accepted_answers": [
+      "Yes",
+      "yes",
+      "True"
+    ],
+    "explanation": "Tear glands can still produce tears underwater.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-005",
+    "category": "Logic",
+    "subcategory": "Riddles",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "A farmer has 17 sheep. All but 3 die. How many are left?",
+    "choices": [
+      "14",
+      "3",
+      "17",
+      "0"
+    ],
+    "correct_answer": "3",
+    "accepted_answers": [
+      "3",
+      "3 sheep",
+      "three",
+      "three sheep"
+    ],
+    "explanation": "All but 3 means 3 survived.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LOGIC-006",
+    "category": "Logic",
+    "subcategory": "Riddles",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "RIDDLE",
+    "question": "What has hands but cannot clap?",
+    "choices": [
+      "A glove",
+      "A clock",
+      "A tree",
+      "A river"
+    ],
+    "correct_answer": "A clock",
+    "accepted_answers": [
+      "A clock",
+      "Clock",
+      "clock"
+    ],
+    "explanation": "A clock has hands that point to time.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-001",
+    "category": "Animals",
+    "subcategory": "Mammals",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the largest living land animal?",
+    "choices": [
+      "Giraffe",
+      "Hippopotamus",
+      "African elephant",
+      "White rhinoceros"
+    ],
+    "correct_answer": "African elephant",
+    "accepted_answers": [
+      "African elephant",
+      "elephant"
+    ],
+    "explanation": "African elephants are the heaviest land animals.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-002",
+    "category": "Animals",
+    "subcategory": "Invertebrates",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many legs does a spider typically have?",
+    "choices": [
+      "6",
+      "8",
+      "10",
+      "12"
+    ],
+    "correct_answer": "8",
+    "accepted_answers": [
+      "8",
+      "eight"
+    ],
+    "explanation": "Spiders are arachnids with eight legs.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-003",
+    "category": "Animals",
+    "subcategory": "Mammals",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the fastest land animal over short distances?",
+    "choices": [
+      "Lion",
+      "Horse",
+      "Cheetah",
+      "Greyhound"
+    ],
+    "correct_answer": "Cheetah",
+    "accepted_answers": [
+      "Cheetah",
+      "cheetah"
+    ],
+    "explanation": "Cheetahs sprint extremely fast in short bursts.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-004",
+    "category": "Animals",
+    "subcategory": "Mammals",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is a group of lions called?",
+    "choices": [
+      "Herd",
+      "Pack",
+      "Pride",
+      "Flock"
+    ],
+    "correct_answer": "Pride",
+    "accepted_answers": [
+      "Pride",
+      "pride"
+    ],
+    "explanation": "A group of lions is a pride.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-005",
+    "category": "Animals",
+    "subcategory": "Mammals",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the largest animal on Earth?",
+    "choices": [
+      "African elephant",
+      "Blue whale",
+      "Sperm whale",
+      "Colossal squid"
+    ],
+    "correct_answer": "Blue whale",
+    "accepted_answers": [
+      "Blue whale",
+      "blue whale"
+    ],
+    "explanation": "Blue whales are the largest animals known.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ANIMAL-006",
+    "category": "Animals",
+    "subcategory": "Life Cycles",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which insect undergoes metamorphosis from caterpillar to winged adult?",
+    "choices": [
+      "Ant",
+      "Butterfly",
+      "Grasshopper",
+      "Beetle"
+    ],
+    "correct_answer": "Butterfly",
+    "accepted_answers": [
+      "Butterfly",
+      "butterfly"
+    ],
+    "explanation": "Butterflies transform from caterpillar to adult.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-001",
+    "category": "Dinosaurs",
+    "subcategory": "Theropods",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which famous dinosaur's name means \"tyrant lizard king\"?",
+    "choices": [
+      "Triceratops",
+      "Stegosaurus",
+      "T-Rex",
+      "Velociraptor"
+    ],
+    "correct_answer": "T-Rex",
+    "accepted_answers": [
+      "T-Rex",
+      "T. rex",
+      "Tyrannosaurus rex",
+      "Trex"
+    ],
+    "explanation": "Tyrannosaurus rex means tyrant lizard king.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-002",
+    "category": "Dinosaurs",
+    "subcategory": "Ceratopsians",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which dinosaur is known for three facial horns and a bony frill?",
+    "choices": [
+      "Stegosaurus",
+      "Triceratops",
+      "Brachiosaurus",
+      "Ankylosaurus"
+    ],
+    "correct_answer": "Triceratops",
+    "accepted_answers": [
+      "Triceratops",
+      "triceratops"
+    ],
+    "explanation": "Triceratops means three-horned face.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-003",
+    "category": "Dinosaurs",
+    "subcategory": "Ornithischians",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which dinosaur is famous for large plates along its back?",
+    "choices": [
+      "Triceratops",
+      "T-Rex",
+      "Stegosaurus",
+      "Spinosaurus"
+    ],
+    "correct_answer": "Stegosaurus",
+    "accepted_answers": [
+      "Stegosaurus",
+      "stegosaurus"
+    ],
+    "explanation": "Stegosaurus had upright plates and a spiked tail.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-004",
+    "category": "Dinosaurs",
+    "subcategory": "Diet",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "An animal that eats only plants is called a…",
+    "choices": [
+      "Carnivore",
+      "Omnivore",
+      "Herbivore",
+      "Insectivore"
+    ],
+    "correct_answer": "Herbivore",
+    "accepted_answers": [
+      "Herbivore",
+      "herbivore"
+    ],
+    "explanation": "Herbivores eat plants.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-005",
+    "category": "Dinosaurs",
+    "subcategory": "Geologic Time",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In which broad era did non-avian dinosaurs live?",
+    "choices": [
+      "Cenozoic Era",
+      "Mesozoic Era",
+      "Paleozoic Era",
+      "Precambrian"
+    ],
+    "correct_answer": "Mesozoic Era",
+    "accepted_answers": [
+      "Mesozoic Era",
+      "Mesozoic"
+    ],
+    "explanation": "Dinosaurs dominated the Mesozoic Era.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "DINO-006",
+    "category": "Dinosaurs",
+    "subcategory": "Geologic Time",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which period ended with the extinction of non-avian dinosaurs?",
+    "choices": [
+      "Jurassic",
+      "Triassic",
+      "Cretaceous",
+      "Permian"
+    ],
+    "correct_answer": "Cretaceous",
+    "accepted_answers": [
+      "Cretaceous",
+      "Cretaceous Period"
+    ],
+    "explanation": "The end-Cretaceous extinction wiped out non-avian dinosaurs.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-001",
+    "category": "Human Body",
+    "subcategory": "Organs",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which organ is the control center of the nervous system?",
+    "choices": [
+      "Heart",
+      "Liver",
+      "Brain",
+      "Stomach"
+    ],
+    "correct_answer": "Brain",
+    "accepted_answers": [
+      "Brain",
+      "brain"
+    ],
+    "explanation": "The brain processes sensory input and directs the body.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-002",
+    "category": "Human Body",
+    "subcategory": "Organs",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which organ pumps blood throughout the body?",
+    "choices": [
+      "Lungs",
+      "Heart",
+      "Kidney",
+      "Liver"
+    ],
+    "correct_answer": "Heart",
+    "accepted_answers": [
+      "Heart",
+      "heart"
+    ],
+    "explanation": "The heart is a muscular pump.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-003",
+    "category": "Human Body",
+    "subcategory": "Organs",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many lungs does a typical healthy human have?",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "2",
+    "accepted_answers": [
+      "2",
+      "two"
+    ],
+    "explanation": "Humans normally have two lungs.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-004",
+    "category": "Human Body",
+    "subcategory": "Organs",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the body's largest organ?",
+    "choices": [
+      "Liver",
+      "Brain",
+      "Skin",
+      "Intestine"
+    ],
+    "correct_answer": "Skin",
+    "accepted_answers": [
+      "Skin",
+      "skin"
+    ],
+    "explanation": "Skin is the largest organ by surface area and weight.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-005",
+    "category": "Human Body",
+    "subcategory": "Circulatory",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which cells carry oxygen in the blood?",
+    "choices": [
+      "White blood cells",
+      "Platelets",
+      "Red blood cells",
+      "Neurons"
+    ],
+    "correct_answer": "Red blood cells",
+    "accepted_answers": [
+      "Red blood cells",
+      "RBCs",
+      "erythrocytes"
+    ],
+    "explanation": "Red blood cells contain hemoglobin that binds oxygen.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "BODY-006",
+    "category": "Human Body",
+    "subcategory": "Skeletal",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the longest bone in the human body?",
+    "choices": [
+      "Tibia",
+      "Humerus",
+      "Femur",
+      "Fibula"
+    ],
+    "correct_answer": "Femur",
+    "accepted_answers": [
+      "Femur",
+      "femur",
+      "thigh bone"
+    ],
+    "explanation": "The femur (thigh bone) is the longest bone.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "WEATHER-001",
+    "category": "Weather",
+    "subcategory": "Precipitation",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Frozen precipitation that falls as soft white flakes is called…",
+    "choices": [
+      "Rain",
+      "Hail",
+      "Snow",
+      "Sleet"
+    ],
+    "correct_answer": "Snow",
+    "accepted_answers": [
+      "Snow",
+      "snow"
+    ],
+    "explanation": "Snow forms when ice crystals grow in cold clouds.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "WEATHER-002",
+    "category": "Weather",
+    "subcategory": "Instruments",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which instrument measures temperature?",
+    "choices": [
+      "Barometer",
+      "Thermometer",
+      "Anemometer",
+      "Hygrometer"
+    ],
+    "correct_answer": "Thermometer",
+    "accepted_answers": [
+      "Thermometer",
+      "thermometer"
+    ],
+    "explanation": "Thermometers measure how hot or cold something is.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "WEATHER-003",
+    "category": "Weather",
+    "subcategory": "Instruments",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which instrument measures air pressure?",
+    "choices": [
+      "Thermometer",
+      "Barometer",
+      "Rain gauge",
+      "Wind vane"
+    ],
+    "correct_answer": "Barometer",
+    "accepted_answers": [
+      "Barometer",
+      "barometer"
+    ],
+    "explanation": "Barometers measure atmospheric pressure.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "WEATHER-004",
+    "category": "Weather",
+    "subcategory": "Storms",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is a powerful tropical cyclone called in the Atlantic?",
+    "choices": [
+      "Tornado",
+      "Blizzard",
+      "Hurricane",
+      "Monsoon"
+    ],
+    "correct_answer": "Hurricane",
+    "accepted_answers": [
+      "Hurricane",
+      "hurricane"
+    ],
+    "explanation": "Atlantic tropical cyclones are called hurricanes.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "WEATHER-005",
+    "category": "Weather",
+    "subcategory": "Tornadoes",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What scale rates tornado intensity in the United States?",
+    "choices": [
+      "Richter Scale",
+      "Saffir-Simpson Scale",
+      "Enhanced Fujita Scale",
+      "Beaufort Scale"
+    ],
+    "correct_answer": "Enhanced Fujita Scale",
+    "accepted_answers": [
+      "Enhanced Fujita Scale",
+      "EF Scale",
+      "Enhanced Fujita"
+    ],
+    "explanation": "The Enhanced Fujita (EF) Scale rates tornado damage EF0-EF5.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "EARTH-001",
+    "category": "Earth Science",
+    "subcategory": "Volcanoes",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is molten rock beneath Earth's surface called?",
+    "choices": [
+      "Lava",
+      "Magma",
+      "Ash",
+      "Pumice"
+    ],
+    "correct_answer": "Magma",
+    "accepted_answers": [
+      "Magma",
+      "magma"
+    ],
+    "explanation": "Magma is molten rock underground.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "EARTH-002",
+    "category": "Earth Science",
+    "subcategory": "Volcanoes",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is molten rock called once it erupts onto Earth's surface?",
+    "choices": [
+      "Magma",
+      "Lava",
+      "Mantle",
+      "Core"
+    ],
+    "correct_answer": "Lava",
+    "accepted_answers": [
+      "Lava",
+      "lava"
+    ],
+    "explanation": "Lava is erupted magma on the surface.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "EARTH-003",
+    "category": "Earth Science",
+    "subcategory": "Geology",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What primarily causes earthquakes?",
+    "choices": [
+      "Ocean tides",
+      "Tectonic plate movement",
+      "Solar flares",
+      "Wind erosion"
+    ],
+    "correct_answer": "Tectonic plate movement",
+    "accepted_answers": [
+      "Tectonic plate movement",
+      "plate tectonics",
+      "tectonic plates"
+    ],
+    "explanation": "Most quakes occur when tectonic plates slip or collide.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "EARTH-004",
+    "category": "Earth Science",
+    "subcategory": "Water Cycle",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What process turns liquid water into water vapor?",
+    "choices": [
+      "Condensation",
+      "Precipitation",
+      "Evaporation",
+      "Collection"
+    ],
+    "correct_answer": "Evaporation",
+    "accepted_answers": [
+      "Evaporation",
+      "evaporation"
+    ],
+    "explanation": "Evaporation is liquid turning into gas.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "EARTH-005",
+    "category": "Earth Science",
+    "subcategory": "Layers",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is Earth's outermost solid layer called?",
+    "choices": [
+      "Mantle",
+      "Outer core",
+      "Crust",
+      "Inner core"
+    ],
+    "correct_answer": "Crust",
+    "accepted_answers": [
+      "Crust",
+      "crust"
+    ],
+    "explanation": "The crust is Earth's thin rocky outer shell.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-001",
+    "category": "Technology",
+    "subcategory": "Hardware",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which computer input device is moved by hand to control a pointer?",
+    "choices": [
+      "Keyboard",
+      "Monitor",
+      "Mouse",
+      "Speaker"
+    ],
+    "correct_answer": "Mouse",
+    "accepted_answers": [
+      "Mouse",
+      "mouse"
+    ],
+    "explanation": "A mouse moves the on-screen cursor.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-002",
+    "category": "Technology",
+    "subcategory": "Hardware",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does CPU stand for?",
+    "choices": [
+      "Computer Personal Unit",
+      "Central Processing Unit",
+      "Core Power Utility",
+      "Control Program Upload"
+    ],
+    "correct_answer": "Central Processing Unit",
+    "accepted_answers": [
+      "Central Processing Unit",
+      "CPU"
+    ],
+    "explanation": "The CPU executes instructions.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-003",
+    "category": "Technology",
+    "subcategory": "Hardware",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which type of computer memory is temporary working memory while programs run?",
+    "choices": [
+      "Hard drive",
+      "SSD only",
+      "RAM",
+      "ROM only"
+    ],
+    "correct_answer": "RAM",
+    "accepted_answers": [
+      "RAM",
+      "Random Access Memory",
+      "temporary working memory"
+    ],
+    "explanation": "RAM holds data the CPU is actively using.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-004",
+    "category": "Technology",
+    "subcategory": "Networking",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does Wi-Fi mainly let devices do?",
+    "choices": [
+      "Store files forever",
+      "Connect wirelessly to a network",
+      "Cool the CPU",
+      "Print without ink"
+    ],
+    "correct_answer": "Connect wirelessly to a network",
+    "accepted_answers": [
+      "Connect wirelessly to a network",
+      "Connect wirelessly",
+      "Wi-Fi"
+    ],
+    "explanation": "Wi-Fi is wireless networking.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-005",
+    "category": "Technology",
+    "subcategory": "Security",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does the \"S\" in HTTPS stand for?",
+    "choices": [
+      "Simple",
+      "Secure",
+      "System",
+      "Server"
+    ],
+    "correct_answer": "Secure",
+    "accepted_answers": [
+      "Secure",
+      "secure",
+      "Security"
+    ],
+    "explanation": "HTTPS is HTTP over a secure encrypted connection.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TECH-006",
+    "category": "Technology",
+    "subcategory": "Networking",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What home device commonly connects gadgets to the internet and hands out local IP addresses?",
+    "choices": [
+      "Monitor",
+      "Router",
+      "Scanner",
+      "GPU"
+    ],
+    "correct_answer": "Router",
+    "accepted_answers": [
+      "Router",
+      "router",
+      "network device"
+    ],
+    "explanation": "A home router routes traffic and often runs DHCP.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-001",
+    "category": "Artificial Intelligence",
+    "subcategory": "Basics",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does AI stand for?",
+    "choices": [
+      "Automated Input",
+      "Artificial Intelligence",
+      "Advanced Internet",
+      "Analog Interface"
+    ],
+    "correct_answer": "Artificial Intelligence",
+    "accepted_answers": [
+      "Artificial Intelligence",
+      "AI"
+    ],
+    "explanation": "AI means Artificial Intelligence.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-002",
+    "category": "Artificial Intelligence",
+    "subcategory": "Basics",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "TRUE_FALSE",
+    "question": "Can computers learn from examples instead of only following fixed rules?",
+    "choices": [
+      "Yes",
+      "No",
+      "Only on weekends",
+      "Only with paper"
+    ],
+    "correct_answer": "Yes",
+    "accepted_answers": [
+      "Yes",
+      "yes",
+      "True"
+    ],
+    "explanation": "Machine learning systems improve by training on data.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-003",
+    "category": "Artificial Intelligence",
+    "subcategory": "Machine Learning",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What do many modern AI systems primarily do during training?",
+    "choices": [
+      "Ignore all data",
+      "Learn patterns from data",
+      "Delete their code",
+      "Only memorize passwords"
+    ],
+    "correct_answer": "Learn patterns from data",
+    "accepted_answers": [
+      "Learn patterns from data",
+      "find patterns in data"
+    ],
+    "explanation": "Training adjusts model parameters from data patterns.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-004",
+    "category": "Artificial Intelligence",
+    "subcategory": "NLP",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Chat-style AI systems are best described as what kind of model?",
+    "choices": [
+      "Spreadsheet",
+      "Language model",
+      "GPS map",
+      "Virus scanner"
+    ],
+    "correct_answer": "Language model",
+    "accepted_answers": [
+      "Language model",
+      "LLM",
+      "large language model"
+    ],
+    "explanation": "Large language models generate text from language patterns.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-005",
+    "category": "Artificial Intelligence",
+    "subcategory": "Machine Learning",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is \"training data\" in AI?",
+    "choices": [
+      "The final user question only",
+      "Example data used to teach a model",
+      "A type of battery",
+      "The Wi-Fi password"
+    ],
+    "correct_answer": "Example data used to teach a model",
+    "accepted_answers": [
+      "Example data used to teach a model",
+      "data used to train a model",
+      "training examples"
+    ],
+    "explanation": "Training data is the examples a model learns from.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "AI-006",
+    "category": "Artificial Intelligence",
+    "subcategory": "Reliability",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In AI, what is a \"hallucination\"?",
+    "choices": [
+      "Seeing lights",
+      "Confidently generating false or made-up information",
+      "A computer virus",
+      "A type of camera"
+    ],
+    "correct_answer": "Confidently generating false or made-up information",
+    "accepted_answers": [
+      "Confidently generating false or made-up information",
+      "false information",
+      "made-up answers"
+    ],
+    "explanation": "Hallucinations are plausible-sounding but incorrect outputs.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MONEY-001",
+    "category": "Money & Finance",
+    "subcategory": "Currency",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many cents are in one U.S. dollar?",
+    "choices": [
+      "10",
+      "50",
+      "100",
+      "1000"
+    ],
+    "correct_answer": "100",
+    "accepted_answers": [
+      "100",
+      "one hundred"
+    ],
+    "explanation": "One dollar equals 100 cents.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MONEY-002",
+    "category": "Money & Finance",
+    "subcategory": "Currency",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many quarters make one U.S. dollar?",
+    "choices": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct_answer": "4",
+    "accepted_answers": [
+      "4",
+      "four"
+    ],
+    "explanation": "Four 25-cent quarters equal $1.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MONEY-003",
+    "category": "Money & Finance",
+    "subcategory": "Arithmetic",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "If an item costs $20 and is 25% off, how much do you save?",
+    "choices": [
+      "$2",
+      "$4",
+      "$5",
+      "$10"
+    ],
+    "correct_answer": "$5",
+    "accepted_answers": [
+      "$5",
+      "5",
+      "5 dollars"
+    ],
+    "explanation": "25% of $20 is $5.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MONEY-004",
+    "category": "Money & Finance",
+    "subcategory": "Arithmetic",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "A sandwich costs $8 and a drink costs $3. If you pay with $16, what is your change?",
+    "choices": [
+      "$3",
+      "$4",
+      "$5",
+      "$6"
+    ],
+    "correct_answer": "$5",
+    "accepted_answers": [
+      "$5",
+      "5",
+      "5 dollars"
+    ],
+    "explanation": "$8 + $3 = $11; $16 - $11 = $5.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MONEY-005",
+    "category": "Money & Finance",
+    "subcategory": "Banking",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is interest (in banking)?",
+    "choices": [
+      "A type of coin",
+      "Extra money earned on savings or paid on loans",
+      "A tax on food only",
+      "Free money with no rules"
+    ],
+    "correct_answer": "Extra money earned on savings or paid on loans",
+    "accepted_answers": [
+      "Extra money earned on savings or paid on loans",
+      "cost of borrowing",
+      "reward for saving"
+    ],
+    "explanation": "Interest is the cost of borrowing or the reward for saving.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GOV-001",
+    "category": "Government & Civics",
+    "subcategory": "US Government",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many branches does the U.S. federal government have?",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "3",
+    "accepted_answers": [
+      "3",
+      "three"
+    ],
+    "explanation": "Legislative, executive, and judicial.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GOV-002",
+    "category": "Government & Civics",
+    "subcategory": "US Government",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What are the three branches of the U.S. government?",
+    "choices": [
+      "Army, Navy, Air Force",
+      "Executive, Legislative, Judicial",
+      "Federal, State, Local",
+      "President, Mayor, Governor"
+    ],
+    "correct_answer": "Executive, Legislative, Judicial",
+    "accepted_answers": [
+      "Executive, Legislative, Judicial",
+      "Legislative, Executive, Judicial"
+    ],
+    "explanation": "Separation of powers among three branches.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GOV-003",
+    "category": "Government & Civics",
+    "subcategory": "US Government",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the supreme law of the United States?",
+    "choices": [
+      "The Declaration of Independence",
+      "The Bill of Rights alone",
+      "US Constitution",
+      "State constitutions only"
+    ],
+    "correct_answer": "US Constitution",
+    "accepted_answers": [
+      "US Constitution",
+      "U.S. Constitution",
+      "the Constitution",
+      "Constitution"
+    ],
+    "explanation": "The Constitution is the highest law of the land.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GOV-004",
+    "category": "Government & Civics",
+    "subcategory": "Congress",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many U.S. senators are there in total?",
+    "choices": [
+      "50",
+      "100",
+      "435",
+      "538"
+    ],
+    "correct_answer": "100",
+    "accepted_answers": [
+      "100",
+      "one hundred"
+    ],
+    "explanation": "Two senators per state times 50 states = 100.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GOV-005",
+    "category": "Government & Civics",
+    "subcategory": "Congress",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How long is one term for a U.S. senator?",
+    "choices": [
+      "2 years",
+      "4 years",
+      "6 years",
+      "8 years"
+    ],
+    "correct_answer": "6 years",
+    "accepted_answers": [
+      "6 years",
+      "six years",
+      "6"
+    ],
+    "explanation": "Senators serve six-year terms.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPORT-001",
+    "category": "Sports",
+    "subcategory": "Soccer",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In soccer (football), how many points is a regular goal worth?",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "6"
+    ],
+    "correct_answer": "1",
+    "accepted_answers": [
+      "1",
+      "one"
+    ],
+    "explanation": "A standard soccer goal counts as one.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPORT-002",
+    "category": "Sports",
+    "subcategory": "Volleyball",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many players are on the court for one volleyball team at a time?",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "9"
+    ],
+    "correct_answer": "6",
+    "accepted_answers": [
+      "6",
+      "six"
+    ],
+    "explanation": "Indoor volleyball fields six players per side.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPORT-003",
+    "category": "Sports",
+    "subcategory": "Baseball",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many strikes make an out in baseball?",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "3",
+    "accepted_answers": [
+      "3",
+      "three"
+    ],
+    "explanation": "Three strikes and you are out.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPORT-004",
+    "category": "Sports",
+    "subcategory": "Ice Sports",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In which sport do players use sticks to shoot a puck into a net?",
+    "choices": [
+      "Lacrosse",
+      "Hockey",
+      "Polo",
+      "Curling"
+    ],
+    "correct_answer": "Hockey",
+    "accepted_answers": [
+      "Hockey",
+      "hockey",
+      "Ice hockey"
+    ],
+    "explanation": "Ice hockey uses a puck.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPORT-005",
+    "category": "Sports",
+    "subcategory": "Racket Sports",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In which sport do players hit a ball over a net with rackets on a rectangular court?",
+    "choices": [
+      "Golf",
+      "Tennis",
+      "Bowling",
+      "Archery"
+    ],
+    "correct_answer": "Tennis",
+    "accepted_answers": [
+      "Tennis",
+      "tennis"
+    ],
+    "explanation": "Tennis uses rackets and a net.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "FOOD-001",
+    "category": "Food",
+    "subcategory": "Ingredients",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Wine and raisins are both made from which fruit?",
+    "choices": [
+      "Apples",
+      "Grapes",
+      "Cherries",
+      "Plums"
+    ],
+    "correct_answer": "Grapes",
+    "accepted_answers": [
+      "Grapes",
+      "grapes"
+    ],
+    "explanation": "Grapes are fermented for wine and dried into raisins.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "FOOD-002",
+    "category": "Food",
+    "subcategory": "Baking",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What microorganism makes bread dough rise?",
+    "choices": [
+      "Bacteria only",
+      "Yeast",
+      "Mold",
+      "Algae"
+    ],
+    "correct_answer": "Yeast",
+    "accepted_answers": [
+      "Yeast",
+      "yeast"
+    ],
+    "explanation": "Yeast releases carbon dioxide that inflates dough.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "FOOD-003",
+    "category": "Food",
+    "subcategory": "Produce",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which fruit is the main ingredient in guacamole?",
+    "choices": [
+      "Tomato",
+      "Avocado",
+      "Mango",
+      "Banana"
+    ],
+    "correct_answer": "Avocado",
+    "accepted_answers": [
+      "Avocado",
+      "avocado"
+    ],
+    "explanation": "Guacamole is mashed avocado with seasonings.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "FOOD-004",
+    "category": "Food",
+    "subcategory": "Dairy",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What food is made by coagulating milk proteins?",
+    "choices": [
+      "Butter only",
+      "Cheese",
+      "Yogurt only",
+      "Cream"
+    ],
+    "correct_answer": "Cheese",
+    "accepted_answers": [
+      "Cheese",
+      "cheese"
+    ],
+    "explanation": "Cheese is formed from milk curds.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "FOOD-005",
+    "category": "Food",
+    "subcategory": "Ingredients",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Chocolate is made primarily from which plant product?",
+    "choices": [
+      "Coffee beans",
+      "Cocoa",
+      "Vanilla beans",
+      "Tea leaves"
+    ],
+    "correct_answer": "Cocoa",
+    "accepted_answers": [
+      "Cocoa",
+      "cocoa",
+      "cacao"
+    ],
+    "explanation": "Cocoa (cacao) beans are processed into chocolate.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MUSIC-001",
+    "category": "Music",
+    "subcategory": "Instruments",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many keys does a standard full-size piano have?",
+    "choices": [
+      "66",
+      "76",
+      "88",
+      "100"
+    ],
+    "correct_answer": "88",
+    "accepted_answers": [
+      "88",
+      "eighty-eight"
+    ],
+    "explanation": "A standard piano has 88 keys.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MUSIC-002",
+    "category": "Music",
+    "subcategory": "Families",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "The violin, viola, cello, and double bass belong to which family?",
+    "choices": [
+      "Brass",
+      "Woodwind",
+      "String family",
+      "Percussion"
+    ],
+    "correct_answer": "String family",
+    "accepted_answers": [
+      "String family",
+      "Strings",
+      "string",
+      "String"
+    ],
+    "explanation": "These instruments use vibrating strings.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MUSIC-003",
+    "category": "Music",
+    "subcategory": "Instruments",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which instrument is primarily played by hitting with sticks or hands?",
+    "choices": [
+      "Flute",
+      "Drums",
+      "Clarinet",
+      "Trombone"
+    ],
+    "correct_answer": "Drums",
+    "accepted_answers": [
+      "Drums",
+      "drums",
+      "drum"
+    ],
+    "explanation": "Drums are percussion instruments.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MUSIC-004",
+    "category": "Music",
+    "subcategory": "Notation",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In music notation, what symbol indicates a measured silence?",
+    "choices": [
+      "Clef",
+      "Rest",
+      "Sharp",
+      "Fermata"
+    ],
+    "correct_answer": "Rest",
+    "accepted_answers": [
+      "Rest",
+      "rest"
+    ],
+    "explanation": "A rest marks a pause of specific duration.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-001",
+    "category": "Games & Gaming",
+    "subcategory": "Video Games",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which popular sandbox game lets players mine blocks and craft items?",
+    "choices": [
+      "Fortnite",
+      "Minecraft",
+      "Among Us",
+      "Tetris"
+    ],
+    "correct_answer": "Minecraft",
+    "accepted_answers": [
+      "Minecraft",
+      "minecraft"
+    ],
+    "explanation": "Minecraft is known for mining, crafting, and building.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-002",
+    "category": "Games & Gaming",
+    "subcategory": "Companies",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which company created Mario and the Nintendo Switch?",
+    "choices": [
+      "Sony",
+      "Microsoft",
+      "Nintendo",
+      "Sega"
+    ],
+    "correct_answer": "Nintendo",
+    "accepted_answers": [
+      "Nintendo",
+      "nintendo"
+    ],
+    "explanation": "Nintendo created Mario and the Switch.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-003",
+    "category": "Games & Gaming",
+    "subcategory": "Characters",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What color is Sonic the Hedgehog traditionally?",
+    "choices": [
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow"
+    ],
+    "correct_answer": "Blue",
+    "accepted_answers": [
+      "Blue",
+      "blue"
+    ],
+    "explanation": "Sonic is a blue hedgehog.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-004",
+    "category": "Games & Gaming",
+    "subcategory": "Characters",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which Pokemon is a yellow electric-type mascot with lightning-bolt cheeks?",
+    "choices": [
+      "Charizard",
+      "Pikachu",
+      "Squirtle",
+      "Eevee"
+    ],
+    "correct_answer": "Pikachu",
+    "accepted_answers": [
+      "Pikachu",
+      "pikachu"
+    ],
+    "explanation": "Pikachu is the franchise mascot.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-005",
+    "category": "Games & Gaming",
+    "subcategory": "Companies",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which company makes the PlayStation consoles?",
+    "choices": [
+      "Nintendo",
+      "Microsoft",
+      "Sony",
+      "Apple"
+    ],
+    "correct_answer": "Sony",
+    "accepted_answers": [
+      "Sony",
+      "sony"
+    ],
+    "explanation": "Sony produces PlayStation consoles.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "GAME-006",
+    "category": "Games & Gaming",
+    "subcategory": "Companies",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which company makes the Xbox consoles?",
+    "choices": [
+      "Sony",
+      "Nintendo",
+      "Microsoft",
+      "Sega"
+    ],
+    "correct_answer": "Microsoft",
+    "accepted_answers": [
+      "Microsoft",
+      "microsoft"
+    ],
+    "explanation": "Xbox is Microsoft's gaming brand.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-001",
+    "category": "Kaiju",
+    "subcategory": "Godzilla",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which giant monster is often called the King of the Monsters?",
+    "choices": [
+      "Mothra",
+      "Rodan",
+      "Godzilla",
+      "Anguirus"
+    ],
+    "correct_answer": "Godzilla",
+    "accepted_answers": [
+      "Godzilla",
+      "godzilla",
+      "Gojira"
+    ],
+    "explanation": "Godzilla is the iconic King of the Monsters.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-002",
+    "category": "Kaiju",
+    "subcategory": "King Kong",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which giant ape kaiju is classically linked to Skull Island?",
+    "choices": [
+      "Godzilla",
+      "King Kong",
+      "Rodan",
+      "Gamera"
+    ],
+    "correct_answer": "King Kong",
+    "accepted_answers": [
+      "King Kong",
+      "Kong"
+    ],
+    "explanation": "King Kong is the giant ape of Skull Island.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-003",
+    "category": "Kaiju",
+    "subcategory": "Toho Roster",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which Toho kaiju is a giant flying pterosaur-like monster?",
+    "choices": [
+      "Mothra",
+      "Rodan",
+      "Hedorah",
+      "Biollante"
+    ],
+    "correct_answer": "Rodan",
+    "accepted_answers": [
+      "Rodan",
+      "rodan"
+    ],
+    "explanation": "Rodan is a gigantic flying kaiju.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-004",
+    "category": "Kaiju",
+    "subcategory": "Toho Roster",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which kaiju is typically portrayed as a giant guardian moth?",
+    "choices": [
+      "Rodan",
+      "Mothra",
+      "Gigan",
+      "Mechagodzilla"
+    ],
+    "correct_answer": "Mothra",
+    "accepted_answers": [
+      "Mothra",
+      "mothra"
+    ],
+    "explanation": "Mothra is the luminous moth guardian.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-005",
+    "category": "Kaiju",
+    "subcategory": "Toho Roster",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which three-headed dragon is one of Godzilla's greatest rivals?",
+    "choices": [
+      "Anguirus",
+      "King Ghidorah",
+      "Mothra",
+      "Rodan"
+    ],
+    "correct_answer": "King Ghidorah",
+    "accepted_answers": [
+      "King Ghidorah",
+      "Ghidorah"
+    ],
+    "explanation": "King Ghidorah is a golden three-headed dragon.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-006",
+    "category": "Kaiju",
+    "subcategory": "Studios",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which Japanese studio created the original Godzilla film?",
+    "choices": [
+      "Studio Ghibli",
+      "Toho",
+      "Pixar",
+      "DreamWorks"
+    ],
+    "correct_answer": "Toho",
+    "accepted_answers": [
+      "Toho",
+      "toho"
+    ],
+    "explanation": "Toho produced the 1954 Godzilla film.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-007",
+    "category": "Kaiju",
+    "subcategory": "Film History",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In what year was the original Japanese Godzilla film released?",
+    "choices": [
+      "1933",
+      "1954",
+      "1962",
+      "1998"
+    ],
+    "correct_answer": "1954",
+    "accepted_answers": [
+      "1954"
+    ],
+    "explanation": "The original Gojira debuted in Japan in 1954.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-008",
+    "category": "Kaiju",
+    "subcategory": "Film History",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which 2016 Japanese Godzilla reboot is known for a stark disaster-film tone?",
+    "choices": [
+      "Godzilla vs. Kong",
+      "Shin Godzilla",
+      "Godzilla Minus One",
+      "King Kong Escapes"
+    ],
+    "correct_answer": "Shin Godzilla",
+    "accepted_answers": [
+      "Shin Godzilla",
+      "Shin Gojira"
+    ],
+    "explanation": "Shin Godzilla (2016) reimagined Godzilla as a national crisis.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-009",
+    "category": "Kaiju",
+    "subcategory": "Toho Roster",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the name of Godzilla's robotic counterpart?",
+    "choices": [
+      "Jet Jaguar",
+      "Mechagodzilla",
+      "MOGUERA",
+      "Kiryu"
+    ],
+    "correct_answer": "Mechagodzilla",
+    "accepted_answers": [
+      "Mechagodzilla",
+      "mechagodzilla"
+    ],
+    "explanation": "Mechagodzilla is Godzilla's mechanical doppelganger.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "KAIJU-010",
+    "category": "Kaiju",
+    "subcategory": "Toho Roster",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which spiked ankylosaur-like kaiju was an early Godzilla co-star?",
+    "choices": [
+      "Rodan",
+      "Anguirus",
+      "Mothra",
+      "Baragon"
+    ],
+    "correct_answer": "Anguirus",
+    "accepted_answers": [
+      "Anguirus",
+      "anguirus",
+      "Angilas"
+    ],
+    "explanation": "Anguirus debuted in Godzilla Raids Again (1955).",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-001",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What symbol often starts a single-line comment in Python?",
+    "choices": [
+      "//",
+      "#",
+      "<!--",
+      "/*"
+    ],
+    "correct_answer": "#",
+    "accepted_answers": [
+      "#",
+      "hash",
+      "pound"
+    ],
+    "explanation": "Python uses # for single-line comments.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-002",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does HTML stand for?",
+    "choices": [
+      "HyperText Markup Language",
+      "High Tech Machine Learning",
+      "Home Tool Multi Language",
+      "Hyper Transfer Main Link"
+    ],
+    "correct_answer": "HyperText Markup Language",
+    "accepted_answers": [
+      "HyperText Markup Language",
+      "HTML"
+    ],
+    "explanation": "HTML structures web page content.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-003",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In most programming languages, what does a loop do?",
+    "choices": [
+      "Deletes files",
+      "Repeats a block of code",
+      "Only prints once",
+      "Turns off the computer"
+    ],
+    "correct_answer": "Repeats a block of code",
+    "accepted_answers": [
+      "Repeats a block of code",
+      "repeat code",
+      "iterate"
+    ],
+    "explanation": "Loops repeat instructions until a condition ends them.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-004",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is a variable in programming?",
+    "choices": [
+      "A broken cable",
+      "A named storage for a value",
+      "A type of virus",
+      "A monitor brand"
+    ],
+    "correct_answer": "A named storage for a value",
+    "accepted_answers": [
+      "A named storage for a value",
+      "stores a value",
+      "container for data"
+    ],
+    "explanation": "Variables hold data that can change while a program runs.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-005",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does debugging mean?",
+    "choices": [
+      "Writing only new apps",
+      "Finding and fixing errors in code",
+      "Deleting the internet",
+      "Buying more RAM"
+    ],
+    "correct_answer": "Finding and fixing errors in code",
+    "accepted_answers": [
+      "Finding and fixing errors in code",
+      "fix bugs",
+      "fixing errors"
+    ],
+    "explanation": "Debugging locates and corrects program errors.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-006",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which of these is a common Boolean value?",
+    "choices": [
+      "Maybe",
+      "True",
+      "Sometimes",
+      "Blue"
+    ],
+    "correct_answer": "True",
+    "accepted_answers": [
+      "True",
+      "true",
+      "False",
+      "false"
+    ],
+    "explanation": "Booleans are typically true or false.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CODE-007",
+    "category": "Coding",
+    "subcategory": "Basics",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does CSS mainly control on a webpage?",
+    "choices": [
+      "Database passwords",
+      "Visual style and layout",
+      "Server electricity",
+      "File compression only"
+    ],
+    "correct_answer": "Visual style and layout",
+    "accepted_answers": [
+      "Visual style and layout",
+      "styling",
+      "appearance"
+    ],
+    "explanation": "CSS styles colors, fonts, spacing, and layout.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-001",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What should you do with a strong password?",
+    "choices": [
+      "Share it in chat",
+      "Reuse it everywhere",
+      "Keep it private and unique",
+      "Write it on your laptop lid"
+    ],
+    "correct_answer": "Keep it private and unique",
+    "accepted_answers": [
+      "Keep it private and unique",
+      "keep it secret",
+      "use unique passwords"
+    ],
+    "explanation": "Unique private passwords reduce account risk.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-002",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is a common goal of fake login emails that look real?",
+    "choices": [
+      "To wish you happy birthday",
+      "To trick people into giving away account secrets",
+      "To deliver free pizza",
+      "To update your wallpaper"
+    ],
+    "correct_answer": "To trick people into giving away account secrets",
+    "accepted_answers": [
+      "To trick people into giving away account secrets",
+      "steal passwords",
+      "fake emails for secrets"
+    ],
+    "explanation": "Fake messages try to steal passwords or personal info.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-003",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What does two-factor authentication (2FA) add?",
+    "choices": [
+      "A second password typed the same way",
+      "A second proof of identity beyond just a password",
+      "Free games",
+      "Slower Wi-Fi only"
+    ],
+    "correct_answer": "A second proof of identity beyond just a password",
+    "accepted_answers": [
+      "A second proof of identity beyond just a password",
+      "extra login step",
+      "second factor"
+    ],
+    "explanation": "2FA often pairs a password with a phone code or app prompt.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-004",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Why should you keep software updated?",
+    "choices": [
+      "Updates only change wallpaper",
+      "Updates often fix known security holes",
+      "Updates delete all files",
+      "Updates remove Wi-Fi"
+    ],
+    "correct_answer": "Updates often fix known security holes",
+    "accepted_answers": [
+      "Updates often fix known security holes",
+      "fix security bugs",
+      "close vulnerabilities"
+    ],
+    "explanation": "Security updates close weaknesses attackers look for.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-005",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 5,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is harmful software that locks your files and demands payment called?",
+    "choices": [
+      "A helpful backup tool",
+      "Ransomware",
+      "A type of antivirus",
+      "A secure messaging app"
+    ],
+    "correct_answer": "Ransomware",
+    "accepted_answers": [
+      "Ransomware",
+      "ransomware"
+    ],
+    "explanation": "Ransomware locks data and demands payment for access.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CYBER-006",
+    "category": "Cybersecurity",
+    "subcategory": "Basics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "A padlock icon in a browser address bar usually means the site connection is…",
+    "choices": [
+      "Offline",
+      "Encrypted (HTTPS)",
+      "Owned by the government",
+      "Impossible to fake ever"
+    ],
+    "correct_answer": "Encrypted (HTTPS)",
+    "accepted_answers": [
+      "Encrypted (HTTPS)",
+      "encrypted",
+      "HTTPS",
+      "secure connection"
+    ],
+    "explanation": "The lock indicates an encrypted HTTPS connection.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CARIB-001",
+    "category": "Caribbean",
+    "subcategory": "Geography",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Trinidad and Tobago is located in which region?",
+    "choices": [
+      "Scandinavia",
+      "The Caribbean",
+      "East Asia",
+      "Central Australia"
+    ],
+    "correct_answer": "The Caribbean",
+    "accepted_answers": [
+      "The Caribbean",
+      "Caribbean"
+    ],
+    "explanation": "Trinidad and Tobago is a twin-island Caribbean nation.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CARIB-002",
+    "category": "Caribbean",
+    "subcategory": "Culture",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Steelpan (steel drum) music is strongly associated with which nation?",
+    "choices": [
+      "Iceland",
+      "Trinidad and Tobago",
+      "Mongolia",
+      "Nepal"
+    ],
+    "correct_answer": "Trinidad and Tobago",
+    "accepted_answers": [
+      "Trinidad and Tobago",
+      "Trinidad",
+      "T&T"
+    ],
+    "explanation": "The steelpan was developed in Trinidad and Tobago.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CARIB-003",
+    "category": "Caribbean",
+    "subcategory": "Geography",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which sea borders many Caribbean islands?",
+    "choices": [
+      "Caspian Sea",
+      "Caribbean Sea",
+      "Dead Sea",
+      "Red Sea"
+    ],
+    "correct_answer": "Caribbean Sea",
+    "accepted_answers": [
+      "Caribbean Sea",
+      "the Caribbean Sea",
+      "Caribbean"
+    ],
+    "explanation": "The Caribbean Sea borders many islands in the region.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "CARIB-004",
+    "category": "Caribbean",
+    "subcategory": "Culture",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Carnival in Trinidad is famous for costumes, music, and which upbeat style?",
+    "choices": [
+      "Opera only",
+      "Soca",
+      "Polka",
+      "Bluegrass"
+    ],
+    "correct_answer": "Soca",
+    "accepted_answers": [
+      "Soca",
+      "soca"
+    ],
+    "explanation": "Soca is central to Trinidad Carnival energy.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NJ-001",
+    "category": "New Jersey",
+    "subcategory": "Geography",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What is the capital of New Jersey?",
+    "choices": [
+      "Newark",
+      "Jersey City",
+      "Trenton",
+      "Atlantic City"
+    ],
+    "correct_answer": "Trenton",
+    "accepted_answers": [
+      "Trenton",
+      "trenton"
+    ],
+    "explanation": "Trenton is New Jersey's capital.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NJ-002",
+    "category": "New Jersey",
+    "subcategory": "Geography",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "New Jersey is on which coast of the United States?",
+    "choices": [
+      "West Coast",
+      "East Coast",
+      "Gulf Coast only",
+      "Arctic Coast"
+    ],
+    "correct_answer": "East Coast",
+    "accepted_answers": [
+      "East Coast",
+      "east coast",
+      "Atlantic Coast"
+    ],
+    "explanation": "New Jersey faces the Atlantic on the East Coast.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NJ-003",
+    "category": "New Jersey",
+    "subcategory": "Culture",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which New Jersey seaside city is famous for its boardwalk and casinos?",
+    "choices": [
+      "Trenton",
+      "Atlantic City",
+      "Princeton",
+      "Hoboken"
+    ],
+    "correct_answer": "Atlantic City",
+    "accepted_answers": [
+      "Atlantic City",
+      "atlantic city"
+    ],
+    "explanation": "Atlantic City is known for its boardwalk.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NJ-004",
+    "category": "New Jersey",
+    "subcategory": "Geography",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which major U.S. city sits just across the Hudson from northern New Jersey?",
+    "choices": [
+      "Boston",
+      "Philadelphia",
+      "New York City",
+      "Baltimore"
+    ],
+    "correct_answer": "New York City",
+    "accepted_answers": [
+      "New York City",
+      "New York",
+      "NYC"
+    ],
+    "explanation": "NYC and northern NJ are linked by bridges and tunnels.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LIT-001",
+    "category": "Literature",
+    "subcategory": "Classics",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who wrote the play Romeo and Juliet?",
+    "choices": [
+      "Charles Dickens",
+      "William Shakespeare",
+      "Jane Austen",
+      "Mark Twain"
+    ],
+    "correct_answer": "William Shakespeare",
+    "accepted_answers": [
+      "William Shakespeare",
+      "Shakespeare"
+    ],
+    "explanation": "Shakespeare wrote the tragedy of star-crossed lovers.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "LIT-002",
+    "category": "Literature",
+    "subcategory": "Forms",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "A story that teaches a moral and often uses animal characters is called a…",
+    "choices": [
+      "Novel",
+      "Fable",
+      "Biography",
+      "Haiku"
+    ],
+    "correct_answer": "Fable",
+    "accepted_answers": [
+      "Fable",
+      "fable"
+    ],
+    "explanation": "Fables use animals to teach lessons.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ART-001",
+    "category": "Art",
+    "subcategory": "Visual Arts",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who painted the Mona Lisa?",
+    "choices": [
+      "Michelangelo",
+      "Vincent van Gogh",
+      "Leonardo da Vinci",
+      "Pablo Picasso"
+    ],
+    "correct_answer": "Leonardo da Vinci",
+    "accepted_answers": [
+      "Leonardo da Vinci",
+      "Leonardo",
+      "da Vinci"
+    ],
+    "explanation": "Leonardo painted the Mona Lisa in the Renaissance.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ART-002",
+    "category": "Art",
+    "subcategory": "Color",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In traditional painting, what are the three primary colors?",
+    "choices": [
+      "Red, green, blue",
+      "Red, yellow, blue",
+      "Cyan, magenta, yellow",
+      "Orange, purple, green"
+    ],
+    "correct_answer": "Red, yellow, blue",
+    "accepted_answers": [
+      "Red, yellow, blue",
+      "red yellow blue"
+    ],
+    "explanation": "Paint primaries are commonly red, yellow, and blue.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MYTH-001",
+    "category": "Mythology",
+    "subcategory": "Greek",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In Greek mythology, who is king of the gods on Mount Olympus?",
+    "choices": [
+      "Hades",
+      "Poseidon",
+      "Zeus",
+      "Apollo"
+    ],
+    "correct_answer": "Zeus",
+    "accepted_answers": [
+      "Zeus",
+      "zeus"
+    ],
+    "explanation": "Zeus rules the Olympian gods.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "MYTH-002",
+    "category": "Mythology",
+    "subcategory": "Norse",
+    "difficulty": 4,
+    "grade_min": 4,
+    "grade_max": 9,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "In Norse mythology, what is the name of Thor's hammer?",
+    "choices": [
+      "Excalibur",
+      "Mjolnir",
+      "Trident",
+      "Gungnir"
+    ],
+    "correct_answer": "Mjolnir",
+    "accepted_answers": [
+      "Mjolnir",
+      "Mjölnir",
+      "mjolnir"
+    ],
+    "explanation": "Thor's hammer is called Mjolnir.",
+    "time_limit_seconds": 20,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "INV-001",
+    "category": "Inventions",
+    "subcategory": "History",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Who is credited with inventing the telephone?",
+    "choices": [
+      "Thomas Edison",
+      "Alexander Graham Bell",
+      "Nikola Tesla",
+      "Guglielmo Marconi"
+    ],
+    "correct_answer": "Alexander Graham Bell",
+    "accepted_answers": [
+      "Alexander Graham Bell",
+      "Bell"
+    ],
+    "explanation": "Bell is widely credited with the practical telephone.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "INV-002",
+    "category": "Inventions",
+    "subcategory": "History",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "The European printing press with movable type is credited mainly to…",
+    "choices": [
+      "Galileo",
+      "Johannes Gutenberg",
+      "Isaac Newton",
+      "James Watt"
+    ],
+    "correct_answer": "Johannes Gutenberg",
+    "accepted_answers": [
+      "Johannes Gutenberg",
+      "Gutenberg"
+    ],
+    "explanation": "Gutenberg's press transformed literacy in Europe.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENV-001",
+    "category": "Nature & Environment",
+    "subcategory": "Ecology",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What gas do trees absorb that helps reduce greenhouse levels?",
+    "choices": [
+      "Oxygen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Helium"
+    ],
+    "correct_answer": "Carbon dioxide",
+    "accepted_answers": [
+      "Carbon dioxide",
+      "CO2",
+      "CO₂"
+    ],
+    "explanation": "Trees take in CO2 during photosynthesis.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "ENV-002",
+    "category": "Nature & Environment",
+    "subcategory": "Conservation",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Recycling primarily helps by…",
+    "choices": [
+      "Using more raw materials",
+      "Reducing waste and saving resources",
+      "Creating more landfills",
+      "Stopping rain"
+    ],
+    "correct_answer": "Reducing waste and saving resources",
+    "accepted_answers": [
+      "Reducing waste and saving resources",
+      "reduce waste",
+      "save resources"
+    ],
+    "explanation": "Recycling reuses materials to save resources.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HEALTH-001",
+    "category": "Human Body",
+    "subcategory": "Nutrition",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which vitamin is produced in skin when exposed to sunlight?",
+    "choices": [
+      "Vitamin C",
+      "Vitamin D",
+      "Vitamin K",
+      "Vitamin B12"
+    ],
+    "correct_answer": "Vitamin D",
+    "accepted_answers": [
+      "Vitamin D",
+      "vitamin D",
+      "D"
+    ],
+    "explanation": "Sunlight helps skin make vitamin D.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "HEALTH-002",
+    "category": "Human Body",
+    "subcategory": "Hygiene",
+    "difficulty": 1,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Washing hands with soap mainly helps prevent…",
+    "choices": [
+      "Gravity",
+      "The spread of germs",
+      "Rainbows",
+      "Earwax permanently"
+    ],
+    "correct_answer": "The spread of germs",
+    "accepted_answers": [
+      "The spread of germs",
+      "germs",
+      "infection"
+    ],
+    "explanation": "Handwashing removes pathogens.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TRANS-001",
+    "category": "Technology",
+    "subcategory": "Vehicles",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What do you call a vehicle that travels on rails?",
+    "choices": [
+      "Boat",
+      "Train",
+      "Helicopter",
+      "Submarine"
+    ],
+    "correct_answer": "Train",
+    "accepted_answers": [
+      "Train",
+      "train"
+    ],
+    "explanation": "Trains run on railroad tracks.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "TRANS-002",
+    "category": "Technology",
+    "subcategory": "Aviation",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What force from the wings helps keep an airplane up while flying?",
+    "choices": [
+      "Only gravity",
+      "Lift",
+      "Only friction",
+      "Magnetism from Earth alone"
+    ],
+    "correct_answer": "Lift",
+    "accepted_answers": [
+      "Lift",
+      "lift",
+      "aerodynamic lift"
+    ],
+    "explanation": "Wing shape and airflow create lift.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "POP-001",
+    "category": "Games & Gaming",
+    "subcategory": "Movies",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which movie studio logo famously features a mountain surrounded by stars?",
+    "choices": [
+      "Pixar lamp",
+      "Paramount",
+      "DreamWorks boy",
+      "Lionsgate"
+    ],
+    "correct_answer": "Paramount",
+    "accepted_answers": [
+      "Paramount",
+      "Paramount Pictures"
+    ],
+    "explanation": "Paramount Pictures uses a mountain-and-stars emblem.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "POP-002",
+    "category": "Games & Gaming",
+    "subcategory": "General",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "How many minutes are in a full day?",
+    "choices": [
+      "1,240",
+      "1,360",
+      "1,440",
+      "1,600"
+    ],
+    "correct_answer": "1,440",
+    "accepted_answers": [
+      "1,440",
+      "1440"
+    ],
+    "explanation": "24 × 60 = 1,440 minutes.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPELL-001",
+    "category": "English",
+    "subcategory": "Common Words",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which is the correct spelling?",
+    "choices": [
+      "Recieve",
+      "Receive",
+      "Receve",
+      "Receeve"
+    ],
+    "correct_answer": "Receive",
+    "accepted_answers": [
+      "Receive",
+      "receive"
+    ],
+    "explanation": "I before e except after c — receive.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "SPELL-002",
+    "category": "English",
+    "subcategory": "Common Words",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "Which is the correct spelling of the phrase meaning \"many\"?",
+    "choices": [
+      "Alot",
+      "A lot",
+      "Allot only",
+      "Alott"
+    ],
+    "correct_answer": "A lot",
+    "accepted_answers": [
+      "A lot",
+      "a lot"
+    ],
+    "explanation": "A lot is two words; allot means to distribute.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NATURE-001",
+    "category": "Nature & Environment",
+    "subcategory": "Plants",
+    "difficulty": 2,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What do bees collect from flowers to make honey?",
+    "choices": [
+      "Only pollen",
+      "Nectar",
+      "Tree bark",
+      "Sand"
+    ],
+    "correct_answer": "Nectar",
+    "accepted_answers": [
+      "Nectar",
+      "nectar"
+    ],
+    "explanation": "Bees gather nectar and convert it into honey.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  },
+  {
+    "question_id": "NATURE-002",
+    "category": "Nature & Environment",
+    "subcategory": "Oceans",
+    "difficulty": 3,
+    "grade_min": 1,
+    "grade_max": 5,
+    "question_type": "MULTIPLE_CHOICE",
+    "question": "What primarily causes most ocean tides on Earth?",
+    "choices": [
+      "Fish swimming",
+      "The Moon's gravity (with help from the Sun)",
+      "Underwater volcanoes only",
+      "Ship traffic"
+    ],
+    "correct_answer": "The Moon's gravity (with help from the Sun)",
+    "accepted_answers": [
+      "The Moon's gravity (with help from the Sun)",
+      "Moon's gravity",
+      "the Moon",
+      "lunar gravity"
+    ],
+    "explanation": "Lunar and solar gravity create tides.",
+    "time_limit_seconds": 15,
+    "base_points": 100,
+    "speed_bonus": true,
+    "steal_allowed": true,
+    "source_verified": true,
+    "active": true,
+    "quality_score": 0.9
+  }
+]
