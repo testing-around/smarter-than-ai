@@ -105,6 +105,10 @@ src/
 
 The playable bank is **395 unique items** after merge (`src/data/bank.ts`: 190 seed + converted legacy + gap fillers, deduped, `active` and `quality_score >= 0.7`). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
 
+## Android APK
+
+Sideload notes and rebuild commands: `docs/ANDROID-APK.md`. Preview profile in `eas.json` outputs an **APK** (`buildType: apk`). This environment has no Expo login, so the preview APK is produced locally with `expo prebuild` + Gradle.
+
 ## Config
 
 `app.json`
