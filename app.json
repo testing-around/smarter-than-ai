@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Smarter Than AI",
+    "slug": "smarter-than-ai",
+    "scheme": "smarterthanai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#07111F",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#07111F"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.smarterthanai.game",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Smarter Than AI listens so it can credit the player who shouted the answer.",
+        "NSSpeechRecognitionUsageDescription": "Smarter Than AI uses speech recognition to hear answers and announce who got it right."
+      }
+    },
+    "android": {
+      "package": "com.smarterthanai.game",
+      "adaptiveIcon": {
+        "backgroundColor": "#07111F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["RECORD_AUDIO"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "backgroundColor": "#07111F",
+      "themeColor": "#07111F"
+    },
+    "plugins": [
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Smarter Than AI needs the mic so players can shout answers.",
+          "speechRecognitionPermission": "Smarter Than AI uses speech recognition to credit the player who answered.",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+        }
+      ]
+    ]
+  }
+}
