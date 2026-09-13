@@ -125,6 +125,11 @@ Profiles are AsyncStorage, not session state. `loadVoiceProfiles()` on hydrate. 
 - Web / Expo Go remain tap-fallback
 - ONNX model is a stub by design in this PR
 
+## Sideload APK
+
+https://github.com/testing-around/smarter-than-ai/releases/download/v1.0.5-preview/SmarterThanAI-1.0.5-preview.apk  
+SHA-256 `fa2bd7168f873b1b0bf4b786d50656699a6d4dd0825c470ccc7cf925829d390e` (versionName 1.0.5, versionCode 6).
+
 ## Structured logs
 
 Look for `[VOICE]` JSON lines: `start.requested`, `start.blocked_busy`, `start.native`, `event.*`, `stop.requested`, `abort.requested`, `error.dump` (full field list from Priority 1). Long-press **Train each voice** for the in-app diagnostics panel.
