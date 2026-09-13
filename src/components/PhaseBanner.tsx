@@ -9,13 +9,15 @@ export function PhaseBanner({ banner }: { banner: PhaseBannerId }) {
       ? colors.green
       : banner === 'wrong' || banner === 'error'
         ? colors.red
-        : banner === 'listening'
+        : banner === 'listening' || banner === 'asking-armed'
           ? colors.cyan
-          : banner === 'checking'
-            ? colors.purple
-            : banner === 'paused'
-              ? colors.gold
-              : colors.gold;
+          : banner === 'interrupt'
+            ? colors.gold
+            : banner === 'checking'
+              ? colors.purple
+              : banner === 'paused'
+                ? colors.gold
+                : colors.gold;
 
   return (
     <View style={[styles.wrap, { borderColor: tone }]}>

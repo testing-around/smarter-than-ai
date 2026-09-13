@@ -9,14 +9,24 @@ import { colors } from '../theme/colors';
 import type { QuickModeId } from '../types';
 
 const MODES: { id: QuickModeId; title: string; blurb: string }[] = [
-  { id: 'family', title: 'Family Battle', blurb: '10 questions · shout out · adaptive' },
-  { id: 'lightning', title: 'Lightning', blurb: '5 questions · 8 second clock' },
-  { id: 'beatAi', title: 'Beat the AI', blurb: 'The host plays too. Do not lose to a robot.' },
+  { id: 'family', title: 'Family Battle', blurb: '10 questions · shout out · early interrupt' },
+  { id: 'lightning', title: 'Lightning', blurb: '5 questions · 8s · early shout-out' },
+  { id: 'beatAi', title: 'Beat the AI', blurb: 'AI plays too. Humans can interrupt the host.' },
   { id: 'grade', title: 'Grade Challenge', blurb: 'Hard mode · turn based · 20s' },
 ];
 
 export function HomeScreen() {
-  const { goSetup, applyQuickMode, leaderboard, hostLine } = useGame();
+  const {
+    goSetup,
+    goPastGames,
+    applyQuickMode,
+    leaderboard,
+    hostLine,
+    activeSessionSummary,
+    crashRecovery,
+    continueSavedGame,
+    dismissCrashRecovery,
+  } = useGame();
 
   return (
     <Screen>
@@ -29,7 +39,33 @@ export function HomeScreen() {
       <AiHostOrb />
       <HostBar line={hostLine} />
       <View style={{ height: 16 }} />
-      <PrimaryButton label="Start New Game" onPress={goSetup} />
+      {crashRecovery ? (
+        <Panel>
+          <Text style={styles.modeTitle}>Resume interrupted game?</Text>
+          <Text style={styles.modeBlurb}>
+            {crashRecovery.name} · Q {crashRecovery.questionNumber}/{crashRecovery.questionTotal}
+          </Text>
+          <View style={{ height: 10 }} />
+          <PrimaryButton
+            label="Continue game"
+            variant="gold"
+            onPress={() => continueSavedGame(crashRecovery.id)}
+          />
+          <View style={{ height: 8 }} />
+          <PrimaryButton label="Not now" variant="ghost" onPress={dismissCrashRecovery} />
+        </Panel>
+      ) : null}
+      {activeSessionSummary && !crashRecovery ? (
+        <PrimaryButton
+          label="Continue game"
+          variant="gold"
+          onPress={() => continueSavedGame(activeSessionSummary.id)}
+        />
+      ) : null}
+      <View style={{ height: 10 }} />
+      <PrimaryButton label="New game" onPress={goSetup} />
+      <View style={{ height: 10 }} />
+      <PrimaryButton label="Past games" variant="ghost" onPress={goPastGames} />
       <Text style={styles.section}>QUICK MODES</Text>
       <View style={styles.modeGrid}>
         {MODES.map((mode) => (

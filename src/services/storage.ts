@@ -15,6 +15,8 @@ export const DEFAULT_SETTINGS: GameSettings = {
   beatTheAi: false,
   hostVoice: 'british-female',
   hostMode: 'AI_HOST_PLUS_HUMAN_CLICKER',
+  earlyShoutOut: false,
+  wrongAnswerLockout: true,
 };
 
 export interface PersistedState {

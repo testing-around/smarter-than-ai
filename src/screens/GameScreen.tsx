@@ -10,7 +10,9 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { Scoreboard } from '../components/Scoreboard';
 import { Screen } from '../components/Screen';
 import { WhoSaidThatModal } from '../components/WhoSaidThatModal';
+import { WrongAttemptCard } from '../components/WrongAttemptCard';
 import { useGame } from '../context/GameContext';
+import { isEarlyShoutArmed } from '../game/earlyShout';
 import { canAcceptAnswers } from '../game/phases';
 import { CATEGORY_LABEL } from '../data/bank';
 import { difficultyBand } from '../data/questionAccess';
@@ -42,6 +44,10 @@ export function GameScreen() {
     clickerCorrect,
     paused,
     eventLog,
+    interruptAlert,
+    wrongOverlay,
+    lockoutPlayerIds,
+    resumeCountdown,
     tapChoice,
     buzzIn,
     claimAnswer,
@@ -51,6 +57,9 @@ export function GameScreen() {
     resumeRound,
     repeatQuestion,
     skipQuestion,
+    revealAnswer,
+    identifyPlayer,
+    saveGameNow,
     stopHostSpeaking,
     retryHostSpeech,
     skipToListening,
@@ -69,7 +78,8 @@ export function GameScreen() {
 
   const turnPlayer = players.find((p) => p.id === turnPlayerId);
   const buzzed = players.find((p) => p.id === buzzedPlayerId);
-  const accepting = canAcceptAnswers(phase) && !hostSpeaking && !paused;
+  const early = isEarlyShoutArmed(settings);
+  const accepting = canAcceptAnswers(phase, early) && !paused && (!hostSpeaking || early);
   const choicesLocked =
     locked ||
     !accepting ||
@@ -93,6 +103,21 @@ export function GameScreen() {
         </Text>
       </View>
       <PhaseBanner banner={banner} />
+      {resumeCountdown !== null ? (
+        <View style={styles.alert}>
+          <Text style={styles.alertTitle}>RESUMING IN {resumeCountdown}</Text>
+          <Text style={styles.alertBody}>Host will re-read the question, then listen.</Text>
+        </View>
+      ) : null}
+      {wrongOverlay ? <WrongAttemptCard attempt={wrongOverlay} /> : null}
+      {interruptAlert ? (
+        <View style={styles.alert}>
+          <Text style={styles.alertTitle}>⚡ ANSWER HEARD!</Text>
+          <Text style={styles.alertBody}>
+            Someone answered while the host was speaking. Pick who said it.
+          </Text>
+        </View>
+      ) : null}
       <Scoreboard
         players={players}
         highlightId={settings.answerMode === 'turn' ? turnPlayerId : buzzedPlayerId}
@@ -116,15 +141,30 @@ export function GameScreen() {
       {settings.answerMode === 'turn' ? (
         <Text style={styles.hint}>Turn: {turnPlayer ? `${turnPlayer.emoji} ${turnPlayer.name}` : '—'}</Text>
       ) : null}
+      {lockoutPlayerIds.length ? (
+        <Text style={styles.hint}>
+          Locked this question:{' '}
+          {players
+            .filter((p) => lockoutPlayerIds.includes(p.id))
+            .map((p) => p.name)
+            .join(', ')}
+        </Text>
+      ) : null}
       {settings.answerMode === 'buzz' ? (
         <Text style={styles.hint}>
           {buzzed ? `${buzzed.emoji} ${buzzed.name} buzzed in` : 'Buzz after the host finishes'}
         </Text>
       ) : (
         <Text style={styles.hint}>
-          {accepting
-            ? 'Shout a letter, or tap. Name-then-answer works too.'
-            : 'Hold answers until the host finishes the question.'}
+          {interruptAlert
+            ? 'Who said that? Tap the player (Host + Clicker) or claim the shout.'
+            : accepting
+              ? early && hostSpeaking
+                ? 'Early shout-out is armed — shout or tap now, even while the host is reading.'
+                : 'Shout a letter, or tap. Name-then-answer works too.'
+              : early
+                ? 'Get ready — you can interrupt the host once they start reading.'
+                : 'Hold answers until the host finishes the question.'}
         </Text>
       )}
 
@@ -162,7 +202,7 @@ export function GameScreen() {
         <ClickerPanel
           pending={pendingAnswer}
           choiceLabel={current.choices[pendingAnswer.choiceIndex] ?? ''}
-          players={players}
+          players={players.filter((p) => !lockoutPlayerIds.includes(p.id))}
           who={clickerWho}
           correctOverride={clickerCorrect}
           onWho={setClickerWho}
@@ -182,6 +222,9 @@ export function GameScreen() {
         onResume={resumeRound}
         onRepeat={repeatQuestion}
         onSkip={skipQuestion}
+        onReveal={revealAnswer}
+        onIdentify={identifyPlayer}
+        onSave={saveGameNow}
         onStopSpeaking={stopHostSpeaking}
         onRetryTts={retryHostSpeech}
         onSkipToListening={skipToListening}
@@ -203,7 +246,7 @@ export function GameScreen() {
         transcript={whoSaidThat?.transcript ?? ''}
         choiceIndex={whoSaidThat?.choiceIndex ?? 0}
         choiceLabel={current.choices[whoSaidThat?.choiceIndex ?? 0] ?? ''}
-        players={players}
+        players={players.filter((p) => !lockoutPlayerIds.includes(p.id) || p.isAi)}
         onClaim={claimAnswer}
       />
     </Screen>
@@ -276,5 +319,26 @@ const styles = StyleSheet.create({
   heard: {
     color: colors.green,
     marginTop: 8,
+  },
+  alert: {
+    borderWidth: 1,
+    borderColor: colors.gold,
+    backgroundColor: colors.panel,
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+  },
+  alertTitle: {
+    color: colors.gold,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+    fontSize: 14,
+  },
+  alertBody: {
+    color: colors.white,
+    marginTop: 4,
+    fontWeight: '700',
+    lineHeight: 18,
   },
 });

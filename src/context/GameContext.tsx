@@ -8,12 +8,34 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { AppState } from 'react-native';
 import type { ClickerWho } from '../components/ClickerPanel';
 import { AI_PLAYER, FAMILY_PLAYERS, createPlayer } from '../data/players';
 import { correctChoiceIndex, isBossQuestion } from '../data/questionAccess';
-import { bannerFor, canAcceptAnswers, canStartListening } from '../game/phases';
+import { isEarlyShoutArmed } from '../game/earlyShout';
+import {
+  LISTEN_BUFFER_MS,
+  createAttempt,
+  decideAttemptOutcome,
+  hostWrongLine,
+  isPlayerLockedOut,
+  lockoutsAfterWrong,
+  resetLockouts,
+} from '../game/attemptEngine';
+import { createGameSession, GAME_SESSION_SAVE_VERSION, isResumable } from '../game/gameSession';
+import {
+  bannerFor,
+  canAcceptAnswers,
+  canStartListening,
+  isWaitingForAnswers,
+} from '../game/phases';
 import { createQuestionSessionId, isLiveSession } from '../game/session';
-import { evaluateTranscript, judgeChoice, whoSaidPrompt } from '../services/answerJudgeEngine';
+import {
+  evaluateTranscript,
+  isContestantInterrupt,
+  judgeChoice,
+  whoSaidPrompt,
+} from '../services/answerJudgeEngine';
 import { buildVoiceProfile, canMarkVoiceReady } from '../game/enrollmentMachine';
 import {
   SPEAKER_AUTO_THRESHOLD,
@@ -32,8 +54,10 @@ import { closePlayerMic, startPlayerListening } from '../services/playerListenin
 import {
   nextAdaptiveDifficulty,
   pickDeck,
+  questionById,
   takeMatching,
 } from '../services/questionBank';
+import { gameSessionStore } from '../services/gameSessionStore';
 import { scoreForAnswer } from '../services/scoring';
 import {
   DEFAULT_SETTINGS,
@@ -52,12 +76,15 @@ import type {
   GameDifficulty,
   GameEvent,
   GameEventType,
+  GameSession,
+  GameSessionSummary,
   GameSettings,
   LeaderboardRow,
   PendingAnswer,
   PhaseBannerId,
   Player,
   Question,
+  QuestionAttempt,
   QuestionDifficulty,
   QuickModeId,
   RoundPhase,
@@ -79,6 +106,7 @@ const QUICK_MODES: Record<
     difficulty: 'adaptive',
     timerSeconds: 15,
     beatTheAi: false,
+    earlyShoutOut: true,
   },
   lightning: {
     questionCount: 5,
@@ -86,6 +114,7 @@ const QUICK_MODES: Record<
     difficulty: 'easy',
     timerSeconds: 8,
     beatTheAi: false,
+    earlyShoutOut: true,
   },
   beatAi: {
     questionCount: 10,
@@ -93,6 +122,7 @@ const QUICK_MODES: Record<
     difficulty: 'adaptive',
     timerSeconds: 15,
     beatTheAi: true,
+    earlyShoutOut: true,
   },
   grade: {
     questionCount: 10,
@@ -100,6 +130,8 @@ const QUICK_MODES: Record<
     difficulty: 'hard',
     timerSeconds: 20,
     beatTheAi: false,
+    earlyShoutOut: false,
+    wrongAnswerLockout: true,
   },
 };
 
@@ -139,8 +171,17 @@ interface GameContextValue {
   canAdvance: boolean;
   eventLog: GameEvent[];
   ttsFailed: boolean;
+  interruptAlert: boolean;
+  questionAttempts: QuestionAttempt[];
+  lockoutPlayerIds: string[];
+  wrongOverlay: QuestionAttempt | null;
+  resumeCountdown: number | null;
+  sessionSummaries: GameSessionSummary[];
+  activeSessionSummary: GameSessionSummary | null;
+  crashRecovery: GameSessionSummary | null;
   goHome: () => void;
   goSetup: () => void;
+  goPastGames: () => void;
   applyQuickMode: (id: QuickModeId) => void;
   setPlayerName: (id: string, name: string) => void;
   setPlayerEmoji: (id: string, emoji: string) => void;
@@ -170,6 +211,13 @@ interface GameContextValue {
   resumeRound: () => void;
   repeatQuestion: () => void;
   skipQuestion: () => void;
+  revealAnswer: () => void;
+  identifyPlayer: () => void;
+  saveGameNow: () => void;
+  continueSavedGame: (id?: string) => void;
+  renameSavedGame: (id: string, name: string) => void;
+  deleteSavedGame: (id: string) => void;
+  dismissCrashRecovery: () => void;
   stopHostSpeaking: () => void;
   retryHostSpeech: () => void;
   skipToListening: () => void;
@@ -249,6 +297,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [eventLog, setEventLog] = useState<GameEvent[]>([]);
   const [ttsFailed, setTtsFailed] = useState(false);
   const [voiceProfiles, setVoiceProfiles] = useState<VoiceProfile[]>([]);
+  const [interruptAlert, setInterruptAlert] = useState(false);
+  const [questionAttempts, setQuestionAttempts] = useState<QuestionAttempt[]>([]);
+  const [lockoutPlayerIds, setLockoutPlayerIds] = useState<string[]>([]);
+  const [wrongOverlay, setWrongOverlay] = useState<QuestionAttempt | null>(null);
+  const [resumeCountdown, setResumeCountdown] = useState<number | null>(null);
+  const [sessionSummaries, setSessionSummaries] = useState<GameSessionSummary[]>([]);
+  const [crashRecovery, setCrashRecovery] = useState<GameSessionSummary | null>(null);
 
   const playersRef = useRef(players);
   const settingsRef = useRef(settings);
@@ -281,6 +336,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const questionTotalRef = useRef(10);
   const voiceProfilesRef = useRef<VoiceProfile[]>([]);
   const listenStartedAtRef = useRef(0);
+  const interruptRef = useRef(false);
+  const resumeAfterWrongRef = useRef<(sessionId: string, question: Question) => void>(
+    () => undefined,
+  );
+  const persistSessionRef = useRef<() => void>(() => undefined);
+  const readQuestionRef = useRef<
+    (
+      question: Question,
+      number: number,
+      total: number,
+      liveSession: string,
+      options?: { repeating?: boolean },
+    ) => Promise<void>
+  >(async () => undefined);
+  const attemptsRef = useRef<QuestionAttempt[]>([]);
+  const lockoutsRef = useRef<string[]>([]);
+  const questionOrderRef = useRef<string[]>([]);
+  const gameSessionIdRef = useRef<string | null>(null);
+  const gameSessionNameRef = useRef('Saved game');
+  const gameSessionCreatedRef = useRef(Date.now());
+  const eventLogRef = useRef<GameEvent[]>([]);
+  const timeLeftRef = useRef(15);
+  const repeatingRef = useRef(false);
+  const resumeTimeLeftRef = useRef<number | null>(null);
+  const listenBufferRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   playersRef.current = players;
   settingsRef.current = settings;
@@ -299,6 +380,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
   isBossRef.current = isBoss;
   questionTotalRef.current = settings.questionCount;
   voiceProfilesRef.current = voiceProfiles;
+  attemptsRef.current = questionAttempts;
+  lockoutsRef.current = lockoutPlayerIds;
+  eventLogRef.current = eventLog;
+  timeLeftRef.current = timeLeft;
 
   const turnPlayerId = players[turnIndex % Math.max(players.length, 1)]?.id ?? null;
   const multiplier = isBoss ? 3 : 1;
@@ -316,8 +401,30 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const applyPhase = useCallback((next: RoundPhase) => {
     phaseRef.current = next;
     setPhase(next);
-    setBanner(bannerFor(next, lastCorrectRef.current));
+    setBanner(
+      bannerFor(next, lastCorrectRef.current, {
+        earlyShoutOut: isEarlyShoutArmed(settingsRef.current),
+        interrupt: interruptRef.current,
+      }),
+    );
   }, []);
+
+  const haltHostForInterrupt = useCallback(() => {
+    if (hostSpeakingRef.current) {
+      void stopHostVoice();
+      hostSpeakingRef.current = false;
+      setHostSpeaking(false);
+    }
+    interruptRef.current = true;
+    setInterruptAlert(true);
+    logEvent('EARLY_INTERRUPT');
+    setBanner(
+      bannerFor('ANSWER_DETECTED', null, {
+        earlyShoutOut: true,
+        interrupt: true,
+      }),
+    );
+  }, [logEvent]);
 
   const beginSession = useCallback((questionId: string) => {
     const next = createQuestionSessionId(questionId);
@@ -364,6 +471,26 @@ export function GameProvider({ children }: { children: ReactNode }) {
       configureHostVoice(saved.settings.hostVoice ?? 'british-female');
       void warmHostVoice();
       setVoice(voiceStatus);
+      const [summaries, active] = await Promise.all([
+        gameSessionStore.listSessions(),
+        gameSessionStore.loadActiveSession(),
+      ]);
+      if (cancelled) {
+        return;
+      }
+      setSessionSummaries(summaries);
+      if (active && isResumable(active)) {
+        setCrashRecovery({
+          id: active.id,
+          name: active.name,
+          status: active.status,
+          createdAt: active.createdAt,
+          updatedAt: active.updatedAt,
+          questionNumber: active.questionNumber,
+          questionTotal: active.questionTotal,
+          playerNames: active.players.filter((p) => !p.isAi).map((p) => p.name),
+        });
+      }
       setHydrated(true);
     })();
     return () => {
@@ -400,12 +527,68 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setClickerCorrectState(null);
     setTranscript('');
     setTtsFailed(false);
+    setInterruptAlert(false);
+    interruptRef.current = false;
     setPaused(false);
     pausedRef.current = false;
     setCanAdvance(false);
     lastCorrectRef.current = null;
     pendingClaimRef.current = null;
+    setWrongOverlay(null);
   }, []);
+
+  const refreshSessionLists = useCallback(async () => {
+    const rows = await gameSessionStore.listSessions();
+    setSessionSummaries(rows);
+  }, []);
+
+  const snapshotSession = useCallback((): GameSession | null => {
+    const id = gameSessionIdRef.current;
+    if (!id || !currentRef.current) {
+      return null;
+    }
+    return {
+      saveVersion: GAME_SESSION_SAVE_VERSION,
+      id,
+      name: gameSessionNameRef.current,
+      status: 'in_progress',
+      createdAt: gameSessionCreatedRef.current,
+      updatedAt: Date.now(),
+      settings: settingsRef.current,
+      players: playersRef.current,
+      questionOrder: [...questionOrderRef.current],
+      remainingQuestionIds: remainingRef.current.map((q) => q.question_id),
+      questionNumber: questionNumberRef.current,
+      questionTotal: questionTotalRef.current,
+      currentQuestionId: currentRef.current.question_id,
+      questionState: phaseRef.current,
+      questionAttempts: attemptsRef.current,
+      lockoutPlayerIds: lockoutsRef.current,
+      remainingTimeMs: timerArmedRef.current
+        ? Math.max(0, timeLeftRef.current) * 1000
+        : settingsRef.current.timerSeconds * 1000,
+      results: resultsRef.current,
+      eventLog: eventLogRef.current,
+      adaptiveLevel: adaptiveRef.current,
+      turnIndex: turnRef.current,
+      isBoss: isBossRef.current,
+      pendingAnswer: pendingAnswerRef.current,
+      buzzedPlayerId: buzzedRef.current,
+      questionSessionId: sessionIdRef.current,
+      hostLine: '',
+    };
+  }, []);
+
+  const persistSession = useCallback(() => {
+    const snap = snapshotSession();
+    if (!snap) {
+      return;
+    }
+    void gameSessionStore.saveSession(snap).then(() => {
+      void refreshSessionLists();
+    });
+  }, [refreshSessionLists, snapshotSession]);
+  persistSessionRef.current = persistSession;
 
   const goHome = useCallback(() => {
     clearAiTimer();
@@ -417,6 +600,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setListening(false);
     timerArmedRef.current = false;
     applyPhase('IDLE');
+    persistSessionRef.current();
     setScreen('HOME');
     setLocked(false);
     lockedRef.current = false;
@@ -429,6 +613,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setScreen('SETUP');
     setLine('Set the rules, then enroll voices.', false);
   }, [setLine]);
+
+  const goPastGames = useCallback(() => {
+    void refreshSessionLists();
+    setScreen('PAST_GAMES');
+  }, [refreshSessionLists]);
+
+  const dismissCrashRecovery = useCallback(() => {
+    setCrashRecovery(null);
+  }, []);
 
   const applyQuickMode = useCallback(
     (id: QuickModeId) => {
@@ -575,6 +768,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       timedOut: boolean;
       correctOverride?: boolean;
       sessionId: string;
+      speakerConfidence?: number | null;
     }) => {
       if (!isCurrentSession(input.sessionId)) {
         return;
@@ -583,6 +777,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (!question || lockedRef.current) {
         return;
       }
+      if (
+        input.player &&
+        isPlayerLockedOut(
+          lockoutsRef.current,
+          input.player.id,
+          settingsRef.current.wrongAnswerLockout !== false,
+        )
+      ) {
+        return;
+      }
+
+      const suggested = judgeChoice(question, input.choiceIndex);
+      const correct = input.correctOverride ?? suggested;
+      const outcome = decideAttemptOutcome({
+        player: input.player,
+        source: input.source,
+        timedOut: input.timedOut,
+        correct,
+      });
+      if (outcome.action === 'reject_unattributed') {
+        return;
+      }
+
       lockedRef.current = true;
       setLocked(true);
       clearAiTimer();
@@ -595,15 +812,35 @@ export function GameProvider({ children }: { children: ReactNode }) {
       clickerOpenRef.current = false;
       applyPhase('ANSWER_JUDGING');
 
-      const suggested = judgeChoice(question, input.choiceIndex);
-      const correct = input.correctOverride ?? suggested;
       const overridden = input.correctOverride !== undefined && input.correctOverride !== suggested;
       if (overridden) {
         logEvent('JUDGMENT_OVERRIDE', `${suggested} → ${correct}`);
       }
+
+      let recorded: QuestionAttempt | null = null;
+      if (input.player && outcome.reason !== 'skip' && outcome.reason !== 'reveal') {
+        recorded = createAttempt({
+          question,
+          player: input.player,
+          choiceIndex: input.choiceIndex,
+          isCorrect: correct,
+          responseTimeMs: input.responseMs,
+          inputSource: input.source,
+          speakerConfidence: input.speakerConfidence,
+          priorAttempts: attemptsRef.current,
+        });
+        const nextAttempts = [...attemptsRef.current, recorded];
+        attemptsRef.current = nextAttempts;
+        setQuestionAttempts(nextAttempts);
+        logEvent('ATTEMPT_RECORDED', `${recorded.playerName} ${recorded.answer} ${recorded.isCorrect}`);
+      }
+
       applyPhase('SCORE_UPDATE');
       const boss = isBossQuestion(question, isBossRef.current);
-      const points = scoreForAnswer(correct, input.responseMs, boss ? 3 : 1, question);
+      const points =
+        outcome.action === 'complete' && correct
+          ? scoreForAnswer(true, input.responseMs, boss ? 3 : 1, question)
+          : 0;
       const result: RoundResult = {
         question,
         playerId: input.player?.id ?? null,
@@ -618,10 +855,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         overridden,
       };
 
-      lastCorrectRef.current = input.timedOut ? false : correct;
+      lastCorrectRef.current = outcome.action === 'complete' ? correct : false;
       logEvent(
         'ANSWER_JUDGED',
-        `${input.player?.name ?? 'none'} ${correct ? 'correct' : 'wrong'} ${input.source}`,
+        `${input.player?.name ?? 'host'} ${correct ? 'correct' : 'wrong'} ${input.source}`,
       );
 
       if (input.player && points > 0) {
@@ -631,34 +868,69 @@ export function GameProvider({ children }: { children: ReactNode }) {
         logEvent('SCORE_UPDATED', `${input.player.name} +${points}`);
       }
 
+      if (outcome.action === 'stay_live') {
+        if (recorded && outcome.reason === 'wrong') {
+          const nextLock = lockoutsAfterWrong(
+            lockoutsRef.current,
+            recorded.playerId,
+            settingsRef.current.wrongAnswerLockout,
+          );
+          lockoutsRef.current = nextLock;
+          setLockoutPlayerIds(nextLock);
+          setWrongOverlay(recorded);
+          if (overlayTimerRef.current) {
+            clearTimeout(overlayTimerRef.current);
+          }
+          overlayTimerRef.current = setTimeout(() => setWrongOverlay(null), 2200);
+        }
+        setInterruptAlert(false);
+        logEvent('WRONG_STAY', input.player?.name ?? 'timeout');
+        applyPhase('WRONG_ATTEMPT');
+        const line = input.player ? hostWrongLine(input.player.name) : hostCopy.timeout;
+        setHostLine(line);
+        persistSessionRef.current();
+        void (async () => {
+          await hostSay(line, ttsRequest(input.sessionId));
+          if (!isCurrentSession(input.sessionId)) {
+            return;
+          }
+          hostSpeakingRef.current = false;
+          setHostSpeaking(false);
+          resumeAfterWrongRef.current(input.sessionId, question);
+        })();
+        return;
+      }
+
+      applyPhase('QUESTION_COMPLETE');
       setLastResult(result);
       setResults((prev) => [...prev, result]);
+      setCanAdvance(false);
       setScreen('ROUND_RESULT');
-      applyPhase('HOST_FEEDBACK');
+      persistSessionRef.current();
 
       let line = hostCopy.timeout;
-      if (!input.timedOut && input.player && correct) {
+      if (outcome.reason === 'skip') {
+        line = hostCopy.skip;
+      } else if (outcome.reason === 'reveal') {
+        line = hostCopy.reveal(question.correct_answer);
+        logEvent('QUESTION_REVEALED', question.correct_answer);
+      } else if (input.player && correct) {
         line = hostCopy.correct(input.player.name);
-      } else if (!input.timedOut && input.player) {
-        line = hostCopy.wrong(input.player.name);
       }
+      applyPhase('HOST_FEEDBACK');
       setHostLine(line);
       hostSpeakingRef.current = true;
       setHostSpeaking(true);
       logEvent('HOST_RESPONSE_STARTED', line);
 
       void (async () => {
-        const outcome = await hostSay(line, ttsRequest(input.sessionId));
+        const sayOutcome = await hostSay(line, ttsRequest(input.sessionId));
         if (!isCurrentSession(input.sessionId)) {
           return;
         }
         hostSpeakingRef.current = false;
         setHostSpeaking(false);
-        if (outcome === 'done') {
-          logEvent('HOST_RESPONSE_FINISHED', 'done');
-        } else {
-          logEvent('HOST_RESPONSE_FINISHED', outcome);
-        }
+        logEvent('HOST_RESPONSE_FINISHED', sayOutcome);
         applyPhase('HOST_FEEDBACK_TTS_COMPLETE');
         clearFeedbackTimer();
         feedbackTimerRef.current = setTimeout(() => {
@@ -679,16 +951,33 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const submitAnswer = useCallback(
     (playerId: string, choiceIndex: number, source: AnswerSource) => {
-      if (!canAcceptAnswers(phaseRef.current) || hostSpeakingRef.current || lockedRef.current) {
+      const early = isEarlyShoutArmed(settingsRef.current);
+      if (!canAcceptAnswers(phaseRef.current, early) || lockedRef.current) {
+        return;
+      }
+      if (hostSpeakingRef.current && !early) {
         return;
       }
       if (whoRef.current || clickerOpenRef.current) {
         return;
       }
+      if (early && hostSpeakingRef.current) {
+        haltHostForInterrupt();
+      }
       const cfg = settingsRef.current;
       const roster = playersRef.current;
       const player = roster.find((p) => p.id === playerId);
       if (!player) {
+        return;
+      }
+      if (
+        isPlayerLockedOut(
+          lockoutsRef.current,
+          player.id,
+          settingsRef.current.wrongAnswerLockout !== false,
+        )
+      ) {
+        setLine('That player is locked out on this question.', true);
         return;
       }
 
@@ -721,12 +1010,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
         sessionId: sessionIdRef.current,
       });
     },
-    [applyPhase, resolveRound],
+    [applyPhase, haltHostForInterrupt, resolveRound],
   );
 
   const openWhoSaidThat = useCallback(
     (choiceIndex: number, heard: string) => {
-      if (!canAcceptAnswers(phaseRef.current) || lockedRef.current || whoRef.current) {
+      if (
+        !canAcceptAnswers(phaseRef.current, isEarlyShoutArmed(settingsRef.current)) ||
+        lockedRef.current ||
+        whoRef.current
+      ) {
         return;
       }
       applyPhase('SPEAKER_IDENTIFICATION');
@@ -771,11 +1064,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const tapChoice = useCallback(
     (choiceIndex: number) => {
-      if (!canAcceptAnswers(phaseRef.current) || hostSpeakingRef.current || lockedRef.current) {
+      const early = isEarlyShoutArmed(settingsRef.current);
+      if (!canAcceptAnswers(phaseRef.current, early) || lockedRef.current) {
+        return;
+      }
+      if (hostSpeakingRef.current && !early) {
         return;
       }
       if (whoRef.current || clickerOpenRef.current) {
         return;
+      }
+      if (early && hostSpeakingRef.current) {
+        haltHostForInterrupt();
       }
       const cfg = settingsRef.current;
       const roster = playersRef.current;
@@ -821,25 +1121,40 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }
       openWhoSaidThat(choiceIndex, 'Tapped answer — who claimed it?');
     },
-    [openClicker, openWhoSaidThat, submitAnswer],
+    [haltHostForInterrupt, openClicker, openWhoSaidThat, submitAnswer],
   );
 
   const handleTranscript = useCallback(
     (text: string, isFinal: boolean) => {
       setTranscript(text);
       logEvent(isFinal ? 'SPEECH_FINAL' : 'SPEECH_PARTIAL', text);
+      const early = isEarlyShoutArmed(settingsRef.current);
       if (
-        !canAcceptAnswers(phaseRef.current) ||
-        hostSpeakingRef.current ||
+        !canAcceptAnswers(phaseRef.current, early) ||
         lockedRef.current ||
         whoRef.current ||
         clickerOpenRef.current
       ) {
         return;
       }
+      if (hostSpeakingRef.current && !early) {
+        return;
+      }
       const question = currentRef.current;
       if (!question) {
         return;
+      }
+      if (early && phaseRef.current === 'HOST_SPEAKING') {
+        if (!isContestantInterrupt(text, question, playersRef.current)) {
+          return;
+        }
+        const named = playersRef.current.some(
+          (p) => !p.isAi && text.toLowerCase().includes(p.name.toLowerCase()),
+        );
+        if (!isFinal && !named) {
+          return;
+        }
+        haltHostForInterrupt();
       }
       const responseMs = timerArmedRef.current ? Date.now() - startedAtRef.current : 0;
       const pending = evaluateTranscript(text, playersRef.current, question, responseMs);
@@ -864,8 +1179,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
         'TRANSCRIPT',
         `${text} · guess=${guess.playerId ?? 'none'} ${Math.round(guess.confidence * 100)}%`,
       );
-      applyPhase('ANSWER_DETECTED');
-      applyPhase('ANSWER_TRANSCRIPTION');
 
       const cfg = settingsRef.current;
       if (usesClicker(cfg.hostMode) || pending.overlap === 'MULTIPLE_SPEAKERS') {
@@ -912,7 +1225,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         openWhoSaidThat(pending.choiceIndex, text);
       }
     },
-    [applyPhase, logEvent, openClicker, openWhoSaidThat, submitAnswer],
+    [haltHostForInterrupt, logEvent, openClicker, openWhoSaidThat, submitAnswer],
   );
 
   const listeningGate = useCallback(
@@ -920,18 +1233,24 @@ export function GameProvider({ children }: { children: ReactNode }) {
       sessionId: sessionIdRef.current,
       phase: phaseRef.current,
       hostSpeaking: hostSpeakingRef.current,
-      listeningEnabled:
-        settingsRef.current.voiceEnabled &&
-        voiceAvailableRef.current &&
-        phaseRef.current === 'LISTENING_FOR_PLAYERS' &&
-        !hostSpeakingRef.current,
+      listeningEnabled: settingsRef.current.voiceEnabled && voiceAvailableRef.current,
+      earlyShoutOut: isEarlyShoutArmed(settingsRef.current) && !repeatingRef.current,
+      repeating: repeatingRef.current,
     }),
     [],
   );
 
   const beginListening = useCallback(() => {
     const gate = listeningGate();
-    if (!canStartListening(gate.phase, gate.hostSpeaking, gate.listeningEnabled)) {
+    if (
+      !canStartListening(
+        gate.phase,
+        gate.hostSpeaking,
+        gate.listeningEnabled,
+        gate.earlyShoutOut,
+        gate.repeating,
+      )
+    ) {
       return;
     }
     const question = currentRef.current;
@@ -965,7 +1284,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [handleTranscript, listeningGate, logEvent]);
 
   const listenNow = useCallback(() => {
-    if (!canAcceptAnswers(phaseRef.current) || hostSpeakingRef.current) {
+    const early = isEarlyShoutArmed(settingsRef.current);
+    if (!canAcceptAnswers(phaseRef.current, early)) {
+      return;
+    }
+    if (hostSpeakingRef.current && !early) {
       return;
     }
     beginListening();
@@ -983,10 +1306,24 @@ export function GameProvider({ children }: { children: ReactNode }) {
         if (!isCurrentSession(liveSession)) {
           return;
         }
-        if (!canAcceptAnswers(phaseRef.current) || hostSpeakingRef.current) {
+        if (
+          phaseRef.current === 'HOST_SPEAKING' ||
+          phaseRef.current === 'REPEATING_QUESTION' ||
+          hostSpeakingRef.current ||
+          !canAcceptAnswers(phaseRef.current)
+        ) {
           return;
         }
         if (lockedRef.current || whoRef.current || clickerOpenRef.current) {
+          return;
+        }
+        if (
+          isPlayerLockedOut(
+            lockoutsRef.current,
+            bot.id,
+            settingsRef.current.wrongAnswerLockout !== false,
+          )
+        ) {
           return;
         }
         if (mode === 'turn') {
@@ -1015,25 +1352,86 @@ export function GameProvider({ children }: { children: ReactNode }) {
         return;
       }
       applyPhase('HOST_SPEECH_FINISHED');
-      applyPhase('LISTENING_FOR_PLAYERS');
-      startedAtRef.current = Date.now();
-      timerArmedRef.current = true;
-      setTimeLeft(settingsRef.current.timerSeconds);
-      setHostLine(hostCopy.listening);
+      void closePlayerMic();
+      setListening(false);
       logEvent('TTS_FINISHED');
-      beginListening();
-      scheduleAi(question, settingsRef.current.answerMode, liveSession);
+      if (listenBufferRef.current) {
+        clearTimeout(listenBufferRef.current);
+      }
+      listenBufferRef.current = setTimeout(() => {
+        if (!isCurrentSession(liveSession) || lockedRef.current) {
+          return;
+        }
+        repeatingRef.current = false;
+        applyPhase('WAITING_FOR_ANSWERS');
+        startedAtRef.current = Date.now();
+        timerArmedRef.current = true;
+        const resumeLeft = resumeTimeLeftRef.current;
+        resumeTimeLeftRef.current = null;
+        setTimeLeft(
+          resumeLeft !== null
+            ? Math.max(1, Math.round(resumeLeft))
+            : settingsRef.current.timerSeconds,
+        );
+        setHostLine(hostCopy.listening);
+        beginListening();
+        scheduleAi(question, settingsRef.current.answerMode, liveSession);
+        persistSessionRef.current();
+      }, LISTEN_BUFFER_MS);
     },
     [applyPhase, beginListening, isCurrentSession, logEvent, scheduleAi],
   );
 
+  const resumeAfterWrong = useCallback(
+    (liveSession: string, question: Question) => {
+      if (!isCurrentSession(liveSession)) {
+        return;
+      }
+      if (currentRef.current?.question_id !== question.question_id) {
+        return;
+      }
+      interruptRef.current = false;
+      setInterruptAlert(false);
+      clickerOpenRef.current = false;
+      whoRef.current = null;
+      pendingAnswerRef.current = null;
+      pendingClaimRef.current = null;
+      setClickerOpen(false);
+      setWhoSaidThat(null);
+      setPendingAnswer(null);
+      setClickerWhoState(null);
+      setClickerCorrectState(null);
+      lockedRef.current = false;
+      setLocked(false);
+      lastCorrectRef.current = null;
+      repeatingRef.current = true;
+      applyPhase('REPEATING_QUESTION');
+      persistSessionRef.current();
+      const live = beginSession(question.question_id);
+      void readQuestionRef.current(question, questionNumberRef.current, questionTotalRef.current, live, {
+        repeating: true,
+      });
+    },
+    [applyPhase, beginSession, isCurrentSession],
+  );
+  resumeAfterWrongRef.current = resumeAfterWrong;
+
   const readQuestion = useCallback(
-    async (question: Question, number: number, total: number, liveSession: string) => {
+    async (
+      question: Question,
+      number: number,
+      total: number,
+      liveSession: string,
+      options?: { repeating?: boolean },
+    ) => {
+      const repeating = Boolean(options?.repeating);
+      repeatingRef.current = repeating;
       const boss = isBossQuestion(question, number === total);
       lockedRef.current = false;
       setLocked(false);
-      applyPhase('QUESTION_SELECTED');
+      applyPhase(repeating ? 'REPEATING_QUESTION' : 'QUESTION_SELECTED');
       setCurrent(question);
+      currentRef.current = question;
       setQuestionNumber(number);
       setIsBoss(boss);
       isBossRef.current = boss;
@@ -1042,27 +1440,58 @@ export function GameProvider({ children }: { children: ReactNode }) {
       startedAtRef.current = 0;
       setBuzzedPlayerId(null);
       buzzedRef.current = null;
-      resetRoundUi();
+      if (!repeating) {
+        resetRoundUi();
+      } else {
+        setClickerOpen(false);
+        clickerOpenRef.current = false;
+        setWhoSaidThat(null);
+        whoRef.current = null;
+        setPendingAnswer(null);
+        pendingAnswerRef.current = null;
+        setInterruptAlert(false);
+        interruptRef.current = false;
+      }
       setScreen('GAME');
       applyPhase('QUESTION_DISPLAYED');
-      logEvent('QUESTION_LOADED', question.question_id);
+      logEvent(repeating ? 'REPEAT_QUESTION' : 'QUESTION_LOADED', question.question_id);
       logEvent('DISPLAYED', question.question);
+      persistSessionRef.current();
 
       const utterance = buildQuestionUtterance(question, number, boss);
       setHostLine(utterance);
-      applyPhase('HOST_SPEAKING');
+      applyPhase(repeating ? 'REPEATING_QUESTION' : 'HOST_SPEAKING');
       hostSpeakingRef.current = true;
       setHostSpeaking(true);
-      void closePlayerMic();
-      setListening(false);
       logEvent('TTS_STARTED');
+
+      if (isEarlyShoutArmed(settingsRef.current) && !repeating) {
+        beginListening();
+      } else {
+        void closePlayerMic();
+        setListening(false);
+      }
 
       const outcome = await speakQuestion(question, number, boss, ttsRequest(liveSession));
       if (!isCurrentSession(liveSession)) {
         return;
       }
+
+      const interruptInFlight =
+        interruptRef.current ||
+        clickerOpenRef.current ||
+        Boolean(whoRef.current) ||
+        lockedRef.current;
+
       hostSpeakingRef.current = false;
       setHostSpeaking(false);
+
+      if (interruptInFlight) {
+        if (outcome === 'stopped') {
+          logEvent('TTS_STOPPED', 'interrupt');
+        }
+        return;
+      }
 
       if (outcome === 'done') {
         unlockListening(liveSession, question);
@@ -1080,6 +1509,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     },
     [
       applyPhase,
+      beginListening,
       isCurrentSession,
       logEvent,
       resetRoundUi,
@@ -1087,12 +1517,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
       unlockListening,
     ],
   );
+  readQuestionRef.current = readQuestion;
 
   const openQuestion = useCallback(
     (question: Question, number: number, total: number) => {
+      attemptsRef.current = [];
+      lockoutsRef.current = resetLockouts();
+      setQuestionAttempts([]);
+      setLockoutPlayerIds([]);
+      setWrongOverlay(null);
+      repeatingRef.current = false;
       const live = beginSession(question.question_id);
       logEvent('NEXT_QUESTION', `${number}/${total}`);
       void readQuestion(question, number, total, live);
+      persistSessionRef.current();
     },
     [beginSession, logEvent, readQuestion],
   );
@@ -1114,6 +1552,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const firstDifficulty: QuestionDifficulty =
       cfg.difficulty === 'easy' ? 'easy' : cfg.difficulty === 'hard' ? 'hard' : 'medium';
     const { next, rest } = takeMatching(deck, firstDifficulty);
+    questionOrderRef.current = [next.question_id, ...rest.map((q) => q.question_id)];
+    const created = createGameSession({
+      settings: cfg,
+      players: roster,
+      questionOrder: questionOrderRef.current,
+      remainingQuestionIds: rest.map((q) => q.question_id),
+      currentQuestionId: next.question_id,
+      questionNumber: 1,
+    });
+    gameSessionIdRef.current = created.id;
+    gameSessionNameRef.current = created.name;
+    gameSessionCreatedRef.current = created.createdAt;
+    void gameSessionStore.saveSession(created).then(() => {
+      void refreshSessionLists();
+    });
     setRemaining(rest);
     remainingRef.current = rest;
     setAdaptiveLevel(firstDifficulty);
@@ -1125,7 +1578,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setLastResult(null);
     setEventLog([]);
     openQuestion(next, 1, cfg.questionCount);
-  }, [openQuestion]);
+  }, [openQuestion, refreshSessionLists]);
 
   const buzzIn = useCallback(
     (playerId: string) => {
@@ -1149,6 +1602,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (!pending || !player) {
         return;
       }
+      if (
+        isPlayerLockedOut(
+          lockoutsRef.current,
+          player.id,
+          settingsRef.current.wrongAnswerLockout !== false,
+        )
+      ) {
+        setLine('That player is locked out on this question.', true);
+        return;
+      }
       pendingClaimRef.current = null;
       setWhoSaidThat(null);
       whoRef.current = null;
@@ -1162,7 +1625,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         sessionId: sessionIdRef.current,
       });
     },
-    [logEvent, resolveRound],
+    [logEvent, resolveRound, setLine],
   );
 
   const finishGame = useCallback(() => {
@@ -1170,11 +1633,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const nextBoard = mergeLeaderboard(leaderboard, roster);
     setLeaderboard(nextBoard);
     void saveLeaderboard(nextBoard);
+    const snap = snapshotSession();
+    if (snap) {
+      void gameSessionStore.saveSession({ ...snap, status: 'completed' }).then(() => {
+        void refreshSessionLists();
+      });
+    }
+    gameSessionIdRef.current = null;
     setScreen('FINAL');
     applyPhase('IDLE');
     const champ = roster[0];
     setLine(champ ? hostCopy.winner(champ.name) : hostCopy.timeout);
-  }, [applyPhase, leaderboard, setLine]);
+  }, [applyPhase, leaderboard, refreshSessionLists, setLine, snapshotSession]);
 
   const continueAfterRound = useCallback(() => {
     clearFeedbackTimer();
@@ -1237,6 +1707,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setHostSpeaking(false);
     }
     logEvent('PAUSED');
+    persistSessionRef.current();
   }, [applyPhase, logEvent]);
 
   const resumeRound = useCallback(() => {
@@ -1260,7 +1731,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       );
       return;
     }
-    applyPhase('LISTENING_FOR_PLAYERS');
+    applyPhase('WAITING_FOR_ANSWERS');
     beginListening();
   }, [applyPhase, beginListening, logEvent, readQuestion]);
 
@@ -1279,11 +1750,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [beginSession, clearAiTimer, logEvent, readQuestion]);
 
   const skipQuestion = useCallback(() => {
-    if (lockedRef.current && screen !== 'GAME') {
+    if (screen === 'ROUND_RESULT' || phaseRef.current === 'QUESTION_COMPLETE') {
       continueAfterRound();
       return;
     }
     logEvent('SKIP_QUESTION');
+    lockedRef.current = false;
+    setLocked(false);
     resolveRound({
       player: null,
       choiceIndex: null,
@@ -1293,6 +1766,164 @@ export function GameProvider({ children }: { children: ReactNode }) {
       sessionId: sessionIdRef.current,
     });
   }, [continueAfterRound, logEvent, resolveRound, screen]);
+
+  const revealAnswer = useCallback(() => {
+    const question = currentRef.current;
+    if (!question) {
+      return;
+    }
+    lockedRef.current = false;
+    setLocked(false);
+    resolveRound({
+      player: null,
+      choiceIndex: correctChoiceIndex(question),
+      source: 'host',
+      responseMs: 0,
+      timedOut: false,
+      sessionId: sessionIdRef.current,
+    });
+  }, [resolveRound]);
+
+  const identifyPlayer = useCallback(() => {
+    const pending = pendingAnswerRef.current;
+    if (pending) {
+      setClickerOpen(true);
+      clickerOpenRef.current = true;
+      applyPhase('SPEAKER_IDENTIFICATION');
+      return;
+    }
+    const claim = pendingClaimRef.current;
+    if (claim) {
+      setWhoSaidThat({
+        transcript: currentRef.current?.choices[claim.choiceIndex] ?? 'that',
+        choiceIndex: claim.choiceIndex,
+      });
+      applyPhase('SPEAKER_IDENTIFICATION');
+      return;
+    }
+    setLine('I need a player and an answer before I can grade.', true);
+  }, [applyPhase, setLine]);
+
+  const saveGameNow = useCallback(() => {
+    persistSession();
+    logEvent('SESSION_SAVED');
+    setLine('Game saved.', false);
+  }, [logEvent, persistSession, setLine]);
+
+  const applySavedSession = useCallback((session: GameSession) => {
+    gameSessionIdRef.current = session.id;
+    gameSessionNameRef.current = session.name;
+    gameSessionCreatedRef.current = session.createdAt;
+    questionOrderRef.current = session.questionOrder;
+    const remaining = session.remainingQuestionIds
+      .map((id) => questionById(id))
+      .filter((q): q is Question => Boolean(q));
+    remainingRef.current = remaining;
+    setRemaining(remaining);
+    const currentQ = session.currentQuestionId
+      ? questionById(session.currentQuestionId)
+      : null;
+    setCurrent(currentQ ?? null);
+    currentRef.current = currentQ ?? null;
+    setPlayers(session.players);
+    setSettings({ ...DEFAULT_SETTINGS, ...session.settings });
+    settingsRef.current = { ...DEFAULT_SETTINGS, ...session.settings };
+    setQuestionNumber(session.questionNumber);
+    questionNumberRef.current = session.questionNumber;
+    setResults(session.results);
+    resultsRef.current = session.results;
+    setQuestionAttempts(session.questionAttempts);
+    attemptsRef.current = session.questionAttempts;
+    setLockoutPlayerIds(session.lockoutPlayerIds);
+    lockoutsRef.current = session.lockoutPlayerIds;
+    setAdaptiveLevel(session.adaptiveLevel);
+    adaptiveRef.current = session.adaptiveLevel;
+    setTurnIndex(session.turnIndex);
+    turnRef.current = session.turnIndex;
+    setIsBoss(session.isBoss);
+    isBossRef.current = session.isBoss;
+    setEventLog(session.eventLog);
+    eventLogRef.current = session.eventLog;
+    setPendingAnswer(session.pendingAnswer);
+    pendingAnswerRef.current = session.pendingAnswer;
+    setBuzzedPlayerId(session.buzzedPlayerId);
+    buzzedRef.current = session.buzzedPlayerId;
+    setLastResult(null);
+    setCanAdvance(false);
+    setWrongOverlay(null);
+    lockedRef.current = false;
+    setLocked(false);
+    setPaused(false);
+    pausedRef.current = false;
+    sessionIdRef.current = session.questionSessionId || createQuestionSessionId(
+      session.currentQuestionId ?? 'resume',
+    );
+    setSessionId(sessionIdRef.current);
+    resumeTimeLeftRef.current = Math.max(1, Math.round(session.remainingTimeMs / 1000));
+    configureHostVoice(session.settings.hostVoice ?? 'british-female');
+  }, []);
+
+  const continueSavedGame = useCallback(
+    (id?: string) => {
+      void (async () => {
+        const session = id
+          ? await gameSessionStore.loadSession(id)
+          : (await gameSessionStore.loadActiveSession()) ??
+            (await gameSessionStore.unfinishedSessions().then(async (rows) =>
+              rows[0] ? gameSessionStore.loadSession(rows[0].id) : null,
+            ));
+        if (!session || !session.currentQuestionId) {
+          setLine('No saved game to continue.', false);
+          return;
+        }
+        const question = questionById(session.currentQuestionId);
+        if (!question) {
+          setLine('That saved question is no longer in the bank.', false);
+          return;
+        }
+        applySavedSession(session);
+        setCrashRecovery(null);
+        setScreen('GAME');
+        applyPhase('QUESTION_DISPLAYED');
+        logEvent('SESSION_RESUMED', session.id);
+        setResumeCountdown(3);
+        let count = 3;
+        const tick = setInterval(() => {
+          count -= 1;
+          if (count <= 0) {
+            clearInterval(tick);
+            setResumeCountdown(null);
+            const live = beginSession(question.question_id);
+            void readQuestionRef.current(
+              question,
+              session.questionNumber,
+              session.questionTotal,
+              live,
+              { repeating: session.questionAttempts.some((a) => !a.isCorrect) },
+            );
+            return;
+          }
+          setResumeCountdown(count);
+        }, 1000);
+      })();
+    },
+    [applyPhase, applySavedSession, beginSession, logEvent, setLine],
+  );
+
+  const renameSavedGame = useCallback((id: string, name: string) => {
+    void gameSessionStore.renameSession(id, name).then(() => {
+      void refreshSessionLists();
+    });
+  }, [refreshSessionLists]);
+
+  const deleteSavedGame = useCallback((id: string) => {
+    void gameSessionStore.deleteSession(id).then(() => {
+      if (crashRecovery?.id === id) {
+        setCrashRecovery(null);
+      }
+      void refreshSessionLists();
+    });
+  }, [crashRecovery?.id, refreshSessionLists]);
 
   const stopHostSpeaking = useCallback(() => {
     if (!hostSpeakingRef.current) {
@@ -1357,6 +1988,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (!player) {
       return;
     }
+    if (
+      isPlayerLockedOut(
+        lockoutsRef.current,
+        player.id,
+        settingsRef.current.wrongAnswerLockout !== false,
+      )
+    ) {
+      setLine('That player is locked out on this question.', true);
+      return;
+    }
     if (pending.suggestedPlayerId && pending.suggestedPlayerId !== player.id) {
       logEvent('SPEAKER_CORRECTED', `${pending.suggestedPlayerId} → ${player.id}`);
     }
@@ -1369,7 +2010,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       correctOverride: clickerCorrect ?? undefined,
       sessionId: sessionIdRef.current,
     });
-  }, [clickerCorrect, clickerWho, logEvent, resolveRound]);
+  }, [clickerCorrect, clickerWho, logEvent, resolveRound, setLine]);
 
   const logSpeakerCorrection = useCallback(
     (fromId: string | null, toId: string) => {
@@ -1388,7 +2029,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (
       screen !== 'GAME' ||
-      phase !== 'LISTENING_FOR_PLAYERS' ||
+      (!isWaitingForAnswers(phase) && phase !== 'LISTENING_FOR_PLAYERS') ||
       locked ||
       paused ||
       whoSaidThat ||
@@ -1426,6 +2067,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
     [clearAiTimer, clearFeedbackTimer],
   );
 
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') {
+        persistSessionRef.current();
+      }
+    });
+    return () => sub.remove();
+  }, []);
+
   const value = useMemo<GameContextValue>(
     () => ({
       screen,
@@ -1461,8 +2111,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
       canAdvance,
       eventLog,
       ttsFailed,
+      interruptAlert,
+      questionAttempts,
+      lockoutPlayerIds,
+      wrongOverlay,
+      resumeCountdown,
+      sessionSummaries,
+      activeSessionSummary:
+        sessionSummaries.find((row) => row.status === 'in_progress') ?? null,
+      crashRecovery,
       goHome,
       goSetup,
+      goPastGames,
       applyQuickMode,
       setPlayerName,
       setPlayerEmoji,
@@ -1488,6 +2148,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
       resumeRound,
       repeatQuestion,
       skipQuestion,
+      revealAnswer,
+      identifyPlayer,
+      saveGameNow,
+      continueSavedGame,
+      renameSavedGame,
+      deleteSavedGame,
+      dismissCrashRecovery,
       stopHostSpeaking,
       retryHostSpeech,
       skipToListening,
@@ -1510,17 +2177,25 @@ export function GameProvider({ children }: { children: ReactNode }) {
       clickerWho,
       confirmClicker,
       continueAfterRound,
+      continueSavedGame,
       completeVoiceEnrollment,
       continueToVoiceCheck,
+      crashRecovery,
       current,
+      deleteSavedGame,
+      dismissCrashRecovery,
       eventLog,
       finishVoiceCheck,
       goHome,
+      goPastGames,
       goSetup,
       hostLine,
       hostSpeaking,
       hydrated,
+      identifyPlayer,
+      interruptAlert,
       isBoss,
+      lockoutPlayerIds,
       lastResult,
       leaderboard,
       listening,
@@ -1536,13 +2211,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
       pendingAnswer,
       phase,
       players,
+      questionAttempts,
       questionNumber,
       rematch,
       removePlayer,
+      renameSavedGame,
       repeatQuestion,
+      resumeCountdown,
+      revealAnswer,
       results,
       resumeRound,
       retryHostSpeech,
+      saveGameNow,
+      sessionSummaries,
       sessionId,
       setClickerCorrect,
       setClickerWho,
@@ -1564,6 +2245,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       voice,
       voiceProfiles,
       whoSaidThat,
+      wrongOverlay,
       screen,
     ],
   );

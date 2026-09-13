@@ -49,6 +49,34 @@ export function judgeChoice(question: Question, choiceIndex: number | null): boo
   return choiceIndex === correctChoiceIndex(question);
 }
 
+/** During HOST_SPEAKING, ignore host-read echoes; allow short isolated answers or name+answer. */
+export function isContestantInterrupt(
+  transcript: string,
+  question: Question,
+  players: Player[],
+): boolean {
+  if (looksLikeHostEcho(transcript, question)) {
+    return false;
+  }
+  const pending = evaluateTranscript(transcript, players, question, 0);
+  if (!pending) {
+    return false;
+  }
+  const hay = normalizeAnswer(transcript);
+  const words = hay.split(' ').filter(Boolean);
+  const choiceHits = question.choices.filter((choice) => hay.includes(normalizeAnswer(choice))).length;
+  if (choiceHits >= 2) {
+    return false;
+  }
+  if (pending.suggestedPlayerId) {
+    return true;
+  }
+  if (HOST_PREFIX.test(transcript)) {
+    return false;
+  }
+  return words.length <= 6;
+}
+
 export function evaluateTranscript(
   transcript: string,
   players: Player[],

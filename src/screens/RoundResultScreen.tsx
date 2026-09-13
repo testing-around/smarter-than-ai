@@ -40,7 +40,13 @@ export function RoundResultScreen() {
         ROUND RESULT · {questionNumber}/{questionTotal}
       </Text>
       <Text style={[styles.banner, lastResult.correct ? styles.yes : styles.no]}>
-        {lastResult.timedOut ? 'TIME' : lastResult.correct ? 'CORRECT' : 'WRONG'}
+        {lastResult.source === 'skip'
+          ? 'SKIPPED'
+          : lastResult.source === 'host'
+            ? 'REVEALED'
+            : lastResult.correct
+              ? 'CORRECT'
+              : 'COMPLETE'}
       </Text>
       <Text style={styles.title}>
         {lastResult.playerName

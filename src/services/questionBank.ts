@@ -17,6 +17,10 @@ export function questionBankSize(): number {
   return QUESTIONS.length;
 }
 
+export function questionById(id: string): Question | undefined {
+  return QUESTIONS.find((question) => question.question_id === id);
+}
+
 export function pickDeck(count: number, difficulty: GameDifficulty): Question[] {
   if (count > QUESTIONS.length) {
     throw new Error(`Need ${count} questions but bank only has ${QUESTIONS.length}`);

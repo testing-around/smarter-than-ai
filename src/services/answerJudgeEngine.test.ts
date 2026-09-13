@@ -4,6 +4,7 @@ import type { Player, Question } from '../types';
 import {
   detectOverlap,
   evaluateTranscript,
+  isContestantInterrupt,
   judgeChoice,
   looksLikeHostEcho,
   whoSaidPrompt,
@@ -78,5 +79,31 @@ describe('answer judge', () => {
     assert.equal(pending?.suggestedPlayerId, 'p1');
     assert.equal(pending?.suggestedCorrect, false);
     assert.equal(judgeChoice(question, 0), false);
+  });
+
+  it('rejects host TTS echo as an early contestant interrupt', () => {
+    assert.equal(
+      isContestantInterrupt(
+        'Question 1. Space. Which planet is known as the Red Planet? A. Venus B. Mars',
+        question,
+        players,
+      ),
+      false,
+    );
+    assert.equal(
+      isContestantInterrupt('Which planet is known as the Red Planet?', question, players),
+      false,
+    );
+  });
+
+  it('accepts a short isolated shout or a name-plus-answer during host speech', () => {
+    assert.equal(isContestantInterrupt('Mars', question, players), true);
+    assert.equal(isContestantInterrupt('Damian B', question, players), true);
+    assert.equal(isContestantInterrupt('Damian, Venus', question, players), true);
+  });
+
+  it('rejects a host-like read that names two choices at once', () => {
+    assert.equal(isContestantInterrupt('Venus Mars Jupiter Saturn', question, players), false);
+    assert.equal(isContestantInterrupt('Option A Venus', question, players), false);
   });
 });
