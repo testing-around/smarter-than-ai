@@ -1,7 +1,7 @@
 import { canStartListening } from '../game/phases';
 import { isLiveSession } from '../game/session';
 import type { RoundPhase } from '../types';
-import { startListening, stopListening, type VoiceListeners } from './voice';
+import { cancelListening, isRecognizerBusy, startListening, type VoiceListeners } from './voice';
 
 export interface ListeningGate {
   sessionId: string;
@@ -34,7 +34,9 @@ export async function startPlayerListening(
 ): Promise<boolean> {
   const opened = getGate();
   if (!shouldOpenMic(opened)) {
-    await stopListening();
+    if (isRecognizerBusy()) {
+      await cancelListening('gate-closed');
+    }
     return false;
   }
 
@@ -47,7 +49,12 @@ export async function startPlayerListening(
       }
     },
     onEnd: () => listeners.onEnd?.(),
-    onError: (message) => listeners.onError?.(message),
+    onError: (message, meta) => {
+      if (meta?.errorType === 'aborted') {
+        return;
+      }
+      listeners.onError?.(message, meta);
+    },
     onPartial: (text) => {
       const gate = getGate();
       if (!isLiveSession(sessionAtStart, gate.sessionId) || !shouldOpenMic(gate)) {
@@ -62,11 +69,17 @@ export async function startPlayerListening(
       }
       listeners.onFinal?.(text);
     },
+    onAudio: (uri) => listeners.onAudio?.(uri),
   };
 
-  return startListening(contextualStrings, guarded);
+  return startListening(contextualStrings, guarded, {
+    persistRecording: true,
+    continuous: true,
+    preferOnDevice: true,
+    contextualScreen: 'GAME',
+  });
 }
 
 export async function closePlayerMic(): Promise<void> {
-  await stopListening();
+  await cancelListening('close-player-mic');
 }

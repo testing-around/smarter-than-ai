@@ -5,6 +5,7 @@ import { Panel } from '../components/Panel';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Screen } from '../components/Screen';
 import { useGame } from '../context/GameContext';
+import { profileForPlayer } from '../services/voiceProfiles';
 import { colors } from '../theme/colors';
 
 const MODE_LABEL = {
@@ -20,7 +21,7 @@ const HOST_MODE_LABEL = {
 } as const;
 
 export function LobbyScreen() {
-  const { players, settings, hostLine, startMatch, goSetup, voice } = useGame();
+  const { players, settings, hostLine, startMatch, goSetup, voice, voiceProfiles } = useGame();
 
   return (
     <Screen>
@@ -37,10 +38,12 @@ export function LobbyScreen() {
             <Text style={styles.meta}>
               {player.isAi
                 ? 'CPU'
-                : player.voiceReady
-                  ? 'voice ready'
-                  : player.tapOnly
-                    ? 'tap only'
+                : player.tapOnly
+                  ? 'tap only'
+                  : player.voiceReady
+                    ? profileForPlayer(voiceProfiles, player.id)?.offlineReady
+                      ? 'offline ready'
+                      : 'voice ready'
                     : 'not trained'}
             </Text>
           </View>

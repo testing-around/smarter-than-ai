@@ -45,6 +45,7 @@ import {
 import {
   loadVoiceProfiles,
   profileForPlayer,
+  removeProfile,
   saveVoiceProfiles,
   upsertProfile,
 } from '../services/voiceProfiles';
@@ -196,6 +197,7 @@ interface GameContextValue {
     name: string,
     samples: EnrollmentSample[],
   ) => VoiceProfile;
+  deleteVoiceProfile: (playerId: string) => void;
   skipPlayerVoice: (id: string) => void;
   skipVoiceAndLobby: () => void;
   finishVoiceCheck: () => void;
@@ -336,6 +338,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const questionTotalRef = useRef(10);
   const voiceProfilesRef = useRef<VoiceProfile[]>([]);
   const listenStartedAtRef = useRef(0);
+  const listenEmbeddingRef = useRef<number[] | null>(null);
   const interruptRef = useRef(false);
   const resumeAfterWrongRef = useRef<(sessionId: string, question: Question) => void>(
     () => undefined,
@@ -724,6 +727,20 @@ export function GameProvider({ children }: { children: ReactNode }) {
     },
     [],
   );
+
+  const deleteVoiceProfile = useCallback((playerId: string) => {
+    setVoiceProfiles((prev) => {
+      const next = removeProfile(prev, playerId);
+      voiceProfilesRef.current = next;
+      void saveVoiceProfiles(next);
+      return next;
+    });
+    setPlayers((prev) =>
+      prev.map((p) =>
+        p.id === playerId ? { ...p, enrolled: false, voiceReady: false, tapOnly: false } : p,
+      ),
+    );
+  }, []);
 
   const skipPlayerVoice = useCallback((id: string) => {
     setPlayers((prev) =>
@@ -1169,6 +1186,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         durationMs,
         playersRef.current,
         voiceProfilesRef.current,
+        isFinal ? listenEmbeddingRef.current : null,
       );
       pending.speakerGuess = guess.playerId;
       pending.speakerConfidence = guess.confidence;
@@ -1267,6 +1285,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ...(question?.choices ?? []),
       ...(question?.accepted_answers ?? []),
     ];
+    listenEmbeddingRef.current = null;
     void startPlayerListening(listeningGate, phrases, {
       onStart: () => {
         listenStartedAtRef.current = Date.now();
@@ -1278,7 +1297,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
         logEvent('MIC_CLOSED');
       },
       onPartial: (text) => handleTranscript(text, false),
-      onFinal: (text) => handleTranscript(text, true),
+      onAudio: (uri) => {
+        void import('../voice/embedRecording').then(async ({ discardRecording, embedFromRecordingUri }) => {
+          const embedded = await embedFromRecordingUri(uri);
+          listenEmbeddingRef.current = embedded?.vector ?? null;
+          await discardRecording(uri);
+        });
+      },
+      onFinal: (text) => {
+        void (async () => {
+          if (!listenEmbeddingRef.current) {
+            await new Promise((resolve) => setTimeout(resolve, 400));
+          }
+          handleTranscript(text, true);
+        })();
+      },
       onError: () => setListening(false),
     });
   }, [handleTranscript, listeningGate, logEvent]);
@@ -2133,6 +2166,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       continueToVoiceCheck,
       voiceProfiles,
       completeVoiceEnrollment,
+      deleteVoiceProfile,
       skipPlayerVoice,
       skipVoiceAndLobby,
       finishVoiceCheck,
@@ -2179,6 +2213,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       continueAfterRound,
       continueSavedGame,
       completeVoiceEnrollment,
+      deleteVoiceProfile,
       continueToVoiceCheck,
       crashRecovery,
       current,

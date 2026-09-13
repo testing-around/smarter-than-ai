@@ -12,6 +12,47 @@ type SpeechModule = typeof import('expo-speech');
 let speech: SpeechModule | null | undefined;
 let lastPick: HostVoicePick | null = null;
 let utteranceSeq = 0;
+let hostTtsActive = false;
+const ttsIdleWaiters: Array<() => void> = [];
+
+function setHostTtsActive(active: boolean): void {
+  hostTtsActive = active;
+  if (!active) {
+    while (ttsIdleWaiters.length) {
+      ttsIdleWaiters.shift()?.();
+    }
+  }
+}
+
+export function isHostTtsActive(): boolean {
+  return hostTtsActive;
+}
+
+export function waitForHostTtsIdle(bufferMs = 350, timeoutMs = 20000): Promise<void> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      setTimeout(resolve, bufferMs);
+    };
+    const timer = setTimeout(() => {
+      setHostTtsActive(false);
+      finish();
+    }, timeoutMs);
+    const done = () => {
+      clearTimeout(timer);
+      finish();
+    };
+    if (!hostTtsActive) {
+      done();
+      return;
+    }
+    ttsIdleWaiters.push(done);
+  });
+}
 
 export interface HostSayRequest {
   sessionId: string;
@@ -41,6 +82,8 @@ export function configureHostVoice(mode: HostVoiceMode): void {
 }
 
 export async function stopHostVoice(): Promise<void> {
+  utteranceSeq += 1;
+  setHostTtsActive(false);
   try {
     const mod = await load();
     await mod?.stop();
@@ -101,6 +144,9 @@ export async function hostSay(line: string, request?: HostSayRequest): Promise<T
           return;
         }
         settled = true;
+        if (myId === utteranceSeq) {
+          setHostTtsActive(false);
+        }
         if (!live()) {
           resolve('stale');
           return;
@@ -109,6 +155,7 @@ export async function hostSay(line: string, request?: HostSayRequest): Promise<T
       };
 
       try {
+        setHostTtsActive(true);
         mod.speak(trimmed, {
           ...options,
           onDone: () => finish('done'),

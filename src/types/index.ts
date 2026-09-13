@@ -214,6 +214,9 @@ export interface EnrollmentSample {
   audioUri: string | null;
   matchScore: number;
   capturedAt: number;
+  embedding?: number[] | null;
+  speechDetected?: boolean;
+  quality?: 'ok' | 'too-short' | 'too-long' | 'silence' | 'mismatch';
 }
 
 export interface VoiceProfileQuality {
@@ -231,12 +234,21 @@ export interface VoiceProfile {
   quality: VoiceProfileQuality;
   meanDurationMs: number;
   meanSpeechRate: number;
+  embeddings?: number[][];
+  centroid?: number[] | null;
+  embeddingModel?: string | null;
+  samplesAccepted?: number;
+  locale?: string;
+  offlineReady?: boolean;
 }
 
 export interface SpeakerGuess {
   playerId: string | null;
   confidence: number;
-  method: 'name' | 'profile' | 'combined' | 'none';
+  method: 'name' | 'profile' | 'combined' | 'embedding' | 'none';
+  cosine?: number;
+  margin?: number;
+  ambiguous?: boolean;
 }
 
 export interface Player {
@@ -350,6 +362,11 @@ export interface WhoSaidThat {
 export interface VoiceStatus {
   available: boolean;
   detail: string;
+  onDevice?: boolean;
+  recording?: boolean;
+  micGranted?: boolean | null;
+  recognitionService?: string | null;
+  offlineEnUs?: boolean | null;
 }
 
 export type QuickModeId = 'family' | 'lightning' | 'beatAi' | 'grade';

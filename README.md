@@ -35,7 +35,7 @@ npx tsc --noEmit
 
 1. **Home** — **New game**, **Continue game** (unfinished save), **Past games**, or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
 2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**), optional **⚡ EARLY SHOUT-OUT**.
-3. **Voice check** — **Train voice** walks each human through 3–5 short phrases (mic + local samples). `voiceReady` only after captures succeed. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md`.
+3. **Voice check** — **Train / Retrain / Test / Delete** walks each human through 5 spoken lines (need 3). Profiles persist on-device for offline speaker ID. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md` and `docs/VOICE-AUDIT.md`.
 4. **Lobby** — roster + rules, then start.
 5. **Game** — host reads the full question (🔊 AI IS ASKING…). By default the answer timer and mic start only after TTS `onDone` + a 400ms buffer (🎤 LISTENING…). **Early shout-out** (Family Battle / Lightning / Beat the AI, or the Setup toggle) lets humans interrupt on the first read. Wrong answers stay on the **same question** (overlay only — no reveal, no Next). Last question is a **boss round (3×)**.
 6. **Round result** — full result only after a **correct** answer (or host skip/reveal). Then Next Question.
@@ -51,8 +51,8 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 
 | Layer | What we use | Notes |
 | --- | --- | --- |
-| Speech-to-text | [`expo-speech-recognition` ^57](https://github.com/jamsch/expo-speech-recognition) | iOS `SFSpeechRecognizer`, Android `SpeechRecognizer`, Web Speech API |
-| Attribution | Name-then-answer + local enrollment profile | “Damian, B”. Speaker guess + confidence; under 70% → Who said that? |
+| Speech-to-text (JOB1) | [`expo-speech-recognition` ^57](https://github.com/jamsch/expo-speech-recognition) | Transcript only. Prefers on-device English when the pack is installed. |
+| Speaker ID (JOB2) | Local `sta-bands-v1` embeddings on this device | Not learned by the STT engine. Calibrated score + margin; uncertain → Who said that? |
 | Low confidence | Never discard | Host asks **Who said that?** and assigns to the claimer |
 | Host voice | [`expo-speech`](https://docs.expo.dev/versions/v57.0.0/sdk/speech/) + `pickBritishFemaleHostVoice()` | Default **British female** (`en-GB`). Setup can switch to system default. |
 | Persistence | `@react-native-async-storage/async-storage` | Last players, settings, family leaderboard |
@@ -64,7 +64,7 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 - **Web (Chrome / Edge)**: Web Speech API can listen. Firefox / some Linux environments have no recognizer — tap still works.
 - Permissions: microphone + speech recognition on iOS; `RECORD_AUDIO` on Android.
 
-Enrollment is a **real training path** (mic permission, 3–5 spoken phrases, stored samples). It is still not a biometric voiceprint. Live rounds parse names/A–D, then compare against the local profile. Confidence under 70% opens **Who said that?** or Host + Clicker. Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed. Profiles stay on-device; nothing is uploaded.
+Enrollment is a **real training path** (mic permission, 5 spoken lines, min 3 valid). Embeddings persist in AsyncStorage across restart and airplane mode. Raw wav is not kept. Live rounds still parse names/A–D, then compare a local embedding. Calibrated confidence under 70% or a thin margin opens **Who said that?** or Host + Clicker. Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed. Profiles stay on-device; nothing is uploaded.
 
 ### Host / listen / judge (strict)
 
