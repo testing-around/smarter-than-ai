@@ -154,6 +154,29 @@ export function SetupScreen() {
         </Text>
       </Pressable>
 
+      <Pressable
+        onPress={() => {
+          const next = !settings.earlyShoutOut;
+          patchSettings(
+            next
+              ? { earlyShoutOut: true, answerMode: 'shout' }
+              : { earlyShoutOut: false },
+          );
+        }}
+        style={[styles.toggle, settings.earlyShoutOut && styles.toggleOn]}
+      >
+        <Text style={styles.toggleText}>
+          {settings.earlyShoutOut
+            ? '⚡ EARLY SHOUT-OUT is ON'
+            : '⚡ EARLY SHOUT-OUT is OFF (default)'}
+        </Text>
+      </Pressable>
+      <Text style={styles.modeHint}>
+        {settings.earlyShoutOut
+          ? 'Humans can shout while the host is still reading. Wrong answers stay on the same question until someone is right (or skip/timeout). Host TTS is never scored. AI contestants wait until after the listen window.'
+          : 'P2 default: mic and answers wait until the host finishes the question. Family Battle, Lightning, and Beat the AI turn this on.'}
+      </Text>
+
       <Panel>
         <Text style={styles.infoTitle}>Voice-first night</Text>
         <Text style={styles.info}>

@@ -34,10 +34,10 @@ npx tsc --noEmit
 `HOME → SETUP → VOICE_CHECK → LOBBY → GAME → ROUND_RESULT → FINAL` (rematch).
 
 1. **Home** — start a custom game or jump into Family Battle, Lightning, Beat the AI, or Grade Challenge.
-2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**).
+2. **Setup** — names + emoji (defaults: Damian 🧠, Dorian 🦖, Delissa ⚡), question count 5/10/20, shout out / buzz-in / turn based, easy / adaptive / hard, timer 8–20s, **host mode** (default **Host + Clicker**), optional **⚡ EARLY SHOUT-OUT**.
 3. **Voice check** — **Train voice** walks each human through 3–5 short phrases (mic + local samples). `voiceReady` only after captures succeed. Skip remains tap-only. See `docs/VOICE-ENROLLMENT.md`.
 4. **Lobby** — roster + rules, then start.
-5. **Game** — host reads the full question (🔊 AI IS ASKING…). The answer timer and mic start only after TTS `onDone` (🎤 LISTENING…). Last question is a **boss round (3×)**.
+5. **Game** — host reads the full question (🔊 AI IS ASKING…). By default the answer timer and mic start only after TTS `onDone` (🎤 LISTENING…). **Early shout-out** (Family Battle / Lightning / Beat the AI, or the Setup toggle) lets humans interrupt while the host is still reading. Last question is a **boss round (3×)**.
 6. **Round result** — who answered, correct?, points, response ms, explanation.
 7. **Final** — leaderboard and rematch.
 
@@ -72,10 +72,20 @@ The host never accepts, scores, or reveals an answer until TTS **finishes** (`ex
 
 `QUESTION_SELECTED → DISPLAYED → HOST_SPEAKING → HOST_SPEECH_FINISHED → LISTENING_FOR_PLAYERS → … → HOST_FEEDBACK → next`
 
-- Mic is **off** while 🔊 AI IS ASKING… so host audio does not enter contestant STT.
-- Timer starts at 🎤 LISTENING…, not at question display.
-- Host question text is display + TTS only. The correct answer stays internal until someone answers or time expires.
+- Mic is **off** while 🔊 AI IS ASKING… so host audio does not enter contestant STT. **Early shout-out** is the explicit exception: the contestant mic may open during `HOST_SPEAKING`.
+- Timer starts at 🎤 LISTENING…, not at question display (early interrupts still keep the question on screen).
+- Host question text is display + TTS only. The correct answer stays internal until someone answers or time expires. Host TTS is never scored as a contestant answer (echo rejection).
 - Stale callbacks from a previous `questionSessionId` are ignored.
+
+**Early shout-out** (opt-in; default remains P2 / wait for TTS):
+
+`🔊 HOST READING… (early buzz armed) → ⚡ ANSWER HEARD! → WHO? → ✅/❌`
+
+- Humans can shout (or tap) while the host is reading. Host TTS pauses. Host + Clicker picks **who said it**, or a high-confidence speaker guess auto-assigns.
+- **Correct** → score, host feedback, next question.
+- **Incorrect** → do not advance; same question stays live and listening continues until someone is right (or skip/timeout).
+- Works with **Beat the AI** and **human-only** Family Battle. The AI contestant never answers from host narration — only after the listen window / its existing delay.
+- Setup toggle **⚡ EARLY SHOUT-OUT**, or Family / Lightning / Beat the AI quick modes. Grade Challenge stays P2.
 
 **Host modes** (Setup):
 

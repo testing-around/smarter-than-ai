@@ -100,6 +100,8 @@ export type RoundPhase =
 
 export type PhaseBannerId =
   | 'asking'
+  | 'asking-armed'
+  | 'interrupt'
   | 'listening'
   | 'checking'
   | 'correct'
@@ -133,7 +135,9 @@ export type GameEventType =
   | 'SKIP_QUESTION'
   | 'PAUSED'
   | 'RESUMED'
-  | 'TRANSCRIPT_CORRECTED';
+  | 'TRANSCRIPT_CORRECTED'
+  | 'EARLY_INTERRUPT'
+  | 'WRONG_STAY';
 
 export interface GameEvent {
   at: number;
@@ -246,6 +250,8 @@ export interface GameSettings {
   beatTheAi: boolean;
   hostVoice: HostVoiceMode;
   hostMode: HostMode;
+  /** When true with shout-out, contestants may answer while the host is still reading. */
+  earlyShoutOut: boolean;
 }
 
 export interface RoundResult {

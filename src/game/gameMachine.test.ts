@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
+import { isEarlyShoutArmed } from './earlyShout';
 import {
   bannerFor,
   bannerLabel,
   canAcceptAnswers,
   canStartListening,
   listeningUnlocksOnTts,
+  shouldAdvanceAfterJudgment,
 } from './phases';
 import { createQuestionSessionId, isLiveSession } from './session';
 
@@ -48,5 +50,38 @@ describe('game machine gates', () => {
     assert.equal(bannerLabel(bannerFor('ANSWER_JUDGING')), '🧠 CHECKING…');
     assert.equal(bannerLabel(bannerFor('HOST_FEEDBACK', true)), '✅ CORRECT');
     assert.equal(bannerLabel(bannerFor('HOST_FEEDBACK', false)), '❌ WRONG');
+  });
+
+  it('arms early shout-out only for shout-out mode', () => {
+    assert.equal(isEarlyShoutArmed({ earlyShoutOut: true, answerMode: 'shout' }), true);
+    assert.equal(isEarlyShoutArmed({ earlyShoutOut: true, answerMode: 'buzz' }), false);
+    assert.equal(isEarlyShoutArmed({ earlyShoutOut: false, answerMode: 'shout' }), false);
+  });
+
+  it('accepts early interrupt while the host is still speaking', () => {
+    assert.equal(canAcceptAnswers('HOST_SPEAKING', true), true);
+    assert.equal(canStartListening('HOST_SPEAKING', true, true, true), true);
+    assert.equal(canStartListening('HOST_SPEAKING', true, false, true), false);
+    assert.equal(bannerFor('HOST_SPEAKING', null, { earlyShoutOut: true }), 'asking-armed');
+    assert.equal(bannerLabel('asking-armed'), '🔊 HOST READING… (early buzz armed)');
+  });
+
+  it('shows the who-said-that interrupt alert after an early shout', () => {
+    assert.equal(
+      bannerFor('ANSWER_DETECTED', null, { earlyShoutOut: true, interrupt: true }),
+      'interrupt',
+    );
+    assert.equal(
+      bannerFor('SPEAKER_IDENTIFICATION', null, { earlyShoutOut: true, interrupt: true }),
+      'interrupt',
+    );
+    assert.equal(bannerLabel('interrupt'), '⚡ ANSWER HEARD!');
+  });
+
+  it('advances after an early correct answer and stays after an early wrong', () => {
+    assert.equal(shouldAdvanceAfterJudgment(true, false, true), true);
+    assert.equal(shouldAdvanceAfterJudgment(false, false, true), false);
+    assert.equal(shouldAdvanceAfterJudgment(false, true, true), true);
+    assert.equal(shouldAdvanceAfterJudgment(false, false, false), true);
   });
 });

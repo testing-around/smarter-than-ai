@@ -9,9 +9,9 @@ import { colors } from '../theme/colors';
 import type { QuickModeId } from '../types';
 
 const MODES: { id: QuickModeId; title: string; blurb: string }[] = [
-  { id: 'family', title: 'Family Battle', blurb: '10 questions · shout out · adaptive' },
-  { id: 'lightning', title: 'Lightning', blurb: '5 questions · 8 second clock' },
-  { id: 'beatAi', title: 'Beat the AI', blurb: 'The host plays too. Do not lose to a robot.' },
+  { id: 'family', title: 'Family Battle', blurb: '10 questions · shout out · early interrupt' },
+  { id: 'lightning', title: 'Lightning', blurb: '5 questions · 8s · early shout-out' },
+  { id: 'beatAi', title: 'Beat the AI', blurb: 'AI plays too. Humans can interrupt the host.' },
   { id: 'grade', title: 'Grade Challenge', blurb: 'Hard mode · turn based · 20s' },
 ];
 

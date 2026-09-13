@@ -8,15 +8,22 @@ export interface ListeningGate {
   phase: RoundPhase;
   hostSpeaking: boolean;
   listeningEnabled: boolean;
+  earlyShoutOut: boolean;
 }
 
 export function shouldOpenMic(gate: ListeningGate): boolean {
-  return canStartListening(gate.phase, gate.hostSpeaking, gate.listeningEnabled);
+  return canStartListening(
+    gate.phase,
+    gate.hostSpeaking,
+    gate.listeningEnabled,
+    gate.earlyShoutOut,
+  );
 }
 
 /**
- * Contestant STT. Hard-gated: never start while the host is speaking,
- * and ignore callbacks from a previous question session.
+ * Contestant STT. Default (P2): never start while the host is speaking.
+ * Early shout-out is the explicit exception: mic may open during HOST_SPEAKING.
+ * Stale callbacks from a previous question session are always ignored.
  */
 export async function startPlayerListening(
   getGate: () => ListeningGate,
