@@ -54,7 +54,7 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 | Speech-to-text | [`expo-speech-recognition` ^57](https://github.com/jamsch/expo-speech-recognition) | iOS `SFSpeechRecognizer`, Android `SpeechRecognizer`, Web Speech API |
 | Attribution | Name-then-answer parser + enrollment | “Damian, B” or “Dorian, Pacific”. Not biometric speaker ID |
 | Low confidence | Never discard | Host asks **Who said that?** and assigns to the claimer |
-| Host voice | [`expo-speech`](https://docs.expo.dev/versions/v57.0.0/sdk/speech/) | Reactions are nice-to-have and fail silently |
+| Host voice | [`expo-speech`](https://docs.expo.dev/versions/v57.0.0/sdk/speech/) + `pickBritishFemaleHostVoice()` | Default **British female** (`en-GB`). Setup can switch to system default. |
 | Persistence | `@react-native-async-storage/async-storage` | Last players, settings, family leaderboard |
 
 **Device support**
@@ -65,6 +65,15 @@ This build uses the best Expo SDK 57-compatible stack that still degrades to a f
 - Permissions: microphone + speech recognition on iOS; `RECORD_AUDIO` on Android.
 
 Enrollment is a practical party check (“can we hear this person?”), not a voiceprint. Live rounds parse the transcript for player names and A/B/C/D (or choice text). Turn-based rounds assign a nameless answer to the current player. Buzz-in assigns a nameless answer to whoever buzzed.
+
+### British female host (default)
+
+`src/services/hostVoice.ts` picks the best **en-GB female** voice on the device:
+
+- Scores `en-GB` first, then names like Google UK English Female, Microsoft Hazel / Libby / Susan / Sonia, Kate, Serena.
+- Fallback: any `en-GB` voice, then speak with `language: 'en-GB'` even if no named voice exists.
+- Crisp game-show energy: pitch **1.08**, rate **1.06** (not cartoonish).
+- Availability varies: Chrome/Edge often have “Google UK English Female”; iOS may offer Kate/Serena; Android TTS packs differ. Linux / Firefox / Expo Go may only get the language hint. Toggle **Host voice → System default** in Setup if you prefer the OS voice.
 
 ## Production pipeline (not this MVP)
 
@@ -87,14 +96,14 @@ This MVP collapses that to **STT → name/answer parser → scoring → TTS**, w
 src/
   screens/      HOME, SETUP, VOICE_CHECK, LOBBY, GAME, ROUND_RESULT, FINAL
   components/   orb, buttons, scoreboard, claim modal
-  data/         169-question bank + default players
-  types/        question + game schema
-  services/     scoring, bank shuffle, STT, TTS, parser, AsyncStorage
+  data/         merged master bank + default players
+  types/        master question + game schema
+  services/     scoring, bank shuffle, STT, British host TTS, parser, AsyncStorage
   context/      screen machine + round timer
   theme/        game-show palette
 ```
 
-The question bank is **169 unique items** in `src/data/questions.ts` plus `src/data/moreQuestions.ts` (science, math, geography, history, logic, general, pop culture, kaiju). A round shuffles and does not repeat IDs. The last question of a match is still the 3× boss round; the extra hard items feed that slot.
+The playable bank is **395 unique items** after merge (`src/data/bank.ts`: 190 seed + converted legacy + gap fillers, deduped, `active` and `quality_score >= 0.7`). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
 
 ## Config
 

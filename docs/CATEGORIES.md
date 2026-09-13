@@ -33,4 +33,6 @@ Brief index of the master category system used by the quiz seed bank.
 29. **Inventions** — Telephone, printing press milestones
 30. **Nature & Environment** — Ecology, recycling, bees/nectar, tides
 
-Seed file: `master-seed-questions.json`
+Seed file: `../data/master-seed-questions.json`
+
+Field definitions and merge rules: `QUESTION-SCHEMA.md`.

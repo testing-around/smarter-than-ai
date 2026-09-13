@@ -148,6 +148,25 @@ function matchLetter(transcript: string): number | null {
   return null;
 }
 
+function matchAccepted(
+  transcript: string,
+  choices: string[],
+  acceptedAnswers: string[],
+): number | null {
+  const hay = normalize(transcript);
+  for (const accepted of acceptedAnswers) {
+    const needle = normalize(accepted);
+    if (needle.length >= 2 && (hay === needle || hay.includes(needle))) {
+      const idx = choices.findIndex((choice) => normalize(choice) === needle);
+      if (idx >= 0) {
+        return idx;
+      }
+      return choices.findIndex((choice) => normalize(choice).includes(needle));
+    }
+  }
+  return null;
+}
+
 function matchChoiceText(transcript: string, choices: string[]): number | null {
   const hay = normalize(transcript);
   let bestIndex: number | null = null;
@@ -179,13 +198,16 @@ export function parseSpokenAnswer(
   transcript: string,
   players: Player[],
   choices: string[],
+  acceptedAnswers: string[] = [],
 ): ParsedSpeech {
   if (!normalize(transcript)) {
     return { playerId: null, matchedName: null, choiceIndex: null, confidence: 'none' };
   }
 
   const player = matchPlayer(transcript, players);
-  const choiceIndex = matchLetter(transcript) ?? matchChoiceText(transcript, choices);
+  const acceptedHit = matchAccepted(transcript, choices, acceptedAnswers);
+  const choiceIndex =
+    matchLetter(transcript) ?? acceptedHit ?? matchChoiceText(transcript, choices);
 
   if (choiceIndex === null) {
     return {

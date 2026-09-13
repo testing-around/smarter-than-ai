@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from 'react';
 import { AI_PLAYER, FAMILY_PLAYERS, createPlayer } from '../data/players';
-import { CATEGORY_LABEL } from '../data/questions';
+import { CATEGORY_LABEL } from '../data/bank';
+import { correctChoiceIndex, isBossQuestion } from '../data/questionAccess';
 import {
   nextAdaptiveDifficulty,
   pickDeck,
@@ -25,7 +26,8 @@ import {
   savePlayers,
   saveSettings,
 } from '../services/storage';
-import { hostCopy, hostSay, stopHostVoice } from '../services/tts';
+import { configureHostVoice, hostCopy, hostSay, stopHostVoice } from '../services/tts';
+import { warmHostVoice } from '../services/hostVoice';
 import { checkVoiceAvailable, startListening, stopListening } from '../services/voice';
 import type {
   AnswerMode,
@@ -225,6 +227,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setPlayers(saved.players);
       setSettings(saved.settings);
       setLeaderboard(saved.leaderboard);
+      configureHostVoice(saved.settings.hostVoice ?? 'british-female');
+      void warmHostVoice();
       setVoice(voiceStatus);
       setHydrated(true);
     })();
@@ -311,6 +315,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (beatTheAi !== undefined) {
       setPlayers((prev) => withAi(prev, beatTheAi));
     }
+    if (patch.hostVoice) {
+      configureHostVoice(patch.hostVoice);
+      void warmHostVoice();
+    }
   }, []);
 
   const continueToVoiceCheck = useCallback(() => {
@@ -363,8 +371,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setWhoSaidThat(null);
 
       const correct =
-        input.choiceIndex !== null && input.choiceIndex === question.correctIndex;
-      const points = scoreForAnswer(correct, input.responseMs, isBoss ? 3 : 1);
+        input.choiceIndex !== null && input.choiceIndex === correctChoiceIndex(question);
+      const boss = isBossQuestion(question, isBoss);
+      const points = scoreForAnswer(correct, input.responseMs, boss ? 3 : 1, question);
       const result: RoundResult = {
         question,
         playerId: input.player?.id ?? null,
@@ -375,7 +384,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         responseMs: input.responseMs,
         timedOut: input.timedOut,
         source: input.source,
-        isBoss,
+        isBoss: boss,
       };
 
       if (input.player && points > 0) {
@@ -501,7 +510,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (!question) {
         return;
       }
-      const parsed = parseSpokenAnswer(text, playersRef.current, question.choices);
+      const parsed = parseSpokenAnswer(
+        text,
+        playersRef.current,
+        question.choices,
+        question.accepted_answers,
+      );
       if (parsed.choiceIndex === null) {
         return;
       }
@@ -557,6 +571,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       'option C',
       'option D',
       ...(question?.choices ?? []),
+      ...(question?.accepted_answers ?? []),
     ];
     void startListening(phrases, {
       onStart: () => setListening(true),
@@ -590,9 +605,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
           }
         }
         const hits = Math.random() < aiAccuracy(settingsRef.current.difficulty);
-        const wrongPool = [0, 1, 2, 3].filter((i) => i !== question.correctIndex);
+        const right = correctChoiceIndex(question);
+        const wrongPool = question.choices.map((_, index) => index).filter((i) => i !== right);
         const pick = hits
-          ? question.correctIndex
+          ? right
           : (wrongPool[Math.floor(Math.random() * wrongPool.length)] ?? 0);
         submitAnswer(bot.id, pick, 'ai');
       }, aiDelayMs(settingsRef.current.timerSeconds));
@@ -602,7 +618,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const openQuestion = useCallback(
     (question: Question, number: number, total: number) => {
-      const boss = number === total;
+      const boss = isBossQuestion(question, number === total);
       lockedRef.current = false;
       setLocked(false);
       setCurrent(question);

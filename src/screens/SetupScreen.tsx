@@ -6,7 +6,7 @@ import { Screen } from '../components/Screen';
 import { useGame } from '../context/GameContext';
 import { PLAYER_EMOJIS } from '../data/players';
 import { colors } from '../theme/colors';
-import type { AnswerMode, GameDifficulty, QuestionCount } from '../types';
+import type { AnswerMode, GameDifficulty, HostVoiceMode, QuestionCount } from '../types';
 
 export function SetupScreen() {
   const {
@@ -108,6 +108,16 @@ export function SetupScreen() {
           { value: 12, label: '12s' },
           { value: 15, label: '15s' },
           { value: 20, label: '20s' },
+        ]}
+      />
+
+      <Text style={styles.section}>HOST VOICE</Text>
+      <ChipSelect<HostVoiceMode>
+        value={settings.hostVoice ?? 'british-female'}
+        onChange={(hostVoice) => patchSettings({ hostVoice })}
+        options={[
+          { value: 'british-female', label: 'BRITISH FEMALE' },
+          { value: 'system', label: 'SYSTEM DEFAULT' },
         ]}
       />
 
