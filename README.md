@@ -140,7 +140,7 @@ The playable bank is **431 unique items** after merge (`src/data/bank.ts`: seed 
 
 ## Android APK
 
-Sideload notes and rebuild commands: `docs/ANDROID-APK.md`. Latest preview: **1.1.0** (`v1.1.0-preview`) — see that doc for the public HTTPS URL after publish. Preview profile in `eas.json` outputs an **APK** (`buildType: apk`). This environment has no Expo login, so the preview APK is produced locally with `expo prebuild` + Gradle.
+Sideload notes and rebuild commands: `docs/ANDROID-APK.md`. Latest preview: [SmarterThenAI-1.1.0-preview.apk](https://github.com/testing-around/smarter-than-ai/releases/download/v1.1.0-preview/SmarterThenAI-1.1.0-preview.apk) (versionName **1.1.0**, versionCode **8**, SHA-256 `f18eaebd5ac1df92b519cc4eb4b938950093a47d8655ea0775a6b665306550a3`). Preview profile in `eas.json` outputs an **APK** (`buildType: apk`). This environment has no Expo login, so the preview APK is produced locally with `expo prebuild` + Gradle.
 
 ## Config
 
