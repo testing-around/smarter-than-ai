@@ -1,3 +1,4 @@
+import { brandEnrollmentLine } from '../branding';
 import type { EnrollmentPhraseId, EnrollmentSample, VoiceProfile } from '../types';
 import { meanEmbedding } from '../voice/audioFeatures';
 import {
@@ -32,8 +33,8 @@ export function enrollmentPhrases(name: string): EnrollmentPhrase[] {
   return [
     {
       id: 'ready',
-      prompt: `My name is ${who} and I am ready to play Smarter Than AI`,
-      expected: `my name is ${who} and i am ready to play smarter than ai`,
+      prompt: brandEnrollmentLine(who),
+      expected: brandEnrollmentLine(who).toLowerCase().replace(/['’]/g, ''),
       requireName: true,
     },
     {

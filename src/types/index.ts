@@ -146,7 +146,10 @@ export type GameEventType =
   | 'ATTEMPT_RECORDED'
   | 'QUESTION_REVEALED'
   | 'SESSION_SAVED'
-  | 'SESSION_RESUMED';
+  | 'SESSION_RESUMED'
+  | 'TIE_DECLARED'
+  | 'TIEBREAKER_STARTED'
+  | 'WINNER_DECLARED';
 
 export interface GameEvent {
   at: number;
@@ -280,6 +283,9 @@ export interface GameSettings {
   earlyTapIn?: boolean;
   /** Locked-out players cannot attempt again on the same live question. */
   wrongAnswerLockout: boolean;
+  winCondition?: WinCondition;
+  pointTarget?: number;
+  hostPersonality?: HostPersonality;
 }
 
 export interface QuestionAttempt {
@@ -325,6 +331,7 @@ export interface GameSession {
   buzzedPlayerId: string | null;
   questionSessionId: string;
   hostLine: string;
+  tiebreakActive?: boolean;
 }
 
 export interface GameSessionSummary {
@@ -375,3 +382,5 @@ export interface VoiceStatus {
 }
 
 export type QuickModeId = 'family' | 'lightning' | 'beatAi' | 'grade';
+export type WinCondition = 'QUESTION_LIMIT' | 'POINT_TARGET' | 'TIMER';
+export type HostPersonality = 'CHILL' | 'FUNNY' | 'COMPETITIVE' | 'SASSY' | 'SAVAGE';

@@ -1,10 +1,10 @@
 # Sideload the Android APK
 
-This is a **standalone** build of Smarter Than AI (`com.smarterthanai.game`), not Expo Go. Microphone and speech recognition ship inside the APK.
+This is a **standalone** build of Smarter Then AI (`com.smarterthanai.game`), not Expo Go. Microphone and speech recognition ship inside the APK.
 
 ## Install on a phone
 
-1. Download `SmarterThanAI-1.0.5-preview.apk` (versionName **1.0.5**, versionCode **6**, voice-training abort fix + local speaker profiles) from https://github.com/testing-around/smarter-than-ai/releases/download/v1.0.5-preview/SmarterThanAI-1.0.5-preview.apk (SHA-256 `fa2bd7168f873b1b0bf4b786d50656699a6d4dd0825c470ccc7cf925829d390e`). Previous: `SmarterThanAI-1.0.4-preview.apk` (1.0.4 / 5).
+1. Download `SmarterThenAI-1.1.0-preview.apk` (versionName **1.1.0**, versionCode **8**, Smarter Then AI branding + ties/winner/personality) from https://github.com/testing-around/smarter-than-ai/releases/download/v1.1.0-preview/SmarterThenAI-1.1.0-preview.apk (SHA-256 `f18eaebd5ac1df92b519cc4eb4b938950093a47d8655ea0775a6b665306550a3`, 70441013 bytes). Previous: `SmarterThanAI-1.0.5-preview.apk` (1.0.5 / 6).
 2. Open the file. If Android blocks it, allow **Install unknown apps** / **Install from this source** for Files, Chrome, or Drive — whichever you used to open the APK.
 3. Tap **Install**, then **Open**.
 

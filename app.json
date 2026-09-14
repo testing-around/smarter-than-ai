@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Smarter Than AI",
+    "name": "Smarter Then AI",
     "slug": "smarter-than-ai",
     "scheme": "smarterthanai",
-    "version": "1.0.5",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -17,13 +17,13 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.smarterthanai.game",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Smarter Than AI listens so it can credit the player who shouted the answer.",
-        "NSSpeechRecognitionUsageDescription": "Smarter Than AI uses speech recognition to hear answers and announce who got it right."
+        "NSMicrophoneUsageDescription": "Smarter Then AI listens so it can credit the player who shouted the answer.",
+        "NSSpeechRecognitionUsageDescription": "Smarter Then AI uses speech recognition to hear answers and announce who got it right."
       }
     },
     "android": {
       "package": "com.smarterthanai.game",
-      "versionCode": 6,
+      "versionCode": 8,
       "adaptiveIcon": {
         "backgroundColor": "#07111F",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -42,8 +42,8 @@
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "Smarter Than AI needs the mic so players can shout answers.",
-          "speechRecognitionPermission": "Smarter Than AI uses speech recognition to credit the player who answered.",
+          "microphonePermission": "Smarter Then AI needs the mic so players can shout answers.",
+          "speechRecognitionPermission": "Smarter Then AI uses speech recognition to credit the player who answered.",
           "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
         }
       ]

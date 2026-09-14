@@ -5,11 +5,13 @@ import type { Player } from '../types';
 export function Scoreboard({
   players,
   highlightId,
+  preserveOrder = false,
 }: {
   players: Player[];
   highlightId?: string | null;
+  preserveOrder?: boolean;
 }) {
-  const ranked = [...players].sort((a, b) => b.score - a.score);
+  const ranked = preserveOrder ? players : [...players].sort((a, b) => b.score - a.score);
   return (
     <View style={styles.row}>
       {ranked.map((player) => {

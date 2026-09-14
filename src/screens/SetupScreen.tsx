@@ -10,8 +10,10 @@ import type {
   AnswerMode,
   GameDifficulty,
   HostMode,
+  HostPersonality,
   HostVoiceMode,
   QuestionCount,
+  WinCondition,
 } from '../types';
 
 export function SetupScreen() {
@@ -71,6 +73,55 @@ export function SetupScreen() {
           <PrimaryButton label="Load Damian / Dorian / Delissa" variant="ghost" onPress={loadFamily} />
         </View>
       </View>
+
+      <Text style={styles.section}>WIN CONDITION</Text>
+      <ChipSelect<WinCondition>
+        value={settings.winCondition ?? 'QUESTION_LIMIT'}
+        onChange={(winCondition) => patchSettings({ winCondition })}
+        options={[
+          { value: 'QUESTION_LIMIT', label: 'AFTER N Qs' },
+          { value: 'POINT_TARGET', label: 'FIRST TO N' },
+          { value: 'TIMER', label: 'TIMER (STUB)' },
+        ]}
+      />
+      {settings.winCondition === 'POINT_TARGET' ? (
+        <>
+          <Text style={styles.section}>POINT TARGET</Text>
+          <ChipSelect<number>
+            value={settings.pointTarget ?? 500}
+            onChange={(pointTarget) => patchSettings({ pointTarget })}
+            options={[
+              { value: 300, label: '300' },
+              { value: 500, label: '500' },
+              { value: 800, label: '800' },
+              { value: 1000, label: '1000' },
+            ]}
+          />
+        </>
+      ) : null}
+      {settings.winCondition === 'TIMER' ? (
+        <Text style={styles.modeHint}>
+          Timer match-end is a stub: the game still ends after the question cap, then tiebreak if
+          needed.
+        </Text>
+      ) : null}
+
+      <Text style={styles.section}>HOST PERSONALITY</Text>
+      <ChipSelect<HostPersonality>
+        value={settings.hostPersonality ?? 'FUNNY'}
+        onChange={(hostPersonality) => patchSettings({ hostPersonality })}
+        options={[
+          { value: 'CHILL', label: 'CHILL' },
+          { value: 'FUNNY', label: 'FUNNY' },
+          { value: 'COMPETITIVE', label: 'COMPETITIVE' },
+          { value: 'SASSY', label: 'SASSY' },
+          { value: 'SAVAGE', label: 'SAVAGE' },
+        ]}
+      />
+      <Text style={styles.modeHint}>
+        Default FUNNY. The host names the player on correct and wrong lines and avoids recent
+        repeats.
+      </Text>
 
       <Text style={styles.section}>QUESTIONS</Text>
       <ChipSelect<QuestionCount>

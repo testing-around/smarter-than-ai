@@ -1,6 +1,6 @@
 {
   "name": "smarter-than-ai",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "main": "index.ts",
   "dependencies": {
     "@expo/metro-runtime": "~57.0.15",
@@ -30,7 +30,7 @@
     "apk:release": "cd android && ./gradlew assembleRelease",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "npx --yes tsx --test src/game/gameMachine.test.ts src/game/enrollmentMachine.test.ts src/game/attemptEngine.test.ts src/game/gameSession.test.ts src/services/answerJudgeEngine.test.ts src/services/hostQuestionEngine.test.ts src/services/speakerMatch.test.ts src/voice/recognitionSession.test.ts src/voice/mapRecognitionError.test.ts src/voice/audioFeatures.test.ts src/voice/speakerEngine.test.ts"
+    "test": "npx --yes tsx --test src/branding.test.ts src/game/tieDetection.test.ts src/game/gameMachine.test.ts src/game/enrollmentMachine.test.ts src/game/attemptEngine.test.ts src/game/gameSession.test.ts src/services/answerJudgeEngine.test.ts src/services/hostQuestionEngine.test.ts src/services/speakerMatch.test.ts src/voice/recognitionSession.test.ts src/voice/mapRecognitionError.test.ts src/voice/audioFeatures.test.ts src/voice/speakerEngine.test.ts"
   },
   "private": true
 }

@@ -1,4 +1,4 @@
-# Smarter Than AI — 30 Master Categories
+# Smarter Then AI — 30 Master Categories
 
 Brief index of the master category system used by the quiz seed bank.
 

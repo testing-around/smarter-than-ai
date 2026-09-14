@@ -36,7 +36,7 @@ describe('enrollment machine', () => {
     const ready = enrollmentPhrases('Damian')[0];
     assert.ok(ready);
     assert.ok(
-      scorePhraseMatch('My name is Damian and I am ready to play Smarter Than AI', ready, 'Damian') >=
+      scorePhraseMatch('My name is Damian and I am ready to play Smarter Then AI', ready, 'Damian') >=
         0.55,
     );
     assert.ok(scorePhraseMatch('hello there everybody', ready, 'Damian') < 0.55);
@@ -80,13 +80,13 @@ describe('enrollment machine', () => {
     const empty = buildVoiceProfile('p1', 'Damian', []);
     assert.equal(canMarkVoiceReady(empty), false);
     const two = buildVoiceProfile('p1', 'Damian', [
-      sample('ready', 'My name is Damian and I am ready to play Smarter Than AI', 0.9),
+      sample('ready', 'My name is Damian and I am ready to play Smarter Then AI', 0.9),
       sample('yes', 'Yes I know this one and I am sure of my answer', 1),
     ]);
     assert.equal(two.quality.phrasesPassed, 2);
     assert.equal(canMarkVoiceReady(two), false);
     const three = buildVoiceProfile('p1', 'Damian', [
-      sample('ready', 'My name is Damian and I am ready to play Smarter Than AI', 0.9),
+      sample('ready', 'My name is Damian and I am ready to play Smarter Then AI', 0.9),
       sample('yes', 'Yes I know this one and I am sure of my answer', 1),
       sample('no', 'No that is not the answer I wanted to give', 1),
     ]);
