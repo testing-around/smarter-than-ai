@@ -12,7 +12,7 @@ import { Screen } from '../components/Screen';
 import { WhoSaidThatModal } from '../components/WhoSaidThatModal';
 import { WrongAttemptCard } from '../components/WrongAttemptCard';
 import { useGame } from '../context/GameContext';
-import { isEarlyShoutArmed } from '../game/earlyShout';
+import { isEarlyAnswerArmed, isEarlyShoutArmed } from '../game/earlyShout';
 import { canAcceptAnswers } from '../game/phases';
 import { CATEGORY_LABEL } from '../data/bank';
 import { difficultyBand } from '../data/questionAccess';
@@ -78,11 +78,15 @@ export function GameScreen() {
 
   const turnPlayer = players.find((p) => p.id === turnPlayerId);
   const buzzed = players.find((p) => p.id === buzzedPlayerId);
-  const early = isEarlyShoutArmed(settings);
-  const accepting = canAcceptAnswers(phase, early) && !paused && (!hostSpeaking || early);
+  const earlyTap = isEarlyAnswerArmed(settings);
+  const earlyVoice = isEarlyShoutArmed(settings);
+  const acceptingTaps =
+    canAcceptAnswers(phase, earlyTap) && !paused && (!hostSpeaking || earlyTap);
+  const acceptingVoice =
+    canAcceptAnswers(phase, earlyVoice) && !paused && (!hostSpeaking || earlyVoice);
   const choicesLocked =
     locked ||
-    !accepting ||
+    !acceptingTaps ||
     (settings.answerMode === 'buzz' && !buzzedPlayerId) ||
     Boolean(whoSaidThat) ||
     clickerOpen;
@@ -158,12 +162,12 @@ export function GameScreen() {
         <Text style={styles.hint}>
           {interruptAlert
             ? 'Who said that? Tap the player (Host + Clicker) or claim the shout.'
-            : accepting
-              ? early && hostSpeaking
-                ? 'Early shout-out is armed — shout or tap now, even while the host is reading.'
+            : acceptingTaps
+              ? earlyTap && hostSpeaking
+                ? 'Tap an answer anytime — first tap stops the host and counts as an attempt.'
                 : 'Shout a letter, or tap. Name-then-answer works too.'
-              : early
-                ? 'Get ready — you can interrupt the host once they start reading.'
+              : earlyVoice
+                ? 'Get ready — you can shout once the host starts reading.'
                 : 'Hold answers until the host finishes the question.'}
         </Text>
       )}
@@ -177,7 +181,7 @@ export function GameScreen() {
                 <PrimaryButton
                   label={`${player.emoji} Buzz`}
                   variant="purple"
-                  disabled={!accepting}
+                  disabled={!acceptingTaps}
                   onPress={() => buzzIn(player.id)}
                 />
               </View>
@@ -233,7 +237,7 @@ export function GameScreen() {
       {settings.voiceEnabled ? (
         <PrimaryButton
           label={listening ? 'Listening…' : 'Listen now'}
-          disabled={!accepting}
+          disabled={!acceptingVoice}
           onPress={listenNow}
         />
       ) : null}

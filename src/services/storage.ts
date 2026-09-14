@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS: GameSettings = {
   hostVoice: 'british-female',
   hostMode: 'AI_HOST_PLUS_HUMAN_CLICKER',
   earlyShoutOut: false,
+  earlyTapIn: true,
   wrongAnswerLockout: true,
 };
 

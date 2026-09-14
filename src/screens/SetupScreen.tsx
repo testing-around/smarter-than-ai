@@ -155,6 +155,22 @@ export function SetupScreen() {
       </Pressable>
 
       <Pressable
+        onPress={() => patchSettings({ earlyTapIn: settings.earlyTapIn === false })}
+        style={[styles.toggle, settings.earlyTapIn !== false && styles.toggleOn]}
+      >
+        <Text style={styles.toggleText}>
+          {settings.earlyTapIn !== false
+            ? '👆 TAP WHILE HOST READS is ON'
+            : '👆 TAP WHILE HOST READS is OFF'}
+        </Text>
+      </Pressable>
+      <Text style={styles.modeHint}>
+        {settings.earlyTapIn !== false
+          ? 'In shout-out, the first tap during 🔊 HOST READING… stops the host and counts as an attempt (wrong stays live). Host TTS is never scored.'
+          : 'Answer buttons wait until the host finishes reading. Family Battle, Lightning, and Beat the AI keep this on.'}
+      </Text>
+
+      <Pressable
         onPress={() => {
           const next = !settings.earlyShoutOut;
           patchSettings(
@@ -174,7 +190,7 @@ export function SetupScreen() {
       <Text style={styles.modeHint}>
         {settings.earlyShoutOut
           ? 'Humans can shout while the host is still reading. Wrong answers stay on the same question until someone is right (or skip/timeout). Host TTS is never scored. AI contestants wait until after the listen window.'
-          : 'P2 default: mic and answers wait until the host finishes the question. Family Battle, Lightning, and Beat the AI turn this on.'}
+          : 'P2 default: the mic waits until the host finishes. Family Battle, Lightning, and Beat the AI turn this on. Taps use the toggle above.'}
       </Text>
 
       <Pressable

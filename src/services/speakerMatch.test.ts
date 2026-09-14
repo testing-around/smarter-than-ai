@@ -10,14 +10,20 @@ const players: Player[] = [
 ];
 
 function readyProfile(playerId: string, name: string) {
-  const samples: EnrollmentSample[] = ['ready', 'yes', 'no'].map((phraseId) => ({
-    phraseId: phraseId as EnrollmentSample['phraseId'],
-    prompt: phraseId,
-    transcript: phraseId,
-    durationMs: 800,
+  const samples: EnrollmentSample[] = [
+    { phraseId: 'ready' as const, transcript: 'My name is Damian and I am ready to play' },
+    { phraseId: 'yes' as const, transcript: 'Yes I know this one and I am sure' },
+    { phraseId: 'no' as const, transcript: 'No that is not the answer' },
+  ].map(({ phraseId, transcript }) => ({
+    phraseId,
+    prompt: transcript,
+    transcript,
+    durationMs: 1800,
     audioUri: null,
     matchScore: 1,
     capturedAt: Date.now(),
+    embedding: [0.4, 0.2, 0.1],
+    speechDetected: true,
   }));
   return buildVoiceProfile(playerId, name, samples);
 }

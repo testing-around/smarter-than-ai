@@ -10,3 +10,26 @@ export function isEarlyShoutArmed(
 ): boolean {
   return Boolean(settings.earlyShoutOut && settings.answerMode === 'shout');
 }
+
+/**
+ * Tap-during-TTS. Default ON for shout-out (including Family / Lightning /
+ * Beat the AI). Independent of the voice early-shout mic gate.
+ */
+export function isEarlyTapArmed(
+  settings: Pick<GameSettings, 'earlyTapIn' | 'earlyShoutOut' | 'answerMode'>,
+): boolean {
+  if (settings.answerMode !== 'shout') {
+    return false;
+  }
+  if (settings.earlyTapIn === false) {
+    return false;
+  }
+  return true;
+}
+
+/** Buttons / grading may run while the host is still reading. */
+export function isEarlyAnswerArmed(
+  settings: Pick<GameSettings, 'earlyTapIn' | 'earlyShoutOut' | 'answerMode'>,
+): boolean {
+  return isEarlyTapArmed(settings) || isEarlyShoutArmed(settings);
+}

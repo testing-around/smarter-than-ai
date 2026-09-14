@@ -1,6 +1,14 @@
 import type { EnrollmentPhraseId, EnrollmentSample, VoiceProfile } from '../types';
+import { meanEmbedding } from '../voice/audioFeatures';
+import {
+  EMBEDDING_MODEL,
+  MAX_SAMPLE_MS,
+  MIN_SAMPLE_MS,
+  MIN_TRANSCRIPT_CHARS,
+  MIN_VALID_SAMPLES,
+} from '../voice/constants';
 
-export const PHRASES_REQUIRED = 3;
+export const PHRASES_REQUIRED = MIN_VALID_SAMPLES;
 
 export interface EnrollmentPhrase {
   id: EnrollmentPhraseId;
@@ -24,19 +32,34 @@ export function enrollmentPhrases(name: string): EnrollmentPhrase[] {
   return [
     {
       id: 'ready',
-      prompt: `My name is ${who} and I'm ready to play`,
-      expected: `my name is ${who} and im ready to play`,
+      prompt: `My name is ${who} and I am ready to play Smarter Than AI`,
+      expected: `my name is ${who} and i am ready to play smarter than ai`,
       requireName: true,
     },
-    { id: 'yes', prompt: 'Yes', expected: 'yes', requireName: false },
-    { id: 'no', prompt: 'No', expected: 'no', requireName: false },
     {
-      id: 'know',
-      prompt: 'I know the answer',
-      expected: 'i know the answer',
+      id: 'yes',
+      prompt: 'Yes, I know this one and I am sure of my answer',
+      expected: 'yes i know this one and i am sure of my answer',
       requireName: false,
     },
-    { id: 'name', prompt: who, expected: who.toLowerCase(), requireName: true },
+    {
+      id: 'no',
+      prompt: 'No, that is not the answer I wanted to give',
+      expected: 'no that is not the answer i wanted to give',
+      requireName: false,
+    },
+    {
+      id: 'know',
+      prompt: 'I know the answer and I want to shout it out now',
+      expected: 'i know the answer and i want to shout it out now',
+      requireName: false,
+    },
+    {
+      id: 'name',
+      prompt: `${who} is speaking now and this is my trained voice`,
+      expected: `${who} is speaking now and this is my trained voice`,
+      requireName: true,
+    },
   ];
 }
 
@@ -76,7 +99,7 @@ function levenshtein(a: string, b: string): number {
 const YES = new Set(['yes', 'yeah', 'yep', 'yup']);
 const NO = new Set(['no', 'nope', 'nah']);
 
-/** Score 0–1. Short yes/no must actually be yes/no — not any long utterance. */
+/** Score 0–1. Short yes/no must actually contain yes/no — not any long utterance. */
 export function scorePhraseMatch(
   transcript: string,
   phrase: EnrollmentPhrase,
@@ -89,11 +112,16 @@ export function scorePhraseMatch(
   const heard = tokens(transcript);
   const name = normalizeEnrollment(playerName);
 
-  if (phrase.id === 'yes') {
-    return heard.some((word) => YES.has(word)) && heard.length <= 4 ? 1 : 0;
+  if (phrase.id === 'yes' && !heard.some((word) => YES.has(word))) {
+    return 0;
   }
   if (phrase.id === 'no') {
-    return heard.some((word) => NO.has(word)) && heard.length <= 4 ? 1 : 0;
+    if (!heard.some((word) => NO.has(word))) {
+      return 0;
+    }
+    if (heard.some((word) => YES.has(word))) {
+      return 0;
+    }
   }
 
   if (phrase.requireName && name) {
@@ -121,13 +149,47 @@ export function phrasePassed(score: number): boolean {
   return score >= PHRASE_PASS_SCORE;
 }
 
+export function classifySampleQuality(
+  sample: Pick<EnrollmentSample, 'durationMs' | 'transcript' | 'matchScore' | 'speechDetected'>,
+): EnrollmentSample['quality'] {
+  if (sample.durationMs < MIN_SAMPLE_MS) {
+    return 'too-short';
+  }
+  if (sample.durationMs > MAX_SAMPLE_MS) {
+    return 'too-long';
+  }
+  if (sample.speechDetected === false) {
+    return 'silence';
+  }
+  if ((sample.transcript ?? '').trim().length < MIN_TRANSCRIPT_CHARS) {
+    return 'silence';
+  }
+  if (!phrasePassed(sample.matchScore)) {
+    return 'mismatch';
+  }
+  return 'ok';
+}
+
+export function sampleIsValid(sample: EnrollmentSample): boolean {
+  const quality = sample.quality ?? classifySampleQuality(sample);
+  return quality === 'ok' && phrasePassed(sample.matchScore);
+}
+
 export function buildVoiceProfile(
   playerId: string,
   name: string,
   samples: EnrollmentSample[],
 ): VoiceProfile {
-  const passed = samples.filter((sample) => phrasePassed(sample.matchScore));
-  const withAudio = passed.filter((sample) => Boolean(sample.audioUri));
+  const annotated = samples.map((sample) => ({
+    ...sample,
+    quality: sample.quality ?? classifySampleQuality(sample),
+    audioUri: null,
+  }));
+  const passed = annotated.filter((sample) => sampleIsValid(sample));
+  const embeddings = passed
+    .map((sample) => sample.embedding)
+    .filter((item): item is number[] => Array.isArray(item) && item.some((value) => value !== 0));
+  const centroid = meanEmbedding(embeddings);
   const meanDurationMs =
     passed.length === 0
       ? 0
@@ -140,23 +202,39 @@ export function buildVoiceProfile(
           const seconds = Math.max(sample.durationMs, 1) / 1000;
           return sum + chars / seconds;
         }, 0) / passed.length;
+  const offlineReady = embeddings.length >= MIN_VALID_SAMPLES && Boolean(centroid);
 
   return {
     playerId,
     name,
-    enrollmentSamples: samples,
+    enrollmentSamples: annotated,
     enrolledAt: Date.now(),
     quality: {
       phrasesPassed: passed.length,
       phrasesRequired: PHRASES_REQUIRED,
-      hasAudio: withAudio.length > 0,
+      hasAudio: embeddings.length > 0 || passed.some((sample) => Boolean(sample.speechDetected)),
       voiceReady: passed.length >= PHRASES_REQUIRED,
     },
     meanDurationMs,
     meanSpeechRate,
+    embeddings,
+    centroid,
+    embeddingModel: embeddings.length ? EMBEDDING_MODEL : null,
+    samplesAccepted: passed.length,
+    locale: 'en-US',
+    offlineReady,
   };
 }
 
 export function canMarkVoiceReady(profile: VoiceProfile | null): boolean {
-  return Boolean(profile?.quality.voiceReady && profile.enrollmentSamples.length > 0);
+  return Boolean(profile?.quality.voiceReady && (profile.samplesAccepted ?? profile.enrollmentSamples.length) > 0);
+}
+
+export function voiceProfileStatus(
+  profile: VoiceProfile | null,
+): 'TRAINED' | 'NEEDS TRAINING' | 'UNTRAINED' {
+  if (!profile) {
+    return 'UNTRAINED';
+  }
+  return profile.quality.voiceReady ? 'TRAINED' : 'NEEDS TRAINING';
 }

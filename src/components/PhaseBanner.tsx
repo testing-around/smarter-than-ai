@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { bannerLabel } from '../game/phases';
+import { bannerHint, bannerLabel } from '../game/phases';
 import { colors } from '../theme/colors';
 import type { PhaseBannerId } from '../types';
 
@@ -18,10 +18,12 @@ export function PhaseBanner({ banner }: { banner: PhaseBannerId }) {
               : banner === 'paused'
                 ? colors.gold
                 : colors.gold;
+  const hint = bannerHint(banner);
 
   return (
     <View style={[styles.wrap, { borderColor: tone }]}>
       <Text style={[styles.label, { color: tone }]}>{bannerLabel(banner)}</Text>
+      {hint ? <Text style={styles.hint}>{hint}</Text> : null}
     </View>
   );
 }
@@ -40,5 +42,11 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1.4,
     fontSize: 13,
+  },
+  hint: {
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: 12,
+    marginTop: 4,
   },
 });
