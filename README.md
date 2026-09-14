@@ -1,10 +1,10 @@
-# Smarter Than AI
+# Smarter Then AI
 
-**Are You Smarter Than A AI?** — a family party trivia game for iOS, Android, and web.
+**Are you Smarter Then AI?** — a family party trivia game for iOS, Android, and web. THEN is intentional branding (not THAN).
 
 Players enter names, get random multiple-choice questions from a built-in bank, race a countdown timer, and (on a real device) shout answers. The host credits the speaker when it can, and never throws an answer away when it cannot.
 
-- App name: **Smarter Than AI**
+- App name: **Smarter Then AI**
 - Package / bundle: `com.smarterthanai.game`
 - Stack: Expo SDK 57, React Native 0.86, TypeScript
 
@@ -136,17 +136,21 @@ src/
   theme/        game-show palette
 ```
 
-The playable bank is **395 unique items** after merge (`src/data/bank.ts`: 190 seed + converted legacy + gap fillers, deduped, `active` and `quality_score >= 0.7`). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
+The playable bank is **431 unique items** after merge (`src/data/bank.ts`: seed + Grade 1–10 starters + converted legacy + gap fillers, deduped, `active` and `quality_score >= 0.7`). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
 
 ## Android APK
 
-Sideload notes and rebuild commands: `docs/ANDROID-APK.md`. Latest preview: [SmarterThanAI-1.0.5-preview.apk](https://github.com/testing-around/smarter-than-ai/releases/download/v1.0.5-preview/SmarterThanAI-1.0.5-preview.apk) (versionName **1.0.5**, versionCode **6**, SHA-256 `fa2bd7168f873b1b0bf4b786d50656699a6d4dd0825c470ccc7cf925829d390e`). Preview profile in `eas.json` outputs an **APK** (`buildType: apk`). This environment has no Expo login, so the preview APK is produced locally with `expo prebuild` + Gradle.
+Sideload notes and rebuild commands: `docs/ANDROID-APK.md`. Latest preview: **1.1.0** (`v1.1.0-preview`) — see that doc for the public HTTPS URL after publish. Preview profile in `eas.json` outputs an **APK** (`buildType: apk`). This environment has no Expo login, so the preview APK is produced locally with `expo prebuild` + Gradle.
 
 ## Config
 
 `app.json`
 
-- `name`: Smarter Than AI
+- `name`: Smarter Then AI
 - `slug`: smarter-than-ai
 - `userInterfaceStyle`: dark
-- iOS `bundleIdentifier` / Android `package`: `com.smarterthanai.game`
+- iOS `bundleIdentifier` / Android `package`: `com.smarterthanai.game` (kept; not renamed)
+
+## Later (stubs)
+
+Full 1750+ generated bank, deeper adaptive difficulty, a full sound-design pack, accessibility suite, continuous voice-learning ML, and elimination mode are deferred. TIMER as a match-end clock is stubbed (still ends on the question cap + tiebreak).

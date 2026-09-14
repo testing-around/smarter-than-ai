@@ -1,5 +1,6 @@
 import seed from '../../data/master-seed-questions.json';
 import type { MasterCategory, Question, QuestionType } from '../types';
+import { GRADE_QUESTIONS } from './gradeQuestions';
 import { GAP_QUESTIONS } from './gapQuestions';
 import { convertLegacyQuestion } from './legacyConvert';
 import { MORE_QUESTIONS } from './moreQuestions';
@@ -108,6 +109,7 @@ const legacy = [...CORE_QUESTIONS, ...MORE_QUESTIONS].map(convertLegacyQuestion)
 
 export const QUESTIONS: Question[] = mergeUnique([
   seed.map(fromSeed),
+  GRADE_QUESTIONS,
   legacy,
   GAP_QUESTIONS,
 ]);

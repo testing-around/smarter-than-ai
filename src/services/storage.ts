@@ -18,6 +18,9 @@ export const DEFAULT_SETTINGS: GameSettings = {
   earlyShoutOut: false,
   earlyTapIn: true,
   wrongAnswerLockout: true,
+  winCondition: 'QUESTION_LIMIT',
+  pointTarget: 500,
+  hostPersonality: 'FUNNY',
 };
 
 export interface PersistedState {

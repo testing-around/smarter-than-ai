@@ -152,9 +152,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel2,
     borderColor: colors.border,
     borderWidth: 1,
-    borderRadius: 12,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    borderRadius: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 14,
+    minHeight: 76,
+    minWidth: 120,
+    justifyContent: 'center',
   },
   chipOn: {
     borderColor: colors.cyan,
@@ -168,6 +171,6 @@ const styles = StyleSheet.create({
   chipText: {
     color: colors.white,
     fontWeight: '800',
-    fontSize: 12,
+    fontSize: 16,
   },
 });

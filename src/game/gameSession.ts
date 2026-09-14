@@ -68,6 +68,7 @@ export function createGameSession(input: {
     buzzedPlayerId: null,
     questionSessionId: '',
     hostLine: '',
+    tiebreakActive: false,
   };
 }
 

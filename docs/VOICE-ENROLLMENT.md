@@ -11,7 +11,7 @@ Profiles stay on this device (AsyncStorage). Raw enrollment wav is embedded, the
 
 Each line is meant to be about 2–5 seconds of clean speech:
 
-1. `My name is {Name} and I am ready to play Smarter Than AI`
+1. `My name is {Name} and I am ready to play Smarter Then AI`
 2. `Yes, I know this one and I am sure of my answer`
 3. `No, that is not the answer I wanted to give`
 4. `I know the answer and I want to shout it out now`

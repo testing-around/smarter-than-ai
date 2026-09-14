@@ -27,7 +27,7 @@ function sample(phraseId: EnrollmentSample['phraseId'], freq: number): Enrollmen
   const embedding = extractBandEmbedding({ sampleRate: 16000, samples: sine(freq) }).vector;
   const transcript =
     phraseId === 'ready'
-      ? 'My name is Damian and I am ready to play Smarter Than AI'
+      ? 'My name is Damian and I am ready to play Smarter Then AI'
       : phraseId === 'yes'
         ? 'Yes I know this one and I am sure of my answer'
         : 'No that is not the answer I wanted to give';

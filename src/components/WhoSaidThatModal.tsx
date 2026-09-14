@@ -44,6 +44,7 @@ export function WhoSaidThatModal({
                   key={player.id}
                   onPress={() => onClaim(player.id)}
                   style={styles.claim}
+                  accessibilityRole="button"
                 >
                   <Text style={styles.emoji}>{player.emoji}</Text>
                   <Text style={styles.name}>{player.name}</Text>
@@ -112,24 +113,29 @@ const styles = StyleSheet.create({
   claims: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   claim: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
+    gap: 10,
     backgroundColor: colors.panel2,
-    borderColor: colors.border,
+    borderColor: colors.gold,
     borderWidth: 1,
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    minHeight: 88,
+    minWidth: '46%',
+    flexGrow: 1,
   },
   emoji: {
-    fontSize: 18,
+    fontSize: 28,
   },
   name: {
     color: colors.white,
-    fontWeight: '700',
+    fontWeight: '800',
+    fontSize: 20,
   },
 });

@@ -1,3 +1,5 @@
+import { brandWelcome } from '../branding';
+import { pickWinnerLine } from '../game/winnerEngine';
 import {
   getHostVoiceMode,
   hostSpeechOptions,
@@ -172,7 +174,7 @@ export async function hostSay(line: string, request?: HostSayRequest): Promise<T
 }
 
 export const hostCopy = {
-  welcome: 'Welcome to Smarter Than AI. Enter your names and get ready to shout.',
+  welcome: brandWelcome(),
   lobby: (names: string) => `Players ready: ${names}. Tap start when the room is loud.`,
   question: (n: number, category: string) => `Question ${n}. ${category}.`,
   boss: 'Boss round. Triple points. Do not choke.',
@@ -182,7 +184,7 @@ export const hostCopy = {
   skip: 'Skipping this one.',
   reveal: (answer: string) => `The answer is ${answer}.`,
   who: (heard?: string) => (heard ? `Who said ${heard}?` : 'Who said that?'),
-  winner: (name: string) => `${name} is smarter than AI. For now.`,
+  winner: (name: string) => pickWinnerLine(name),
   asking: 'Hold your answers. The host is still speaking.',
   listening: 'Listening for answers.',
 };

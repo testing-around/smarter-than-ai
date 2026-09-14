@@ -1,3 +1,4 @@
+import { brandEnrollmentLine } from '../branding';
 import { enrollmentPhrases, phrasePassed, scorePhraseMatch } from '../game/enrollmentMachine';
 import type { Player } from '../types';
 
@@ -13,6 +14,8 @@ export interface ParsedSpeech {
 const LETTER_WORDS: Record<string, number> = {
   a: 0,
   ay: 0,
+  aye: 0,
+  eh: 0,
   alpha: 0,
   b: 1,
   bee: 1,
@@ -35,10 +38,35 @@ const LETTER_WORDS: Record<string, number> = {
   fourth: 3,
 };
 
+const NUMBER_WORDS: Record<string, string> = {
+  zero: '0',
+  one: '1',
+  two: '2',
+  three: '3',
+  four: '4',
+  five: '5',
+  six: '6',
+  seven: '7',
+  eight: '8',
+  nine: '9',
+  ten: '10',
+  fifty: '50',
+  hundred: '100',
+};
+
 function normalize(text: string): string {
   return text
     .toLowerCase()
+    .replace(/['’]/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function fold(text: string): string {
+  return normalize(text)
+    .replace(/^(the|a|an)\s+/, '')
+    .replace(/\b(option|letter|answer|choice|number)\b/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -149,32 +177,39 @@ function matchLetter(transcript: string): number | null {
   return null;
 }
 
+function expandAliases(text: string): string[] {
+  const folded = fold(text);
+  const extra = NUMBER_WORDS[folded];
+  return extra && extra !== folded ? [folded, extra] : [folded];
+}
+
 function matchAccepted(
   transcript: string,
   choices: string[],
   acceptedAnswers: string[],
 ): number | null {
-  const hay = normalize(transcript);
-  const words = tokens(transcript);
+  const hay = fold(transcript);
+  const words = tokens(hay);
 
   for (const accepted of acceptedAnswers) {
-    const needle = normalize(accepted);
-    if (needle.length < 2) {
-      continue;
-    }
-    if (hay === needle || hay.includes(needle)) {
-      const mapped = indexForAccepted(needle, choices);
-      if (mapped !== null) {
-        return mapped;
+    for (const needle of expandAliases(accepted)) {
+      if (needle.length < 1) {
+        continue;
       }
-    }
+      if (hay === needle || hay.includes(needle) || words.includes(needle)) {
+        const mapped = indexForAccepted(needle, choices) ?? indexForAccepted(fold(accepted), choices);
+        if (mapped !== null) {
+          return mapped;
+        }
+      }
 
-    if (needle.length >= 4) {
-      for (const word of words) {
-        if (word.length >= 4 && levenshtein(word, needle) <= 1) {
-          const mapped = indexForAccepted(needle, choices);
-          if (mapped !== null) {
-            return mapped;
+      if (needle.length >= 3) {
+        for (const word of words) {
+          if (word.length >= 3 && levenshtein(word, needle) <= 1) {
+            const mapped = indexForAccepted(needle, choices) ?? indexForAccepted(fold(accepted), choices);
+            if (mapped !== null) {
+              return mapped;
+            }
           }
         }
       }
@@ -184,22 +219,23 @@ function matchAccepted(
 }
 
 function indexForAccepted(needle: string, choices: string[]): number | null {
-  const exact = choices.findIndex((choice) => normalize(choice) === needle);
+  const foldedNeedle = fold(needle);
+  const exact = choices.findIndex((choice) => fold(choice) === foldedNeedle);
   if (exact >= 0) {
     return exact;
   }
-  const via = choices.findIndex((choice) => normalize(choice).includes(needle));
+  const via = choices.findIndex((choice) => fold(choice).includes(foldedNeedle));
   return via >= 0 ? via : null;
 }
 
 function matchChoiceText(transcript: string, choices: string[]): number | null {
-  const hay = normalize(transcript);
+  const hay = fold(transcript);
   let bestIndex: number | null = null;
   let bestLen = 0;
 
   for (let index = 0; index < choices.length; index += 1) {
-    const needle = normalize(choices[index] ?? '');
-    if (needle.length >= 4 && hay.includes(needle) && needle.length > bestLen) {
+    const needle = fold(choices[index] ?? '');
+    if (needle.length >= 2 && (hay === needle || hay.includes(needle)) && needle.length > bestLen) {
       bestIndex = index;
       bestLen = needle.length;
       continue;
@@ -261,7 +297,7 @@ export function parseSpokenAnswer(
 }
 
 export function enrollmentPhrase(name: string): string {
-  return `My name is ${name} and I'm ready to play`;
+  return brandEnrollmentLine(name);
 }
 
 export function transcriptMatchesEnrollment(transcript: string, name: string): boolean {

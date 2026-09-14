@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ExitGameModal } from '../components/ExitGameModal';
 import { HostBar } from '../components/HostBar';
 import { Panel } from '../components/Panel';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Scoreboard } from '../components/Scoreboard';
 import { Screen } from '../components/Screen';
 import { useGame } from '../context/GameContext';
+import { detectLeaders } from '../game/tieDetection';
 import { colors, letters } from '../theme/colors';
 
 export function RoundResultScreen() {
@@ -18,7 +21,11 @@ export function RoundResultScreen() {
     canAdvance,
     hostSpeaking,
     settings,
+    tiebreakActive,
+    goHome,
+    abandonActiveGame,
   } = useGame();
+  const [leaveOpen, setLeaveOpen] = useState(false);
 
   if (!lastResult) {
     return (
@@ -28,6 +35,16 @@ export function RoundResultScreen() {
     );
   }
 
+  const leaders = detectLeaders(players);
+  const atCap = questionNumber >= questionTotal;
+  const nextLabel =
+    !canAdvance && hostSpeaking
+      ? 'Host is wrapping up…'
+      : tiebreakActive || (atCap && leaders.isTie)
+        ? 'Sudden death'
+        : atCap && leaders.leaders.length === 1
+          ? 'See champion'
+          : 'Next question';
   const choice =
     lastResult.choiceIndex !== null
       ? `${letters[lastResult.choiceIndex]} · ${lastResult.question.choices[lastResult.choiceIndex]}`
@@ -67,20 +84,30 @@ export function RoundResultScreen() {
         <Text style={styles.explain}>{lastResult.question.explanation}</Text>
       </Panel>
       <View style={{ height: 12 }} />
-      <Scoreboard players={players} highlightId={lastResult.playerId} />
+      <Scoreboard players={players} highlightId={lastResult.playerId} preserveOrder />
       <View style={{ height: 12 }} />
-      <HostBar line={hostLine} />
+      <HostBar
+        line={hostLine}
+        compact
+        onHome={() => setLeaveOpen(true)}
+      />
       <View style={{ height: 18 }} />
       <PrimaryButton
-        label={
-          questionNumber >= questionTotal
-            ? 'See final board'
-            : !canAdvance && hostSpeaking
-              ? 'Host is wrapping up…'
-              : 'Next question'
-        }
+        label={nextLabel}
         disabled={settings.hostMode === 'FULL_AI_HOST' && !canAdvance}
         onPress={continueAfterRound}
+      />
+      <ExitGameModal
+        visible={leaveOpen}
+        onSaveAndExit={() => {
+          setLeaveOpen(false);
+          goHome();
+        }}
+        onExit={() => {
+          setLeaveOpen(false);
+          abandonActiveGame();
+        }}
+        onCancel={() => setLeaveOpen(false)}
       />
     </Screen>
   );

@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderWidth: 1,
     borderRadius: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    minHeight: 64,
+    paddingVertical: 16,
+    paddingHorizontal: 14,
+    minHeight: 80,
     flex: 1,
   },
   pressed: {
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
   label: {
     color: colors.white,
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: 18,
+    lineHeight: 22,
     flex: 1,
   },
 });

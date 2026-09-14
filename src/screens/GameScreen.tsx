@@ -1,7 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Modal, StyleSheet, Text, View } from 'react-native';
+import { ChipSelect } from '../components/ChipSelect';
 import { ChoiceButton } from '../components/ChoiceButton';
 import { ClickerPanel } from '../components/ClickerPanel';
 import { EventLogPanel } from '../components/EventLogPanel';
+import { ExitGameModal } from '../components/ExitGameModal';
 import { HostBar } from '../components/HostBar';
 import { HostControls } from '../components/HostControls';
 import { Panel } from '../components/Panel';
@@ -17,6 +20,7 @@ import { canAcceptAnswers } from '../game/phases';
 import { CATEGORY_LABEL } from '../data/bank';
 import { difficultyBand } from '../data/questionAccess';
 import { colors } from '../theme/colors';
+import type { HostPersonality } from '../types';
 
 export function GameScreen() {
   const {
@@ -53,6 +57,10 @@ export function GameScreen() {
     claimAnswer,
     listenNow,
     goHome,
+    abandonActiveGame,
+    patchSettings,
+    tiebreakActive,
+    tiebreakLeaderIds,
     pauseRound,
     resumeRound,
     repeatQuestion,
@@ -67,6 +75,8 @@ export function GameScreen() {
     setClickerCorrect,
     confirmClicker,
   } = useGame();
+  const [leaveOpen, setLeaveOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   if (!current) {
     return (
@@ -76,8 +86,13 @@ export function GameScreen() {
     );
   }
 
-  const turnPlayer = players.find((p) => p.id === turnPlayerId);
-  const buzzed = players.find((p) => p.id === buzzedPlayerId);
+  const seated = players;
+  const livePlayers =
+    tiebreakActive && tiebreakLeaderIds.length
+      ? seated.filter((p) => tiebreakLeaderIds.includes(p.id) || p.isAi)
+      : seated;
+  const turnPlayer = seated.find((p) => p.id === turnPlayerId);
+  const buzzed = seated.find((p) => p.id === buzzedPlayerId);
   const earlyTap = isEarlyAnswerArmed(settings);
   const earlyVoice = isEarlyShoutArmed(settings);
   const acceptingTaps =
@@ -100,7 +115,7 @@ export function GameScreen() {
     <Screen>
       <View style={styles.top}>
         <Text style={styles.kicker}>
-          Q {questionNumber}/{questionTotal}
+          {tiebreakActive ? 'TIEBREAK' : `Q ${questionNumber}/${questionTotal}`}
         </Text>
         <Text style={[styles.timer, { color: timerColor }]}>
           {timerArmed ? `${timeLeft}s` : '—'}
@@ -122,9 +137,16 @@ export function GameScreen() {
           </Text>
         </View>
       ) : null}
+      {tiebreakActive ? (
+        <View style={styles.alert}>
+          <Text style={styles.alertTitle}>SUDDEN DEATH</Text>
+          <Text style={styles.alertBody}>Only the tied leaders can answer until one winner.</Text>
+        </View>
+      ) : null}
       <Scoreboard
-        players={players}
+        players={seated}
         highlightId={settings.answerMode === 'turn' ? turnPlayerId : buzzedPlayerId}
+        preserveOrder
       />
       <View style={{ height: 12 }} />
       <Panel gold={isBoss}>
@@ -174,7 +196,7 @@ export function GameScreen() {
 
       {settings.answerMode === 'buzz' && !buzzedPlayerId ? (
         <View style={styles.buzzRow}>
-          {players
+          {livePlayers
             .filter((p) => !p.isAi)
             .map((player) => (
               <View key={player.id} style={{ flex: 1 }}>
@@ -206,7 +228,7 @@ export function GameScreen() {
         <ClickerPanel
           pending={pendingAnswer}
           choiceLabel={current.choices[pendingAnswer.choiceIndex] ?? ''}
-          players={players.filter((p) => !lockoutPlayerIds.includes(p.id))}
+          players={livePlayers.filter((p) => !lockoutPlayerIds.includes(p.id))}
           who={clickerWho}
           correctOverride={clickerCorrect}
           onWho={setClickerWho}
@@ -216,7 +238,16 @@ export function GameScreen() {
       ) : null}
 
       <View style={{ height: 12 }} />
-      <HostBar line={listening ? `${hostLine} · listening` : hostLine} />
+      <HostBar
+        line={listening ? `${hostLine} · listening` : hostLine}
+        compact
+        paused={paused}
+        onHome={() => setLeaveOpen(true)}
+        onPause={paused ? resumeRound : pauseRound}
+        onRepeat={repeatQuestion}
+        onSkip={skipQuestion}
+        onSettings={() => setSettingsOpen(true)}
+      />
       {transcript ? <Text style={styles.heard}>Heard: {transcript}</Text> : null}
       <HostControls
         paused={paused}
@@ -242,7 +273,7 @@ export function GameScreen() {
         />
       ) : null}
       <View style={{ height: 8 }} />
-      <PrimaryButton label="Quit to home" variant="ghost" onPress={goHome} />
+      <PrimaryButton label="🏠 Home" variant="ghost" onPress={() => setLeaveOpen(true)} />
       <EventLogPanel events={eventLog} />
 
       <WhoSaidThatModal
@@ -250,9 +281,48 @@ export function GameScreen() {
         transcript={whoSaidThat?.transcript ?? ''}
         choiceIndex={whoSaidThat?.choiceIndex ?? 0}
         choiceLabel={current.choices[whoSaidThat?.choiceIndex ?? 0] ?? ''}
-        players={players.filter((p) => !lockoutPlayerIds.includes(p.id) || p.isAi)}
+        players={livePlayers.filter((p) => !lockoutPlayerIds.includes(p.id) || p.isAi)}
         onClaim={claimAnswer}
       />
+      <ExitGameModal
+        visible={leaveOpen}
+        onSaveAndExit={() => {
+          setLeaveOpen(false);
+          goHome();
+        }}
+        onExit={() => {
+          setLeaveOpen(false);
+          abandonActiveGame();
+        }}
+        onCancel={() => setLeaveOpen(false)}
+      />
+      <Modal visible={settingsOpen} transparent animationType="fade">
+        <View style={styles.settingsBackdrop}>
+          <View style={styles.settingsCard}>
+            <Text style={styles.alertTitle}>IN-GAME SETTINGS</Text>
+            <Text style={styles.alertBody}>
+              Win: {settings.winCondition ?? 'QUESTION_LIMIT'}
+              {settings.winCondition === 'POINT_TARGET'
+                ? ` · first to ${settings.pointTarget ?? 500}`
+                : ` · after ${questionTotal} questions`}
+            </Text>
+            <Text style={styles.settingsLabel}>HOST PERSONALITY</Text>
+            <ChipSelect<HostPersonality>
+              value={settings.hostPersonality ?? 'FUNNY'}
+              onChange={(hostPersonality) => patchSettings({ hostPersonality })}
+              options={[
+                { value: 'CHILL', label: 'CHILL' },
+                { value: 'FUNNY', label: 'FUNNY' },
+                { value: 'COMPETITIVE', label: 'COMPETITIVE' },
+                { value: 'SASSY', label: 'SASSY' },
+                { value: 'SAVAGE', label: 'SAVAGE' },
+              ]}
+            />
+            <View style={{ height: 12 }} />
+            <PrimaryButton label="Close" variant="ghost" onPress={() => setSettingsOpen(false)} />
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
@@ -297,9 +367,9 @@ const styles = StyleSheet.create({
   },
   prompt: {
     color: colors.white,
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: '800',
-    lineHeight: 28,
+    lineHeight: 34,
   },
   hint: {
     color: colors.muted,
@@ -344,5 +414,26 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontWeight: '700',
     lineHeight: 18,
+  },
+  settingsBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(7,17,31,0.82)',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  settingsCard: {
+    backgroundColor: colors.panel,
+    borderColor: colors.gold,
+    borderWidth: 1,
+    borderRadius: 22,
+    padding: 20,
+  },
+  settingsLabel: {
+    color: colors.muted,
+    letterSpacing: 1.4,
+    fontWeight: '800',
+    fontSize: 12,
+    marginTop: 14,
+    marginBottom: 8,
   },
 });

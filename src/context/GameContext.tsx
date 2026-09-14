@@ -10,14 +10,24 @@ import {
 } from 'react';
 import { AppState } from 'react-native';
 import type { ClickerWho } from '../components/ClickerPanel';
+import { APP_TAGLINE } from '../branding';
+import { QUESTIONS } from '../data/bank';
 import { AI_PLAYER, FAMILY_PLAYERS, createPlayer } from '../data/players';
 import { correctChoiceIndex, isBossQuestion } from '../data/questionAccess';
 import { isEarlyAnswerArmed, isEarlyShoutArmed, isEarlyTapArmed } from '../game/earlyShout';
 import {
+  hostCorrectLine,
+  hostTieLine,
+  hostWrongReaction,
+  resetPersonalityHistory,
+} from '../game/hostPersonality';
+import { detectLeaders, isPlayerInTiebreak, tieAnnouncement } from '../game/tieDetection';
+import { evaluateMatchEnd } from '../game/winConditions';
+import { neverRandomWinner, pickWinnerLine } from '../game/winnerEngine';
+import {
   LISTEN_BUFFER_MS,
   createAttempt,
   decideAttemptOutcome,
-  hostWrongLine,
   isPlayerLockedOut,
   lockoutsAfterWrong,
   resetLockouts,
@@ -69,6 +79,7 @@ import {
   saveSettings,
 } from '../services/storage';
 import { configureHostVoice, hostCopy, hostSay, stopHostVoice } from '../services/tts';
+import { shuffle } from '../utils/shuffle';
 import { warmHostVoice } from '../services/hostVoice';
 import { checkVoiceAvailable } from '../services/voice';
 import type {
@@ -212,6 +223,7 @@ interface GameContextValue {
   claimAnswer: (playerId: string) => void;
   continueAfterRound: () => void;
   rematch: () => void;
+  playAgain: () => void;
   listenNow: () => void;
   pauseRound: () => void;
   resumeRound: () => void;
@@ -232,6 +244,9 @@ interface GameContextValue {
   confirmClicker: () => void;
   logSpeakerCorrection: (fromId: string | null, toId: string) => void;
   logTranscriptCorrection: (fromText: string, toText: string) => void;
+  tiebreakActive: boolean;
+  tiebreakLeaderIds: string[];
+  abandonActiveGame: () => void;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -274,7 +289,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
     available: false,
     detail: 'Checking speech recognition…',
   });
-  const [hostLine, setHostLine] = useState('Are you smarter than an AI?');
+  const [hostLine, setHostLine] = useState(APP_TAGLINE);
+  const [tiebreakActive, setTiebreakActive] = useState(false);
+  const [tiebreakLeaderIds, setTiebreakLeaderIds] = useState<string[]>([]);
+  const tiebreakRef = useRef(false);
+  const tiebreakLeadersRef = useRef<string[]>([]);
   const [transcript, setTranscript] = useState('');
   const [listening, setListening] = useState(false);
   const [remaining, setRemaining] = useState<Question[]>([]);
@@ -584,6 +603,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       buzzedPlayerId: buzzedRef.current,
       questionSessionId: sessionIdRef.current,
       hostLine: '',
+      tiebreakActive: tiebreakRef.current,
     };
   }, []);
 
@@ -884,9 +904,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       );
 
       if (input.player && points > 0) {
-        setPlayers((prev) =>
-          prev.map((p) => (p.id === input.player?.id ? { ...p, score: p.score + points } : p)),
+        const nextPlayers = playersRef.current.map((p) =>
+          p.id === input.player?.id ? { ...p, score: p.score + points } : p,
         );
+        playersRef.current = nextPlayers;
+        setPlayers(nextPlayers);
         logEvent('SCORE_UPDATED', `${input.player.name} +${points}`);
       }
 
@@ -908,7 +930,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setInterruptAlert(false);
         logEvent('WRONG_STAY', input.player?.name ?? 'timeout');
         applyPhase('WRONG_ATTEMPT');
-        const line = input.player ? hostWrongLine(input.player.name) : hostCopy.timeout;
+        const heard =
+          input.choiceIndex !== null ? (question.choices[input.choiceIndex] ?? '') : '';
+        const line = input.player
+          ? hostWrongReaction(
+              settingsRef.current.hostPersonality ?? 'FUNNY',
+              input.player.name,
+              heard,
+            )
+          : hostCopy.timeout;
         setHostLine(line);
         persistSessionRef.current();
         void (async () => {
@@ -937,7 +967,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
         line = hostCopy.reveal(question.correct_answer);
         logEvent('QUESTION_REVEALED', question.correct_answer);
       } else if (input.player && correct) {
-        line = hostCopy.correct(input.player.name);
+        line = hostCorrectLine(
+          settingsRef.current.hostPersonality ?? 'FUNNY',
+          input.player.name,
+          question.correct_answer,
+        );
       }
       applyPhase('HOST_FEEDBACK');
       setHostLine(line);
@@ -1003,6 +1037,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
         )
       ) {
         setLine('That player is locked out on this question.', true);
+        return;
+      }
+      if (
+        tiebreakRef.current &&
+        !isPlayerInTiebreak(
+          player.id,
+          playersRef.current.filter((p) => tiebreakLeadersRef.current.includes(p.id)),
+        )
+      ) {
+        setLine('Sudden death is only for the leaders.', true);
         return;
       }
 
@@ -1367,6 +1411,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
         ) {
           return;
         }
+        if (tiebreakRef.current && !tiebreakLeadersRef.current.includes(bot.id)) {
+          return;
+        }
         if (mode === 'turn') {
           const currentTurn = roster[turnRef.current % roster.length];
           if (currentTurn?.id !== bot.id) {
@@ -1618,6 +1665,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
     turnRef.current = 0;
     setLastResult(null);
     setEventLog([]);
+    tiebreakRef.current = false;
+    setTiebreakActive(false);
+    setTiebreakLeaderIds([]);
+    tiebreakLeadersRef.current = [];
+    resetPersonalityHistory();
     openQuestion(next, 1, cfg.questionCount);
   }, [openQuestion, refreshSessionLists]);
 
@@ -1629,11 +1681,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (lockedRef.current || buzzedRef.current) {
         return;
       }
+      if (tiebreakRef.current && !tiebreakLeadersRef.current.includes(playerId)) {
+        setLine('Sudden death is only for the leaders.', true);
+        return;
+      }
       buzzedRef.current = playerId;
       setBuzzedPlayerId(playerId);
       beginListening();
     },
-    [beginListening],
+    [beginListening, setLine],
   );
 
   const claimAnswer = useCallback(
@@ -1653,6 +1709,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setLine('That player is locked out on this question.', true);
         return;
       }
+      if (tiebreakRef.current && !tiebreakLeadersRef.current.includes(player.id)) {
+        setLine('Sudden death is only for the leaders.', true);
+        return;
+      }
       pendingClaimRef.current = null;
       setWhoSaidThat(null);
       whoRef.current = null;
@@ -1669,35 +1729,45 @@ export function GameProvider({ children }: { children: ReactNode }) {
     [logEvent, resolveRound, setLine],
   );
 
-  const finishGame = useCallback(() => {
-    const roster = [...playersRef.current].sort((a, b) => b.score - a.score);
-    const nextBoard = mergeLeaderboard(leaderboard, roster);
-    setLeaderboard(nextBoard);
-    void saveLeaderboard(nextBoard);
-    const snap = snapshotSession();
-    if (snap) {
-      void gameSessionStore.saveSession({ ...snap, status: 'completed' }).then(() => {
-        void refreshSessionLists();
-      });
-    }
-    gameSessionIdRef.current = null;
-    setScreen('FINAL');
-    applyPhase('IDLE');
-    const champ = roster[0];
-    setLine(champ ? hostCopy.winner(champ.name) : hostCopy.timeout);
-  }, [applyPhase, leaderboard, refreshSessionLists, setLine, snapshotSession]);
+  const resetTiebreak = useCallback(() => {
+    tiebreakRef.current = false;
+    setTiebreakActive(false);
+    setTiebreakLeaderIds([]);
+    tiebreakLeadersRef.current = [];
+  }, []);
 
-  const continueAfterRound = useCallback(() => {
-    clearFeedbackTimer();
-    void stopHostVoice();
-    hostSpeakingRef.current = false;
-    setHostSpeaking(false);
+  const applyTiebreak = useCallback(
+    (leaders: Player[]) => {
+      const ids = leaders.map((player) => player.id);
+      tiebreakRef.current = true;
+      setTiebreakActive(true);
+      setTiebreakLeaderIds(ids);
+      tiebreakLeadersRef.current = ids;
+    },
+    [],
+  );
+
+  const refillDeck = useCallback((): Question[] => {
+    const used = new Set(questionOrderRef.current);
+    if (currentRef.current) {
+      used.add(currentRef.current.question_id);
+    }
+    let pool = QUESTIONS.filter((question) => question.active !== false && !used.has(question.question_id));
+    if (pool.length === 0) {
+      pool = QUESTIONS.filter(
+        (question) => question.active !== false && question.question_id !== currentRef.current?.question_id,
+      );
+    }
+    return shuffle(pool);
+  }, []);
+
+  const dealNextQuestion = useCallback(() => {
     const cfg = settingsRef.current;
-    if (questionNumberRef.current >= cfg.questionCount || remainingRef.current.length === 0) {
-      finishGame();
-      return;
+    if (remainingRef.current.length === 0) {
+      const extra = refillDeck();
+      remainingRef.current = extra;
+      setRemaining(extra);
     }
-
     const recent = resultsRef.current.map((r) => r.correct);
     let target = adaptiveRef.current;
     if (cfg.difficulty === 'adaptive') {
@@ -1707,21 +1777,120 @@ export function GameProvider({ children }: { children: ReactNode }) {
     } else {
       target = cfg.difficulty === 'easy' ? 'easy' : 'hard';
     }
-
     const { next, rest } = takeMatching(remainingRef.current, target);
+    questionOrderRef.current = [...questionOrderRef.current, next.question_id];
     setRemaining(rest);
     remainingRef.current = rest;
     if (cfg.answerMode === 'turn') {
-      const nextTurn = (turnRef.current + 1) % Math.max(playersRef.current.length, 1);
+      const eligible = tiebreakRef.current
+        ? playersRef.current.filter((p) => tiebreakLeadersRef.current.includes(p.id))
+        : playersRef.current;
+      const nextTurn = (turnRef.current + 1) % Math.max(eligible.length || playersRef.current.length, 1);
       setTurnIndex(nextTurn);
       turnRef.current = nextTurn;
     }
     openQuestion(next, questionNumberRef.current + 1, cfg.questionCount);
-  }, [clearFeedbackTimer, finishGame, openQuestion]);
+  }, [openQuestion, refillDeck]);
+
+  const finishGame = useCallback(
+    (winner?: Player | null) => {
+      const detection = detectLeaders(playersRef.current);
+      const champ = winner ?? neverRandomWinner(detection.leaders);
+      if (!champ) {
+        applyTiebreak(detection.leaders);
+        const line = hostTieLine(
+          detection.leaders.map((p) => p.name).join(' and '),
+          detection.score,
+        );
+        logEvent('TIE_DECLARED', tieAnnouncement(detection.leaders, detection.score));
+        logEvent('TIEBREAKER_STARTED', detection.leaders.map((p) => p.name).join(', '));
+        setHostLine(line);
+        void (async () => {
+          await hostSay(line);
+          dealNextQuestion();
+        })();
+        return;
+      }
+      const roster = [
+        champ,
+        ...playersRef.current.filter((player) => player.id !== champ.id),
+      ];
+      const nextBoard = mergeLeaderboard(leaderboard, roster);
+      setLeaderboard(nextBoard);
+      void saveLeaderboard(nextBoard);
+      const snap = snapshotSession();
+      if (snap) {
+        void gameSessionStore.saveSession({ ...snap, status: 'completed' }).then(() => {
+          void refreshSessionLists();
+        });
+      }
+      gameSessionIdRef.current = null;
+      resetTiebreak();
+      setScreen('FINAL');
+      applyPhase('IDLE');
+      logEvent('WINNER_DECLARED', champ.name);
+      setLine(pickWinnerLine(champ.name));
+    },
+    [
+      applyPhase,
+      applyTiebreak,
+      dealNextQuestion,
+      leaderboard,
+      logEvent,
+      refreshSessionLists,
+      resetTiebreak,
+      setLine,
+      snapshotSession,
+    ],
+  );
+
+  const continueAfterRound = useCallback(() => {
+    clearFeedbackTimer();
+    void stopHostVoice();
+    hostSpeakingRef.current = false;
+    setHostSpeaking(false);
+    const cfg = settingsRef.current;
+    const decision = evaluateMatchEnd({
+      players: playersRef.current,
+      winCondition: cfg.winCondition ?? 'QUESTION_LIMIT',
+      pointTarget: cfg.pointTarget ?? 500,
+      questionsPlayed: questionNumberRef.current,
+      questionLimit: cfg.questionCount,
+      remainingCount: remainingRef.current.length,
+      inTiebreak: tiebreakRef.current,
+    });
+
+    if (decision.kind === 'winner') {
+      finishGame(decision.winner);
+      return;
+    }
+
+    if (decision.kind === 'tiebreak') {
+      const firstEntry = !tiebreakRef.current;
+      applyTiebreak(decision.detection.leaders);
+      if (firstEntry) {
+        const names = decision.detection.leaders.map((p) => p.name).join(' and ');
+        const line = hostTieLine(names, decision.detection.score);
+        logEvent('TIE_DECLARED', tieAnnouncement(decision.detection.leaders, decision.detection.score));
+        logEvent('TIEBREAKER_STARTED', names);
+        setHostLine(line);
+        void (async () => {
+          await hostSay(line);
+          dealNextQuestion();
+        })();
+        return;
+      }
+      dealNextQuestion();
+      return;
+    }
+
+    dealNextQuestion();
+  }, [applyTiebreak, clearFeedbackTimer, dealNextQuestion, finishGame, logEvent]);
 
   continueAfterRoundRef.current = continueAfterRound;
 
   const rematch = useCallback(() => {
+    resetTiebreak();
     setPlayers((prev) => prev.map((p) => ({ ...p, score: 0 })));
     setResults([]);
     setLastResult(null);
@@ -1730,7 +1899,54 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setScreen('LOBBY');
     const names = playersRef.current.map((p) => p.name).join(', ');
     setLine(hostCopy.lobby(names));
-  }, [applyPhase, setLine]);
+  }, [applyPhase, resetTiebreak, setLine]);
+
+  const playAgain = useCallback(() => {
+    resetTiebreak();
+    const cleared = playersRef.current.map((p) => ({ ...p, score: 0 }));
+    playersRef.current = cleared;
+    setPlayers(cleared);
+    setResults([]);
+    resultsRef.current = [];
+    setLastResult(null);
+    startMatch();
+  }, [resetTiebreak, startMatch]);
+
+  const abandonActiveGame = useCallback(() => {
+    const snap = snapshotSession();
+    if (snap) {
+      void gameSessionStore.saveSession({ ...snap, status: 'abandoned' }).then(() => {
+        void refreshSessionLists();
+      });
+    }
+    gameSessionIdRef.current = null;
+    resetTiebreak();
+    clearAiTimer();
+    clearFeedbackTimer();
+    void closePlayerMic();
+    void stopHostVoice();
+    hostSpeakingRef.current = false;
+    setHostSpeaking(false);
+    setListening(false);
+    timerArmedRef.current = false;
+    applyPhase('IDLE');
+    setScreen('HOME');
+    setLocked(false);
+    lockedRef.current = false;
+    setCurrent(null);
+    currentRef.current = null;
+    resetRoundUi();
+    setLine(hostCopy.welcome, false);
+  }, [
+    applyPhase,
+    clearAiTimer,
+    clearFeedbackTimer,
+    refreshSessionLists,
+    resetRoundUi,
+    resetTiebreak,
+    setLine,
+    snapshotSession,
+  ]);
 
   const pauseRound = useCallback(() => {
     if (pausedRef.current || lockedRef.current) {
@@ -1902,6 +2118,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setSessionId(sessionIdRef.current);
     resumeTimeLeftRef.current = Math.max(1, Math.round(session.remainingTimeMs / 1000));
     configureHostVoice(session.settings.hostVoice ?? 'british-female');
+    const resumeTie = Boolean(session.tiebreakActive);
+    tiebreakRef.current = resumeTie;
+    setTiebreakActive(resumeTie);
+    const leaderIds = resumeTie ? detectLeaders(session.players).leaders.map((p) => p.id) : [];
+    setTiebreakLeaderIds(leaderIds);
+    tiebreakLeadersRef.current = leaderIds;
   }, []);
 
   const continueSavedGame = useCallback(
@@ -2185,6 +2407,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       claimAnswer,
       continueAfterRound,
       rematch,
+      playAgain,
       listenNow,
       pauseRound,
       resumeRound,
@@ -2205,8 +2428,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
       confirmClicker,
       logSpeakerCorrection,
       logTranscriptCorrection,
+      tiebreakActive,
+      tiebreakLeaderIds,
+      abandonActiveGame,
     }),
     [
+      abandonActiveGame,
       addPlayer,
       applyQuickMode,
       banner,
@@ -2253,6 +2480,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       paused,
       pendingAnswer,
       phase,
+      playAgain,
       players,
       questionAttempts,
       questionNumber,
@@ -2281,6 +2509,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       stopHostSpeaking,
       submitAnswer,
       tapChoice,
+      tiebreakActive,
+      tiebreakLeaderIds,
       timeLeft,
       transcript,
       ttsFailed,

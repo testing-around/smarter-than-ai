@@ -31,7 +31,7 @@ export function HomeScreen() {
   return (
     <Screen>
       <Text style={styles.eyebrow}>ARE YOU</Text>
-      <Text style={styles.hero}>SMARTER{'\n'}THAN AI?</Text>
+      <Text style={styles.hero}>SMARTER{'\n'}THEN AI?</Text>
       <Text style={styles.sub}>
         Multiplayer trivia. Enter names, shout the letter, and let the host credit the right
         player.
