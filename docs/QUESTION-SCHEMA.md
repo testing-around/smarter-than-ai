@@ -3,10 +3,12 @@
 Playable items are merged from:
 
 1. `data/master-seed-questions.json` (190 seed rows)
-2. The original in-app bank (`src/data/questions.ts` + `moreQuestions.ts`), converted to this schema
-3. `src/data/gapQuestions.ts` originals that fill thin categories in `CATEGORIES.md`
+2. `src/data/gradeQuestions.ts` (Grade 1–10 starters)
+3. The original in-app bank (`src/data/questions.ts` + `moreQuestions.ts`), converted to this schema
+4. `src/data/gapQuestions.ts` originals that fill thin categories in `CATEGORIES.md`
+5. `data/funfacts-batch-001.json` (FUN-001 through FUN-100). FUN-044 duplicates seed `GEO-008` and is dropped at merge, so this batch adds 99 playable items.
 
-The live deck is built in `src/data/bank.ts` (**395** playable after the current merge). A question is **playable** only if `active === true` and `quality_score >= 0.7`. Duplicates are dropped by normalized question text + correct answer. A round shuffles and never reuses a `question_id`.
+The live deck is built in `src/data/bank.ts` (**530** playable after the current merge). A question is **playable** only if `active === true`, `quality_score >= 0.7`, and it has at least two choices. Duplicates are dropped by normalized question text + correct answer. A round shuffles and never reuses a `question_id`.
 
 ## Fields
 
