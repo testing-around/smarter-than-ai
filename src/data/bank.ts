@@ -1,3 +1,4 @@
+import funfacts from '../../data/funfacts-batch-001.json';
 import seed from '../../data/master-seed-questions.json';
 import type { MasterCategory, Question, QuestionType } from '../types';
 import { GRADE_QUESTIONS } from './gradeQuestions';
@@ -62,7 +63,29 @@ function asQuestionType(value: string): QuestionType {
   return 'MULTIPLE_CHOICE';
 }
 
-function fromSeed(raw: (typeof seed)[number]): Question {
+type MasterJsonRow = {
+  question_id: string;
+  category: string;
+  subcategory: string;
+  difficulty: number;
+  grade_min: number;
+  grade_max: number;
+  question_type: string;
+  question: string;
+  choices: readonly string[];
+  correct_answer: string;
+  accepted_answers: readonly string[];
+  explanation: string;
+  time_limit_seconds: number;
+  base_points: number;
+  speed_bonus: boolean;
+  steal_allowed: boolean;
+  source_verified: boolean;
+  active: boolean;
+  quality_score: number;
+};
+
+function fromSeed(raw: MasterJsonRow): Question {
   return {
     question_id: raw.question_id,
     category: asMasterCategory(raw.category),
@@ -112,6 +135,7 @@ export const QUESTIONS: Question[] = mergeUnique([
   GRADE_QUESTIONS,
   legacy,
   GAP_QUESTIONS,
+  funfacts.map(fromSeed),
 ]);
 
 export const CATEGORY_LABEL: Record<MasterCategory, string> = {

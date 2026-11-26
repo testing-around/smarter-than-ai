@@ -136,7 +136,7 @@ src/
   theme/        game-show palette
 ```
 
-The playable bank is **431 unique items** after merge (`src/data/bank.ts`: seed + Grade 1–10 starters + converted legacy + gap fillers, deduped, `active` and `quality_score >= 0.7`). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
+The playable bank is **530 unique items** after merge (`src/data/bank.ts`: seed + Grade 1–10 starters + converted legacy + gap fillers + FunFacts batch 001, deduped, `active`, `quality_score >= 0.7`, and at least two choices). Schema: `docs/QUESTION-SCHEMA.md`. Categories: `docs/CATEGORIES.md`. A round shuffles and does not repeat IDs. Last question (and `question_type: BOSS`) is 3×.
 
 ## Android APK
 
